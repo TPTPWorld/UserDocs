@@ -1,0 +1,161 @@
+<A NAME="NonClassicalLogics"</A>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3> The Non-classical Logics </H3>
+
+The TPTP recognizes several normal modal logics, and one temporal logic.
+Each logic has a define name:
+<UL>
+<LI> Generic modal - <TT>$modal</TT>
+<LI> Alethic modal - <TT>$alethic_modal</TT>
+<LI> Deontic modal - <TT>$deontic_modal</TT>
+<LI> Epistemic modal - <TT>$epistemic_modal</TT>
+<LI> Doxastic modal - <TT>$doxastic_modal</TT>
+<LI> Temporal (instant-based) - <TT>$temporal_instant</TT>
+</UL>
+
+<STRONG>Connectives</STRONG><BR>
+The non-classical connectives of NTF have the form <TT>{$</TT><EM>name</EM><TT>}</TT>.
+For the logics recognized by the TPTP the connectives are:
+<UL>
+<LI> <TT>$modal</TT> - <TT>{$box}</TT>, <TT>{$dia}</TT>
+<LI> <TT>$alethic_modal</TT> - <TT>{$necessary}</TT>, <TT>{$possible}</TT> 
+<LI> <TT>$deontic_modal</TT> - <TT>{$obligatory}</TT>, <TT>{$permissible}</TT>, 
+     <TT>{$forbidden}</TT>
+<LI> <TT>$epistemic_modal</TT> - <TT>{$knows}</TT>, <TT>{$canKnow}</TT>
+<LI> <TT>$doxastic_modal</TT> - <TT>{$believes}</TT>, <TT>{$canBelieve}</TT>
+<LI> <TT>$temporal_instant</TT> - <TT>{$future}</TT>, <TT>{$past}</TT>, <TT>{$henceforth}</TT>, 
+     <TT>{$hitherto}</TT>
+</UL>
+(System names may also be used for user-defined connectives, e.g.,
+<TT>{$$canadian_conditional}</TT>, thus allowing use of the TPTP syntax when experimenting with 
+logics that have not yet been formalized in the TPTP.)
+A connective can be parameterized to reflect more complex non-classical connectives.
+The form is
+<TT>{$</TT><EM>name</EM><TT>(</TT><EM>param<SUB>1</SUB></EM><TT>,</TT><EM>param<SUB>2</SUB></EM><TT>,</TT><EM>param<SUB>2</SUB></EM><TT>)}</TT>.
+If the connective is indexed the index is given as the first parameter prefixed with a <TT>#</TT>,
+e.g., <TT>{$knows(#manuel)}&nbsp;@&nbsp;(nothing)}</TT>,
+so that the connective is <TT>{$knows(#manuel)}</TT> (and not the connective <TT>{$knows}</TT>
+applied to the index <TT>#manuel</TT>).
+All other parameters are key-value assignments, e.g., to list the agents of common knowledge the
+form might be <TT>{$common($agents:=[alice,bob,claire])}</TT>.
+<P>
+In NXF the non-classical connectives are applied in a mixed
+higher-order-applied/first-order-functional style, with the connectives applied using <TT>@</TT>
+to a <TT>()</TT>ed list of arguments.
+In NHF the non-classical connectives are applied using <TT>@</TT> in usual higher-order style with 
+curried function applications.
+There are also short form unary connectives for unparameterised <TT>{$box}</TT> and 
+<TT>{$dia}</TT>, applied directly like negation: <TT>[.]</TT> and <TT>&lt;.&gt;</TT>, e.g., 
+<TT>{$box}&nbsp;@&nbsp;(p)</TT> can be 
+written <TT>[.]&nbsp;p</TT>.
+Short forms and long forms can be used together, e.g., it’s OK to use <TT>{$necessary}</TT> and 
+<TT>[.]</TT> in the same problem or formula.
+<P>
+Full specification of the connectives and their use in formulae is in the BNF
+starting at <A HREF="https://tptp.org/TPTP/SyntaxBNF.html#nxf_atom"><TT>&lt;nxf_atom&gt;</TT></A> 
+and <A HREF="https://tptp.org/TPTP/SyntaxBNF.html#thf_defined_atomic">
+<TT>&lt;thf_defined_atomic&gt;</TT></A>.
+<P>
+
+<A NAME="SemanticsSpecification"/A>
+<STRONG> Semantics Specification </STRONG><BR>
+An annotated formula with the role <TT>logic</TT> is used to specify the semantics of formulae.
+The semantic specification typically comes first in a file.
+A semantic specification consists of the defined name of the logic followed by 
+<TT>==</TT> and a list of properties value assignments. 
+Each specification is the property name, followed by <TT>==</TT> and either a value or a tuple 
+of specification details.
+If the first element of a list of details is a value, that is the default value for all cases 
+that are not specified in the rest of the list. 
+Each detail after the optional default value is the name of a relevant part of the vocabulary of 
+the problem, followed by <TT>==</TT> and a value for that named part.
+
+The BNF grammar is <A HREF="https://tptp.org/TPTP/SyntaxBNF.html#ntf_semantics_spec">here</A>.
+The grammar is not very restrictive on purpose, to enable working with other logics as well.
+It is possible to create a lot of nonsense specifications, and to say the same thing in different 
+meaningful ways.
+A tool to check the sanity of a specification is available.
+<P>
+A semantic specification changes the meaning of things such as the boolean type <TT>$o</TT>, 
+universal quantification with <TT>!</TT>, etc - their existing meaning in classical logic should 
+not be confused with the meaning in the declared logic.
+<P>
+For plain <TT>$modal</TT> and all the <TT>*_modal</TT> logics the properties that may be 
+specified are <TT>$domains</TT>, <TT>$designation</TT>, <TT>$terms</TT>, and <TT>$modalities</TT>.
+<UL> 
+<LI> <TT>$domains</TT>
+     <UL>
+     <LI> <TT>$constant</TT> - Constant domain semantics has all world's domains fixed the same.
+     <LI> <TT>$varying</TT> - Varying domain semantics has (potentially) different domains for 
+          each world.
+     <LI> <TT>$cumulative</TT> - Cumulative domain semantics and varying, and the domain of each 
+          world is a superset of the domains of the worlds from which it can be reached.
+     <LI> <TT>$decreasing</TT> - Decreasing domain semantics and varying, and the domain of each 
+          world is a subset of the domains of the worlds from which it can be reached.
+     </UL>
+<LI> <TT>$designation</TT>
+     <UL>
+     <LI> <TT>$rigid</TT> - Rigid designation independent of worlds.
+     <LI> <TT>$flexible</TT> - Flexible designation dependent on worlds.
+     </UL>
+<LI> <TT>$terms</TT>
+     <UL>
+     <LI> <TT>$local</TT> - Terms are interpreted in the local world
+     <LI> <TT>$global</TT> - Terms are interpreted globally in all the worlds
+     </UL>
+<LI> <TT>$modalities</TT>
+     <UL>
+     <LI> A known system name in the form <TT>$modal_system_</TT><EM>Sys</EM><BR>
+          <EM>Sys</EM> &isin; { <TT>K,KB,K4,K5,K45,KB5,D,DB,D4,D5,D45,M,B,S4,S5,S5U</TT> }
+<!--
+<A HREF="https://github.com/TPTPWorld/NonClassicalLogic/blob/master/Logics/LOG001_4.l">
+<TT>LOG001_4.l</TT></A>.
+-->
+     <LI> A tuple of known axiom names in the form
+          <TT>[ $modal_axiom_</TT><EM>Ax<SUB>1</SUB></EM><TT>,
+                $modal_axiom_</TT><EM>Ax<SUB>2</SUB></EM><TT>, ... ]</TT><BR>
+          <EM>Ax<SUB>i</SUB></EM> &isin; { <TT>K,M,B,D,4,5,CD,BoxM,C4,C</TT> }
+<!--
+<A HREF="https://github.com/TPTPWorld/NonClassicalLogic/blob/master/Logics/LOG001_3.l">
+<TT>LOG001_3.l</TT></A>.
+The <TT>$designation</TT>, <TT>$domains</TT>, and <TT>$modalities</TT> may have individual values 
+for constants and types.
+-->
+     </UL>
+</UL>
+<P>
+For <TT>$temporal_instant</TT> the properties are the <TT>$domains</TT>, <TT>$designation</TT>, 
+and <TT>$terms</TT> of the modal logic, <TT>$modalities</TT> with different possible values,
+and another property <TT>$time</TT>.
+<UL>
+<LI> <TT>$modalities</TT>
+     <UL>
+     <LI> A tuple of known axiom names in the form
+          <TT>[ $modal_axiom_</TT><EM>AxTm<SUB>1</SUB></EM><TT>,
+                $modal_axiom_</TT><EM>AxTm<SUB>2</SUB></EM><TT>, ... ]</TT><BR>
+          <EM>Ax<SUB>i</SUB></EM> &isin; { <TT>K,M,B,D,4,5</TT> },
+          <EM>Tm<SUB>i</SUB></EM> &isin; { <TT>+,-</TT> },
+     </UL>
+<LI> <TT>$time</TT>
+     <UL>
+     <LI> A tuple of known time properties in the form
+          <TT>[ </TT><EM>P<SUB>1</SUB></EM><TT>,</TT><EM>P<SUB>2</SUB></EM><TT>, ... ]</TT><BR>
+          <EM>P<SUB>i</SUB></EM> 
+          &isin; { <TT>$reflexivity, $irreflexivity, $transitivity, $asymmetry, $anti_symmetry, 
+          $linearity, $forward_linearity, $backward_linearity, $beginning, $end, $no_beginning, 
+          $no_end, $density, $forward_discreteness, $backward_discreteness</TT> }
+     </UL>
+</UL>
+
+<P>
+The formulae of a problem can be either local (true in the current world) or global (true in all 
+worlds).
+By default, formulae with the roles <TT>hypothesis</TT> and <TT>conjecture</TT> are local, and 
+all others are global.
+These defaults can be overridden by adding a subrole, e.g., <TT>axiom-$local</TT>, 
+<TT>conjecture-$global</TT>.
+<P>
+<!--
+See <A HREF="LogicSpecifications/CorrectSpecifications.p"> <TT>CorrectSpecifications.p</TT></A> for 
+examples.
+-->

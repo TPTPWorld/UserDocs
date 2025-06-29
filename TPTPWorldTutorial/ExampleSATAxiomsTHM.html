@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<TITLE> A Theorem with Nice Axioms </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<H1>A Theorem with Nice Axioms</H1>
+
+Every student is enrolled in at least one course. 
+Every professor teaches at least one course. 
+Every course has at least one student enrolled. 
+Every course has at least one professor teaching. 
+The coordinator of a course teaches the course. 
+If a student is enrolled in a course then the student is taught by every 
+professor who teaches the course. 
+Michael is enrolled in CSC410. 
+Victor is the coordinator of CSC410. 
+Therefore, Michael is taught by Victor.
+(<A HREF="http://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ131_1.p">PUZ131_1</A>)
+<PRE>
+%------------------------------------------------------------------------------
+tff(student_type,type,        student: $tType ).
+tff(professor_type,type,      professor: $tType ).
+tff(course_type,type,         course: $tType ).
+
+tff(michael_type,type,        michael: student ).
+tff(victor_type,type,         victor: professor ).
+tff(csc410_type,type,         csc410: course ).
+tff(enrolled_type,type,       enrolled: ( student * course ) > $o ).
+tff(teaches_type,type,        teaches: ( professor * course ) > $o ).
+tff(taught_by_type,type,      taughtby: ( student * professor ) > $o ).
+tff(coordinator_of_type,type, coordinatorof: course > professor ).
+
+%----Every student is enrolled in at least one course.
+tff(student_enrolled,axiom,
+    ! [X: student] : ? [Y: course] : enrolled(X,Y) ).
+
+%----Every professor teaches at least one course.
+tff(professor_teaches,axiom,
+    ! [X: professor] : ? [Y: course] : teaches(X,Y) ).
+
+%----Every course has at least one student enrolled.
+tff(course_enrolled,axiom,
+    ! [X: course] : ? [Y: student] : enrolled(Y,X) ).
+
+%----Every course has at least one professor teaching.
+tff(course_teaches,axiom,
+    ! [X: course] : ? [Y: professor] : teaches(Y,X) ).
+
+%----The coordinator of a course teaches the course.
+tff(coordinator_teaches,axiom,
+    ! [X: course] : teaches(coordinatorof(X),X) ).
+
+%----If a student is enrolled in a course then the student is taught by 
+%----every professor who teaches the course.
+tff(student_enrolled_taught,axiom,
+    ! [X: student,Y: course] :
+      ( enrolled(X,Y)
+     => ! [Z: professor] : ( teaches(Z,Y) => taughtby(X,Z) ) ) ).
+
+%----Michael is enrolled in CSC410.
+tff(michael_enrolled_csc410,axiom,
+    enrolled(michael,csc410) ).
+
+%----Victor is the coordinator of CSC410.
+tff(victor_coordinator_csc410,axiom,
+    coordinatorof(csc410) = victor ).
+
+%----Therefore, Michael is taught by Victor.
+tff(teaching_conjecture,conjecture,
+    taughtby(michael,victor) ).
+%------------------------------------------------------------------------------
+</PRE>
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

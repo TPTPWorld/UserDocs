@@ -1,0 +1,211 @@
+<HTML>
+<HEAD>
+<TITLE> TPTP and TSTP Quick Guide </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/QuickGuide.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H1 ALIGN=CENTER> TPTP and TSTP Quick Guide </H1>
+
+<H2> The TPTP Language </H2>
+<UL>
+<LI> The <A HREF="../TPTPLanguage/TPTPLanguage.shtml">full language description</A>
+<LI> How to <A HREF="Problems.html">write problems</A>
+<LI> How to <A HREF="Derivations.html">write derivations</A>
+<LI> How to <A HREF="Interpretations.shtml">write interpretations</A>
+<LI> The <A HREF="../TPTPLanguage/SyntaxBNF.html">language grammar</A> in BNF
+<LI> The <A HREF="../SZSOntology">SZS ontology</A> for problem and solution status
+</UL>
+
+<H2> The TPTP Problem Library</H2>
+
+The TPTP (Thousands of Problems for Theorem Provers) is a 
+<A HREF="https://tptp.org/Seminars/TPTP/Summary.html">library of test problems for ATP systems</A>.
+<UL>
+<LI> The WWW page is <A HREF="https://tptp.org/TPTP"><TT>tptp.org/TPTP</TT></A>
+<LI> You can <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems">browse the TPTP 
+     problems</A> online.
+<LI> Here is a <A HREF="PUZGarfieldExamples/">series of fun examples</A> using the various logic 
+     languages of the TPTP World.
+<LI> Sample problems in
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT031-1.p">
+     CNF</A>,
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ001+1.p">
+     FOF</A>,
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ131_1.p">
+     TFF</A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=DAT&File=DAT001_1.p">
+     TFA</A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ081_8.p">
+     TXF</A>,
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL633^1.p">
+     THF</A>,
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PHI&File=PHI002^8.p">
+     NTF</A>
+</UL>
+
+<H2> The TSTP Solution Library</H2>
+
+The TSTP (Thousands of Solutions from Theorem Provers) is a 
+<A HREF="https://tptp.org/Seminars/TSTP/Summary.html">library of solutions to TPTP problems</A>.
+<UL>
+<LI> The WWW page is <A HREF="https://tptp.org/TSTP"><TT>tptp.org/TSTP</TT></A>.
+<LI> You can <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Solutions">browse the TSTP 
+     solutions</A> online.
+<LI> See E's (and others') derivation (a refutation) for the FOF problem
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Solutions&Domain=PUZ&File=PUZ001+1">
+     <TT>PUZ001+1</TT></A>
+</UL>
+
+<H2> Test Problems </H2>
+
+The <TT>SYN000*</TT> problem files are contrived to use most features of the TPTP language, and 
+are thus suitable for testing parsers, etc.
+<UL>
+<LI> CNF problem contrived to use common parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000-1.p">
+     <TT>SYN000-1</TT></A>
+<LI> FOF problem contrived to use common parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000+1.p">
+     <TT>SYN000+1</TT></A>
+<LI> TFF problem contrived to use common parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000_1.p">
+     <TT>SYN000_1</TT></A>
+<LI> THF problem contrived to use common parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000^1.p">
+     <TT>SYN000^1</TT></A>
+<LI> TFF problem contrived to use non-classical parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000_6.p">
+     <TT>SYN000_6</TT></A>
+<LI> THF problem contrived to use non-classical parts of the TPTP language:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN000^6.p">
+     <TT>SYN000^6</TT></A>
+</UL>
+
+Here are some easy test problems that should be solved with the given SZS result:
+<UL>
+<LI> CNF Unsatisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN075-1.p">
+     <TT>SYN075-1</TT></A>
+<LI> CNF Satisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT031-1.p">
+     <TT>MGT031-1</TT></A>
+<LI> EPR Unsatisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT041-2.p">
+     <TT>MGT041-2</TT></A>
+<LI> EPR Satisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=NLP&File=NLP114-1.p">
+     <TT>NLP114-1</TT></A>
+<LI> UEQ Unsatisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=BOO&File=BOO003-4.p">
+     <TT>BOO003-4</TT></A>
+<LI> UEQ Satisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=BOO&File=BOO027-1.p">
+     <TT>BOO027-1</TT></A>
+<LI> FOF Theorem: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN075+1.p">
+     <TT>SYN075+1</TT></A>
+<LI> FOF CounterSatisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT019+2.p">
+     <TT>MGT019+2</TT></A>
+<LI> FOF Unsatisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=KRS&File=KRS063+1.p">
+     <TT>KRS063+1</TT></A>
+<LI> FOF Satisfiable: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=KRS&File=KRS018+1.p">
+     <TT>KRS018+1</TT></A>
+<LI> TFF Theorem:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ131_1.p">
+     <TT>PUZ131_1</TT></A>
+<LI> TFF CounterSatisfiable:
+     No example
+<LI> TFA Theorem:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=DAT&File=DAT001=1.p">
+     <TT>DAT001=1</TT></A>
+<LI> TFA CounterSatisfiable:
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=ARI&File=ARI086=1.p">
+     <TT>ARI086=1</TT></A>
+<LI> THF Theorem (in Henkin semantics):
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL580^1.p">
+     <TT>LCL580^1</TT></A>
+<LI> THF CounterSatisfiable (in Henkin semantics):
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL582^1.p">
+     <TT>LCL582^1</TT></A>
+</UL>
+(As a cut-and-paste list: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN075-1.p">
+     <TT>SYN075-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT031-1.p">
+     <TT>MGT031-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT041-2.p">
+     <TT>MGT041-2</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=NLP&File=NLP114-1.p">
+     <TT>NLP114-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=BOO&File=BOO003-4.p">
+     <TT>BOO003-4</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=BOO&File=BOO027-1.p">
+     <TT>BOO027-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYN&File=SYN075+1.p">
+     <TT>SYN075+1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MGT&File=MGT019+2.p">
+     <TT>MGT019+2</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=KRS&File=KRS063+1.p">
+     <TT>KRS063+1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=KRS&File=KRS018+1.p">
+     <TT>KRS018+1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=PUZ&File=PUZ131_1.p">
+     <TT>PUZ131_1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=DAT&File=DAT001=1.p">
+     <TT>DAT001=1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=ARI&File=ARI086=1.p">
+     <TT>ARI086=1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL580^1.p">
+     <TT>LCL580^1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL582^1.p">
+     <TT>LCL582^1</TT></A>)
+<P>
+These are hard test problems. If you solve any of these then either your
+system is very good, or your system is unsound.
+<UL> 
+<LI> CNF Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LDA&File=LDA014-1.p">
+     <TT>LDA014-1</TT></A>
+<LI> EPR Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MSC&File=MSC015-1.025.p">
+     <TT>MSC015-1.025</TT></A>
+<LI> UEQ Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=ROB&File=ROB032-1.p">
+     <TT>ROB032-1</TT></A>
+<LI> FOF Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=GEO&File=GEO090+1.p">
+     <TT>GEO090+1</TT></A>
+<LI> TFF Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=COM&File=COM003_1.p">
+     <TT>COM003_1</TT></A>
+<LI> TFA Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYO&File=SYO522=1.p">
+     <TT>SYO522=1</TT></A>
+<LI> THF Timeout: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL634^1.p">
+     <TT>LCL634^1</TT></A>
+</UL>
+(As a cut-and-paste list: 
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LDA&File=LDA014-1.p">
+     <TT>LDA014-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=MSC&File=MSC015-1.025.p">
+     <TT>MSC015-1.025</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=ROB&File=ROB032-1.p">
+     <TT>ROB032-1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=GEO&File=GEO090+1.p">
+     <TT>GEO090+1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=COM&File=COM003_1.p">
+     <TT>COM003_1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=SYO&File=SYO522=1.p">
+     <TT>SYO522=1</TT></A>
+     <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=LCL&File=LCL634^1.p">
+     <TT>LCL634^1</TT></A>)
+
+<P>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+</BODY>
+</HTML>

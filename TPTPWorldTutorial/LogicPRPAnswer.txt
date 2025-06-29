@@ -1,0 +1,17 @@
+fof(quiet_resting,axiom,
+    ( quiet
+   => resting ) ).
+
+fof(resting_peace_quiet,axiom,
+    ( resting
+   => ( peace
+      & quiet ) ) ).
+
+fof(peace_quiet_resting,axiom,
+    ( peace
+   => ( quiet
+      | resting ) ) ).
+
+fof(peace_is_quiet,conjecture,
+    ( peace
+  <=> quiet ) ).

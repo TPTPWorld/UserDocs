@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE> A Theorem with Nasty Axioms </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<H1>A Theorem with Nasty Axioms</H1>
+
+Every number is greater than its predecessor, and if a number is greater than 
+another, it's successor is also greater.
+If a number is greater than another, then they are not equal.
+Prove 3 is not equal to 1.
+
+<PRE>
+%------------------------------------------------------------------------------
+%----Every number is greater than its predecessor
+fof(greater_than_predecessor,axiom,(
+    ! [X] : greater(s(X),X) )).
+
+%----If a number is greater than another, it's successor is also greater
+fof(greater_successor,axiom,(
+    ! [X,Y] :
+      ( greater(X,Y)
+     => greater(s(X),Y) ) )).
+
+%----If a number is greater than another, then they are not equal
+fof(greater_not_equal,axiom,(
+    ! [X,Y] :
+      ( greater(X,Y)
+     => X != Y ) )).
+
+%----Prove 3 is not equal to 1
+fof(three_is_not_one,conjecture,(
+    s(s(s(zero))) != s(zero) )).
+%------------------------------------------------------------------------------
+</PRE>
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

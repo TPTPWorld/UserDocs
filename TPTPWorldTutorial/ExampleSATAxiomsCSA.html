@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<TITLE> A Non-Theorem with Nice Axioms </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<H1>A Non-Theorem with Nice Axioms</H1>
+
+Find a complete 2-colour graph of size 11 without a complete
+subgraph of size 4 in which all the edges have the same color.
+(A variant of 
+<A HREF="http://tptp.org/cgi-bin/SeeTPTP?Category=Problems&Domain=GRA&File=GRA015+1.p">GRA015+1</A>.)
+<PRE>
+%------------------------------------------------------------------------------
+%----A complete graph with 11 nodes
+fof(ordering,axiom,
+    ( edge(n1,n2)
+    & edge(n2,n3)
+    & edge(n3,n4)
+    & edge(n4,n5)
+    & edge(n5,n6)
+    & edge(n6,n7)
+    & edge(n7,n8)
+    & edge(n8,n9)
+    & edge(n9,n10)
+    & edge(n10,n11) )).
+
+fof(edge_transitive,axiom,(
+    ! [A,B,C] :
+      ( ( edge(A,B)
+        & edge(B,C) )
+     => edge(A,C) ) )).
+
+%----All edges are red xor green
+fof(partition,axiom,(
+    ! [A,B] :
+      ( edge(A,B)
+     => ( red(A,B)
+      <~> green(A,B) ) ) )).
+
+%----The nodes are distinct
+fof(distinct_nodes,axiom,
+    ! [A,B] :
+      ( edge(A,B)
+     => A != B ) ).
+
+%----A red clique of size 4
+fof(red_clique,axiom,(
+    ! [A,B,C,D] :
+      ( ( red(A,B)
+        & red(A,C)
+        & red(B,C)
+        & red(A,D)
+        & red(B,D)
+        & red(C,D) )
+     => goal ) )).
+
+%----A green clique of size 4
+fof(green_clique,axiom,(
+    ! [A,B,C,D] :
+      ( ( green(A,B)
+        & green(A,C)
+        & green(B,C)
+        & green(A,D)
+        & green(B,D)
+        & green(C,D) )
+     => goal ) )).
+
+%----Prove there is a red clique or a green clique
+fof(goal_to_be_proved,conjecture,(
+    goal )).
+%------------------------------------------------------------------------------
+</PRE>
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

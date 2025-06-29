@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<TITLE> Typed Higher-order Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Typed Higher-order Logic (THF) </H1>
+
+<IMG SRC="LogicTHF.gif" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> Functions and predicates conflated
+<LI> Lambda functions 
+<LI> Curried symbol signatures, allowing ...
+<LI> Partial application, producing a lambda function
+<LI> Variable functions and predicates
+</UL>
+<P>
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> Coffee is a beverage.
+     <LI> A heated beverage is a beverage.
+     <LI> A mixture of a beverage with a syrup is a beverage.
+     <LI> A heated mix is the application of heat to the mixture of a beverage with a syrup.
+     <LI> A heated mixture is hot!
+     <LI> A heated mixture of coffee and any syrup is still coffee.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> There is something that when mixed with any syrup results in hot coffee.
+     </UL>
+</UL>
+
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Lambda: &#955; 
+<LI> Type information
+     <UL>
+     <LI> <EM>beverage</EM> is a type
+     <LI> <EM>syrup</EM> is a type
+     <LI> <EM>coffee</EM> is a <EM>beverage</EM>
+     <LI> <EM>mix</EM> takes a <EM>beverage</EM> and a <EM>syrup</EM> argument and returns a 
+          <EM>beverage</EM>
+     <LI> <EM>heat</EM> takes a <EM>beverage</EM> argument and returns a <EM>beverage</EM>
+     <LI> <EM>heated_mix</EM> takes a <EM>beverage</EM> and a <EM>syrup</EM> argument and returns 
+          a <EM>beverage</EM>
+     <LI> <EM>hot</EM> takes a <EM>beverage</EM> argument and returns <EM>boolean</EM>
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> <EM>heated_mix = &#955; B:beverage,S:syrup (heat (mix B S))</EM>
+     <LI> &forall; <EM>B:beverage</EM> &forall; <EM>S:syrup</EM> (hot (heated_mix B S))</EM>
+     <LI> &forall; <EM>S:syrup</EM> <EM>(heated_mix coffee S) = coffee</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &exist; <EM>M:syrup > beverage</EM> &forall; <EM>S:syrup</EM> 
+          <EM>(M S) = coffee &and; (hot (M S))</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Currried signatures: Use <TT>&gt;</TT>
+<LI> Lambda: <TT>^</TT>
+<LI> Explicit application: <TT>@</TT>
+<LI> <TT>thf</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+%------------------------------------------------------------------------------
+thf(beverage_type,type,beverage: $tType).
+thf(syrup_type,type,syrup: $tType).
+thf(coffee_decl,type,coffee: beverage).
+thf(mix_decl,type,mix: beverage > syrup > beverage).
+thf(heat_decl,type,heat: beverage > beverage ).
+thf(heated_mix_decl,type,heated_mix: beverage > syrup > beverage).
+thf(hot_decl,type,hot: beverage > $o).
+
+thf(heated_mix,axiom,
+    heated_mix = ( ^ [B: beverage,S :syrup] : ( heat @ ( mix @ B @ S ))) ).
+
+thf(hot_mixture,axiom,
+    ! [B: beverage,S: syrup] : ( hot @ ( heated_mix @ B @ S ) ) ).
+
+thf(heated_coffee_mix,axiom,
+    ! [S: syrup] : ( ( heated_mix @ coffee @ S ) = coffee ) ).
+
+thf(hot_coffee,conjecture,
+    ? [Mixture: syrup > beverage] :
+    ! [S: syrup] :
+        ( ( ( Mixture @ S ) = coffee )
+        & ( hot @ ( Mixture @ S ) ) ) ).
+%------------------------------------------------------------------------------
+</PRE>
+<P>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Check the axioms are satisfiable with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using Leo-III in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+Andrew, Betty, and Charlie are (different) people.
+Andrew and Betty loves themselves, neither love Charlie, and Andrew does not love Betty.
+Selfish love is a relationship between two (different) people in which the first person loves 
+themself, and does not love anyone else.
+Prove that there exists a property of a person that is true for Andrew but not for Betty.
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

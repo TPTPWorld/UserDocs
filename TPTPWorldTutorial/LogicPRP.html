@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+<TITLE> Propositional Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Propositional Logic (PRP) </H1>
+
+<IMG SRC="LogicPRP.gif" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> Logic features </H3>
+<UL>
+<LI> <EM>Propositions</EM> are <EM>true</EM> or <EM>false</EM> (boolean)
+<LI> Formulae can be <EM>negated</EM>, <EM>disjoined</EM>, <EM>conjoined</EM>,
+     <EM>implied</EM>, <EM>implied-by</EM>, <EM>equivalent</EM>, <EM>inequivalent</EM>
+</UL>
+
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> If the horse races are fixed or the bookies are crooked, then the tourist trade declines. 
+     <LI> If the tourist trade declines then the police force is happy. 
+     <LI> The police force is not happy.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> The horse races are not fixed
+     </UL>
+</UL>
+
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Connectives: &not;&nbsp;&nbsp;&or;&nbsp;&nbsp;&and;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;&larr;&nbsp;&nbsp;&harr;&nbsp;&nbsp;&#8853;
+<LI> Axioms
+     <UL>
+     <LI> <EM>(horse_races_fixed &or; bookies_crooked) &rarr; tourist_trade_declines</EM>
+     <LI> <EM>tourist_trade_declines &rarr; police_force_happy</EM>
+     <LI> <EM>&not; police_force_happy</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> <EM>&not; horse_races_fixed</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Propositions: start lowercase, contain alphanumerics and underscore.
+<LI> Logical constants: <TT>$true</TT>, <TT>$false</TT>
+<LI> Connectives: <TT>~</TT>&nbsp;&nbsp;<TT>|</TT>&nbsp;&nbsp;<TT>&amp;</TT>&nbsp;&nbsp;<TT>=&gt;</TT>&nbsp;&nbsp;<TT>&lt;=</TT>&nbsp;&nbsp;<TT>&lt;=&gt;</TT>&nbsp;&nbsp;<TT>&lt;~&gt;</TT>
+<LI> <TT>fof</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+fof(bad_tourism,axiom,
+    (horse_races_fixed | bookies_crooked) => tourist_trade_declines ).
+fof(tourism_police,axiom,
+    tourist_trade_declines => happy_police ).
+fof(unhappy_police,axiom,
+    ~ happy_police ).
+
+fof(horse_races_ok,conjecture,
+    ~ horse_races_fixed ).
+</PRE>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Check the axioms are satisfiable with E-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using E in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+If you are quiet then you are resting.
+If you are resting then you are peaceful and quiet.
+If you are peaceful then you are quiet or resting (or both).
+Therefore, being peaceful is the same as being quiet.
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

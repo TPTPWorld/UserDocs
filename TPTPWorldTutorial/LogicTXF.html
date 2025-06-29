@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<TITLE> Typed eXtended First-order Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Typed eXtended First-order Logic (TXF) </H1>
+
+<IMG SRC="LogicTXF.jpg" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> Predicate and function arguments can be boolean, i.e., formulae
+<LI> Typed variables, can be boolean
+<LI> FOOL terms ... tuples, conditionals, let expressions
+</UL>
+<P>
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> Inhabitants of the island are either knights or knaves.
+     <LI> Knights always tell the truth, and knaves always lie. 
+     <LI> Mel and Zoey live on the island.
+     <LI> Zoey says "Mel is a knave". 
+     <LI> Mel says "Neither Zoey nor I are knaves".
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> There is at least one knight and one knave on the island.
+     </UL>
+</UL>
+
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Type information
+     <UL>
+     <LI> <EM>inhabitant</EM> is a type
+     <LI> Statements are true or false (<EM>boolean</EM>)
+     <LI> <EM>Mel</EM> is a <EM>inhabitant</EM>
+     <LI> <EM>Zoey</EM> is a <EM>inhabitant</EM>
+     <LI> <EM>is_knight</EM> takes one <EM>inhabitant</EM> argument,
+          and returns <EM>boolean</EM>
+     <LI> <EM>is_knave</EM> takes an <EM>inhabitant</EM> argument,
+          and returns a <EM>boolean</EM>
+     <LI> <EM>says</EM> takes an <EM>inhabitant</EM> and a statement 
+          as arguments, and returns a <EM>boolean</EM>
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> &forall; <EM>I:inhabitant</EM> 
+          (<EM>is_knight(I)</EM> &otimes; <EM>is_knave(I)</EM>)
+     <LI> &forall; <EM>I:inhabitant</EM>
+          &forall; <EM>S:boolean</EM>
+          <EM>(((is_knight(I) &and; says(I,S)) &rarr; S)</EM>
+     <LI> &forall; <EM>I:inhabitant</EM>
+          &forall; <EM>S:boolean</EM>
+          <EM>(((is_knave(I) &and; says(I,S)) &rarr; &not;S)</EM>
+     <LI> <EM>says(zoey,is_knave(mel))</EM>
+     <LI> <EM>says(mel,&not; is_knave(zoey) &and; &not; is_knave(mel))</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &exist; <EM>Knight:inhabitant</EM> 
+          &exist; <EM>Knave:inhabitant</EM>
+          <EM>(is_knight(Knight) &and; is_knave(Knave))</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Predicate and function arguments: Can be type <TT>$o</TT>
+<LI> Variables: Can be type <TT>$o</TT>
+<LI> FOOL terms ... too much for this tutorial
+<LI> <TT>tff</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+tff(inhabitant_type,type,inhabitant: $tType ).
+tff(mel_decl,type,mel: inhabitant ).
+tff(zoey_decl,type,zoey: inhabitant ).
+tff(is_knight_decl,type,is_knight: inhabitant > $o ).
+tff(is_knave_decl,type,is_knave: inhabitant > $o ).
+tff(says_decl,type,says: ( inhabitant * $o ) > $o ).
+
+tff(knights_xor_knaves,axiom,
+    ! [I: inhabitant] : ( is_knight(I) <~> is_knave(I) ) ).
+tff(knights_tell_truth,axiom,
+    ! [I: inhabitant,S: $o] : ( ( is_knight(I) & says(I,S) ) => S ) ).
+tff(knaves_lie,axiom,
+    ! [I: inhabitant,S: $o] : ( ( is_knave(I) & says(I,S) ) => ~ S ) ).
+tff(zoey_speaks,axiom,
+    says(zoey,is_knave(mel)) ).
+tff(mel_speaks,axiom,
+    says(mel, ~ is_knave(zoey) & ~ is_knave(mel)) ).
+
+tff(knight_and_knave,conjecture,
+    ? [Knight: inhabitant,Knave: inhabitant] :
+      ( is_knight(Knight) & is_knave(Knave) ) ).
+</PRE>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Check the axioms are satisfiable with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+Jon is the owner of Odie.
+Odie bit Jon twice!
+If a dog bites a person more than once, and that person is not the owner of the dog, then 
+that person hates the owner of the dog.
+If a dog bites a person at least once then the person chases the dog, else the person feeds the dog.
+Jon says that a dog he does not own bit him.
+Jon tells the truth.
+Prove that there exists a dog that Jon chases and another person that Jon hates.
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

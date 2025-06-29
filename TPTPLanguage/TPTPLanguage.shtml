@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>TPTP Language</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPLanguage.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<A NAME="Title"></A>
+<CENTER>
+<H1>The TPTP Language</H1>
+</CENTER>
+<H3>Table of Contents</H3>
+<UL>
+<LI> <A HREF="#AnnotatedFormulae">Annotated Formulae</A>
+<LI> <A HREF="#ArithmeticSystem">The Arithmetic System</A>
+<LI> <A HREF="#NonClassicalLogics">The Non-classical Logics</A>
+<LI> <A HREF="#NewSymbolNames">New Symbol Names</A>
+<LI> <A HREF="#TOPOFPAGE">Hyperlinked BNF</A>
+</UL>
+
+<HR><!------------------------------------------------------------------------>
+<!--#include file="AnnotatedFormulae.html"-->
+<!--#include file="ArithmeticSystem.html"-->
+<!--#include file="NonClassicalLogics.html"-->
+<HR>
+<!--#include file="NewSymbolNames.html"-->
+<HR>
+<H3>The TPTP Language BNF</H3>
+<!--#include file="SyntaxBNF.html"-->
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

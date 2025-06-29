@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>
+<TITLE> First-order Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> First-order Logic (FOF) </H1>
+
+<IMG SRC="LogicFOF.gif" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> Predicates with arguments are <EM>true</EM> or <EM>false</EM> (boolean)
+<LI> Constants and functions with arguments (things in the world)
+<LI> Universally quantified variables (for all)
+<LI> Existentially quantified variables (there exists)
+<LI> Equality as a primitive
+</UL>
+<P>
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> The USA is a country.
+     <LI> The capital of every country is a beautiful big city
+     <LI> There is some city that is the capital of the USA
+     <LI> Every big city has crime.
+     <LI> A big city is a city.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> Therefore, there is some city that is beautiful but has crime.
+     </UL>
+</UL>
+<P>
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Quantifiers: &forall;&nbsp;&nbsp;&exist;
+<LI> Equality: <EM>=</EM>&nbsp;&nbsp;&ne;
+<LI> Axioms
+     <UL>
+     <LI> <EM>country(usa)</EM>
+     <LI> &forall; <EM>C (country(C) &rarr; (big_city(capital_of(C)) &and; beautiful(capital_of(C)) ))</EM>
+     <LI> &exist; C <EM>(city(C) &and; C = capital_of(usa))</EM>
+     <LI> &forall; C <EM>(big_city(C) &rarr; has_crime(C))</EM>
+     <LI> &forall; C <EM>(big_city(C) &rarr; city(C))</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &exist; C <EM>(city(C) &and; beautiful(C) &and; has_crime(C))</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Predicates, constants, functions: start lowercase, contain alphanumerics and underscore.
+<LI> Quantifiers: <TT>!</TT>&nbsp;&nbsp;<TT>?</TT>
+<LI> Infix equality <TT>=</TT>&nbsp;&nbsp;<TT>!=</TT>
+<LI> Unique Names <TT>$distinct</TT>, e.g.,<TT>$distinct(usa,brazil,australia,japan)</TT>.
+     <EM>Not a closed world assumption.</EM>
+<LI> <TT>fof</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+fof(usa,axiom, country(usa) ).
+fof(country_big_city,axiom,
+    ! [C] : ( country(C) => ( big_city(capital_of(C)) & beautiful(capital_of(C)) ) ) ).
+fof(usa_capital_axiom,axiom, 
+    ? [C] : ( city(C) & C = capital_of(usa) ) ).
+fof(crime_axiom,axiom,
+    ! [C] : ( big_city(C) => has_crime(C) ) ).
+fof(big_city_city,axiom,
+    ! [C] : ( big_city(C) => city(C) ) ).
+
+fof(some_beautiful_crime,conjecture,
+    ? [C] : ( city(C) & beautiful(C) & has_crime(C) ) ).
+</PRE>
+<LI> Check the syntax in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>
+     SystemB4TPTP</A> using TPTP4X.
+<LI> Check the axioms are satisfiable with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>
+     SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>
+     SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+Bob, Maggie, Jill, and Geoff are four distinct people.
+The oldest sibling of Geoff is Jill (hint - a person has only one oldest sibling).
+If any person's oldest sibling is good looking then that person is good looking.
+If any person is good looking then one (or both) of their parents is good looking
+(hint - think of parent-child as a relationship between two people).
+Jill is good looking, Bob is not.
+The (only) parents of Geoff are Bob and Maggie.
+Therefore, Maggie is good looking.
+<P>
+<H3> Non-theorems </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> Iokaste, Oedipus, Polyneikes, and Thersandros are different people
+     <LI> Iokaste is a parent of Oedipus and Polyneikes
+     <LI> Oedipus is a parent of Polyneikes
+     <LI> Polyneikes is a parent of Thersandros
+     <LI> Nobody is their own parent
+     <LI> Oedipus is a patricide
+     <LI> Thersandros is not a patricide
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> Iokaste is a parent of a patricide who is a parent of somebody who is not a patricide
+     </UL>
+<P>
+<LI> In TPTP format 
+     <PRE>
+fof(different_people,axiom,
+    ( iokaste != oedipus & iokaste != polyneikes & iokaste != thersandros
+    & oedipus != polyneikes & oedipus != thersandros
+    & polyneikes != thersandros ) ).
+fof(iokaste_oedipus,axiom,
+    ( parent_of(iokaste,oedipus) & parent_of(iokaste,polyneikes) ) ).
+fof(oedipus_polyneikes,axiom,
+    parent_of(oedipus,polyneikes) ).
+fof(polyneikes_thersandros,axiom,
+    parent_of(polyneikes,thersandros) ).
+fof(no_self_parent,axiom,
+    ! [X] : ~ parent_of(X,X) ).
+fof(oedipus_patricidal,axiom,
+    patricide(oedipus) ).
+fof(thersandros_not_patricidal,axiom,
+    ~ patricide(thersandros) ).
+fof(iokaste_parent_particide_parent_not_patricide,conjecture,
+    ? [P,NP] :
+      ( parent_of(iokaste,P) & patricide(P) & parent_of(P,NP)
+      & ~ patricide(NP) ) ).  </PRE>
+<P>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Check the axioms are consistent with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Change the conjecture to "Iokaste is a parent of a patricide who is a parent of 
+     somebody who is a patricide"
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>. 
+     That produces a saturation as a countermodel.
+<LI> Disprove it using Paradox
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>. 
+     That produces a finite countermodel.
+<LI> View the finite countermodel using IIV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the finite countermodel using AGMV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+     Use the concatenation of the problem and the countermodel as input.
+</UL>
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

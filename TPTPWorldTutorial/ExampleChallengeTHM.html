@@ -1,0 +1,178 @@
+<HTML>
+<HEAD>
+<TITLE> A Challenge Theorem </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H1>A Challenge Theorem</H1>
+
+Garfield is a cat and Odie is a dog. 
+Cats and dogs are pets. 
+Jon is a human. 
+Every pet has one human owner. 
+Jon owns Garfield and Odie, and they are the only cat and dog he owns. 
+If a dog chases a cat, then the cat's owner hates the dog's owner. 
+Odie has chased Garfield. 
+Therefore, Jon hates himself.
+
+<!--
+<PRE>
+fof(garfield_type,axiom,(
+    cat(garfield) )).
+
+fof(odie_type,axiom,(
+    dog(odie) )).
+
+fof(dog_pet_type,axiom,(
+    ! [A] :
+      ( dog(A)
+     => pet(A) ) )).
+
+fof(cat_pet_type,axiom,(
+    ! [A] :
+      ( cat(A)
+     => pet(A) ) )).
+
+fof(jon_type,axiom,(
+    human(jon) )).
+
+fof(owner_of_type,axiom,(
+    ! [A] :
+      ( pet(A)
+     => human(owner_of(A)) ) )).
+
+fof(pet_owner_axiom,axiom,(
+    ! [X] :
+      ( pet(X)
+     => ? [Y] :
+          ( human(Y)
+          & owner(X,Y) ) ) )).
+
+fof(jon_o_owner_axiom,axiom,(
+    owner(jon,odie) )).
+
+fof(jon_g_owner_axiom,axiom,(
+    owner(jon,garfield) )).
+
+fof(jon_only_g_owner_axiom,axiom,(
+    ! [X] :
+      ( ! [X] :
+          ( cat(X)
+         => owner(jon,X) )
+     => X = garfield ) )).
+
+fof(jon_only_o_owner_axiom,axiom,(
+    ! [X] :
+      ( ! [X] :
+          ( dog(X)
+         => owner(jon,X) )
+     => X = odie ) )).
+
+fof(cat_chase_axiom,axiom,(
+    ! [X,Y] :
+      ( ( cat(X)
+        & dog(Y) )
+     => ( chased(Y,X)
+       => hates(owner_of(X),owner_of(Y)) ) ) )).
+
+fof(owner_def,axiom,(
+    ! [X,Y] :
+      ( ( human(X)
+        & pet(Y) )
+     => ( owner(X,Y)
+      <=> X = owner_of(Y) ) ) )).
+
+fof(odie_chase_axiom,axiom,(
+    chased(odie,garfield) )).
+
+fof(jon_conjecture,conjecture,(
+    hates(jon,jon) )).
+</PRE>
+-->
+<P>
+<H1>Another Challenge Theorem</H1>
+
+Every student is enrolled in at least one course. 
+Every professor teaches at least one course. 
+Every course has at least one student enrolled. 
+Every course has at least one professor teaching it. 
+The coodinator of a course is a professor who is teaching it. 
+If a student is enrolled in a course then the student is taught by every professor who teaches 
+the course. 
+CSC410 is a course. 
+Michael is a student enrolled in CSC410. 
+Victor is the coordinator of CSC410. 
+Therefore, Michael is taught by Victor.
+
+<!--
+<PRE>
+%----Every student is enrolled in at least one course.
+fof(enrolled,axiom,
+    ! [S] :
+      ( student(S)
+     => ? [C] :
+          ( course(C)
+          & enrolled(S,C) ) ) ).
+
+%----Every professor teaches at least one course.
+fof(teaches,axiom,
+    ! [P] :
+      ( professor(P)
+     => ? [C] :
+          ( course(C)
+          & teaches(P,C) ) ) ).
+
+%----Every course has at least one student enrolled.
+fof(enrollment,axiom,
+    ! [C] :
+      ( course(C)
+     => ? [S] :
+          ( student(S)
+          & enrolled(S,C) ) ) ).
+
+%----Every course has at least one professor teaching it.
+fof(teachers,axiom,
+    ! [C] :
+      ( course(C)
+     => ? [P] :
+          ( professor(P)
+          & teaches(P,C) ) ) ).
+
+%----The coodinator of a course is a professor who is teaching it.
+fof(coodinator,axiom,
+    ! [C] :
+      ( course(C)
+     => ( professor(coordinator_of(C))
+        & teaches(coordinator_of(C),C) ) ) ).
+
+%----If a student is enrolled in a course then the student is taught by every professor who
+%----teaches the course.
+fof(all_teachers,axiom,
+    ! [S,C] :
+      ( student(S)
+      & course(C)
+      & enrolled(S,C) ) ).
+
+%----CSC410 is a course.
+fof(csc410,axiom,
+    course(csc410) ).
+
+%----Michael is a student enrolled in CSC410.
+fof(michael,axiom,
+    ( student(michael)
+    & enrolled(michael,csc410) ) ).
+
+%----Victor is the coordinator of CSC410.
+fof(victor,axiom,
+    coordinator_of(csc410) = victor ).
+
+%----Victor teaches Michael.
+fof(victor_teaches_michael,axiom,
+    taught_by(michael,victor) ).
+</PRE>
+-->
+<P>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+</BODY>
+</HTML>

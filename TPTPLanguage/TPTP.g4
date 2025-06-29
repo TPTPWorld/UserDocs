@@ -1,0 +1,1 @@
+/home/tptp/SyntaxBNF/ANTLRParsers/ANTLRGrammar/TPTP.g4

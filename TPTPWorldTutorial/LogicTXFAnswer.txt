@@ -1,0 +1,47 @@
+tff(person_type,type,   person: $tType ).
+tff(dog_type,type,      dog: $tType ).
+tff(jon_decl,type,      jon: person ).
+tff(odie_decl,type,     odie: dog ).
+tff(owner_of_decl,type, owner_of: dog > person ).
+tff(bit_decl,type,      bit: ( dog * person * $int ) > $o ).
+tff(hates_decl,type,    hates: ( person * person ) > $o ).
+tff(chases_decl,type,   chases: ( person * dog ) > $o ).
+tff(feeds_decl,type,    feeds: ( person * dog ) > $o ).
+tff(says_decl,type,     says: ( person * $o ) > $o ).
+
+tff(jon_owns_odie,axiom,
+    owner_of(odie) = jon ).
+
+tff(odie_bit_jon_twice,axiom,
+    bit(odie,jon,2) ).
+
+tff(biters_not_owned,axiom,
+    ! [D: dog,P: person,N: $int] :
+      ( ( bit(D,P,N)
+        & $greater(N,1)
+        & ( owner_of(D) != P ) )
+     => hates(P,owner_of(D)) ) ).
+
+tff(chase_or_feed,axiom,
+    ! [D: dog,P: person,N: $int] :
+      $ite(
+        ( bit(D,P,N)
+        & $greater(N,0) ),
+        chases(P,D),
+        feeds(P,D) ) ).
+
+tff(jon_says_bit,axiom,
+    says(jon,
+      ? [D: dog,N: $int] :
+        ( bit(D,jon,N)
+        & $greater(N,0) )) ).
+
+tff(jon_tells_truth,axiom,
+    ! [S: $o] :
+      ( says(jon,(S))
+     => (S) ) ).
+
+tff(jon_chases_hates,conjecture,
+    ? [D: dog,P: person] :
+      ( chases(jon,D)
+      & hates(jon,P) ) ).

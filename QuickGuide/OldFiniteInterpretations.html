@@ -1,0 +1,296 @@
+<HTML>
+<HEAD>
+<TITLE>TPTP Format for Finite Interpretations</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/QuickGuide.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-- ------------------------------------------------------------------ -->
+<CENTER>
+<H1>TPTP Format for Finite Interpretations</H1>
+</CENTER>
+
+<H3> Introduction </H3>
+
+A finite interpretation (or "finite model" of some identified formulae) 
+consists of a finite <EM>domain</EM>, an <EM>interpretation of functors</EM> 
+- a functor applied to domain elements is interpreted as a domain element, and 
+an <EM>interpretation of predicates</EM> - a predicate applied to domain
+elements is interpreted as either <EM>true</EM> or <EM>false</EM>.
+The elements of the domain are known to be distinct.
+The interpretation of functors and predicates is total, i.e., there is
+an interpretation for every functor and predicate for every pattern
+of domain element arguments.
+<P>
+The TPTP language is sufficient for recording a finite interpretation.
+The domain, interpretation of functors, and interpretation of
+predicates, are written as FOF annotated formulae.
+A recorded interpretation provides the information required for various 
+forms of processing, such as model verification, interpretation of
+formulae, and identification of isomorphic interpretations.
+The goals of the representation format are:
+<UL>
+<LI> Use the TPTP syntax with as little modification as possible
+<LI> Use FOF formulae to represent all aspects
+<LI> A representation that is amenable to checking and use
+<LI> A representation that is compact
+<LI> A representation that allows multiple interpretations to be 
+     easily represented
+</UL>
+
+<H3> Specifying the Domain </H3>
+
+The domain of a finite interpretation is written in the form:
+<PRE>    fof(<EM>fi_name</EM>,fi_domain,
+        ! [X] : ( X = <EM>e<SUB>1</SUB></EM> | X = <EM>e<SUB>2</SUB></EM> | ... | X = <EM>e<SUB>n</SUB></EM> )  ).</PRE>
+where the <TT><EM>e<SUB>i</SUB></EM></TT> are all <TT>"</TT>distinct object<TT>"</TT>s, 
+or all distinct integers, or all distinct constant terms.
+If <TT>"</TT>distinct object<TT>"</TT>s or integer terms appear in the 
+interpreted signature, then all those terms must appear in the domain. 
+If constant terms are used they are freely chosen constants that do not 
+appear in the signature being interpreted.
+The <TT><EM>e<SUB>i</SUB></EM></TT> values provide an exhaustive list of terms whose
+interpretation form the domain (there is a bijection from the terms to
+the domain, so one may think of the terms directly as the domain elements).
+The use of <TT>"</TT>distinct object<TT>"</TT>s or integer terms for 
+a domain is preferred over constant terms, because it takes advantage of 
+the predefined interpretation of such terms - all such terms and 
+corresponding domain elements are known to be distinct.
+If the domain elements are constant terms then their inequality must be 
+explicitly stated in annotated formulae of the form:
+<PRE>    fof(<EM>e<SUB>i</SUB></EM>_not_<EM>e<SUB>j</SUB></EM>,fi_domain,
+        <EM>e<SUB>i</SUB></EM> != <EM>e<SUB>j</SUB></EM> ).</PRE>
+
+<!--
+The use of multiple <TT>domain</TT> formulae in a file, where the domain
+elements are constant terms, permits domain elements to have alternative names,
+and the size of the domain is no larger than the minimal number of literals 
+in any <TT>domain</TT> formula.
+This practice is not recommended.
+-->
+
+<H3> Specifying the Functor and Predicate Interpretations </H3>
+
+The interpretation of functors is written in the form:
+<PRE>    fof(<EM>fi_name</EM> ,fi_functors,
+        ( f(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>m</SUB></EM>) = <EM>e<SUB>r</SUB></EM>
+        & f(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>p</SUB></EM>) = <EM>e<SUB>s</SUB></EM>
+        ...  )   ).</PRE>
+specifying that, e.g., <TT>f(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>m</SUB></EM>)</TT>
+is interpreted as the domain element </TT><EM>e<SUB>r</SUB></EM></TT>.
+If <TT>"</TT>distinct object<TT>"</TT>s or integer terms appear in the 
+interpreted 
+signature, then those terms are necessarily interpreted as themselves and 
+must not be interpreted in the </TT>fi_functors</TT>.
+<P>
+The interpretation of predicates is written in the form:
+<PRE>    fof(<EM>fi_name</EM> ,fi_predicates,
+        ( p(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>m</SUB></EM>)
+        & ~ p(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>p</SUB></EM>)
+        ...  )   ).</PRE>
+specifying that, e.g., <TT>p(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>m</SUB></EM>)</TT>
+is interpreted as <EM>true</EM> 
+and <TT>p(<EM>e<SUB>1</SUB></EM>,...,<EM>e<SUB>p</SUB></EM>)</TT>
+is interpreted as <EM>false</EM>.
+Equality is naturally interpreted by the domain, with the understanding that
+identical elements are equal.
+
+<H3> Example </H3>
+
+Consider the following FOF problem that is <TT>CounterSatisfiable</TT>, i.e., 
+there is a model for the axioms and negated conjecture.
+
+<PRE>
+%----All (hu)men are created equal. John is a human. John got an F grade.
+%----There is someone (a human) who got an A grade. An A grade is not 
+%----equal to an F grade. Grades are not human. Therefore, it is not the 
+%----case being created equal is the same as really being equal.
+
+fof(all_created_equal,axiom,
+    ! [H1,H2] :
+      ( ( human(H1)
+        & human(H2) )
+     => created_equal(H1,H2) ) ).
+
+fof(john,axiom,
+    human(john) ).
+
+fof(john_failed,axiom,
+    grade(john) = f ).
+
+fof(someone_got_an_a,axiom,
+    ? [H] :
+      ( human(H)
+      & grade(H) = a ) ).
+
+fof(distinct_grades,axiom,
+    a != f ).
+
+fof(grades_not_human,axiom,
+    ! [G] : ~ human(grade(G)) ).
+
+fof(equality_lost,conjecture,
+    ! [H1,H2] :
+      ( created_equal(H1,H2)
+    <=> H1 = H2 ) ).
+%------------------------------------------------------------------------------
+</PRE>
+
+Here is a model for the axioms and negated conjecture (adapted from the 
+one found by <A HREF="http://www.cs.chalmers.se/~koen/paradox/">
+Paradox</A> 1.3):
+<PRE>
+%------------------------------------------------------------------------------
+fof(equality_lost,interpretation_domain,
+    ! [X] : ( X = "a" | X = "f" | X = "john" | X = "got_A")  ).
+
+fof(equality_lost,interpretation_terms,
+    ( a = "a"
+    & f = "f"
+    & john = "john"
+    & grade("a") = "f"
+    & grade("f") = "a"
+    & grade("john") = "f"
+    & grade("got_A") = "a" )  ).
+
+fof(equality_lost,interpretation_atoms,
+    ( ~ human("a")
+    & ~ human("f")
+    & human("john")
+    & human("got_A")
+    & ~ created_equal("a","a")
+    & ~ created_equal("a","f")
+    & ~ created_equal("a","john")
+    & ~ created_equal("a","got_A")
+    & ~ created_equal("f","a")
+    & ~ created_equal("f","f")
+    & ~ created_equal("f","john")
+    & ~ created_equal("f","got_A")
+    & ~ created_equal("john","a")
+    & ~ created_equal("john","f")
+    & created_equal("john","john")
+    & created_equal("john","got_A")
+    & ~ created_equal("got_A","a")
+    & ~ created_equal("got_A","f")
+    & created_equal("got_A","john")
+    & created_equal("got_A","got_A") )  ).
+%------------------------------------------------------------------------------
+</PRE>
+
+Here's the same example using constant terms for domain elements:
+<PRE>
+%------------------------------------------------------------------------------
+fof(equality_lost,interpretation_domain,
+    ! [X] : ( X = e_a | X = e_f | X = e_john | X = e_got_A)  ).
+
+fof(equality_lost,interpretation_domain,
+    ( e_a != e_f
+    & e_a != e_john
+    & e_a != e_got_A
+    & e_f != e_john
+    & e_f != e_got_A
+    & e_john != e_got_A )  ).
+
+fof(equality_lost,interpretation_terms,
+    ( a = e_a
+    & f = e_f
+    & john = e_john
+    & grade(e_a) = e_f
+    & grade(e_f) = e_a
+    & grade(e_john) = e_f
+    & grade(e_got_A) = e_a )  ).
+
+fof(equality_lost,interpretation_atoms,
+    ( ~ human(e_a)
+    & ~ human(e_f)
+    & human(e_john)
+    & human(e_got_A)
+    & ~ created_equal(e_a,e_a)
+    & ~ created_equal(e_a,e_f)
+    & ~ created_equal(e_a,e_john)
+    & ~ created_equal(e_a,e_got_A)
+    & ~ created_equal(e_f,e_a)
+    & ~ created_equal(e_f,e_f)
+    & ~ created_equal(e_f,e_john)
+    & ~ created_equal(e_f,e_got_A)
+    & ~ created_equal(e_john,e_a)
+    & ~ created_equal(e_john,e_f)
+    & created_equal(e_john,e_john)
+    & created_equal(e_john,e_got_A)
+    & ~ created_equal(e_got_A,e_a)
+    & ~ created_equal(e_got_A,e_f)
+    & created_equal(e_got_A,e_john)
+    & created_equal(e_got_A,e_got_A) )  ).
+%------------------------------------------------------------------------------
+</PRE>
+
+<H3> Layout and Variations </H3>
+
+Normally every functor and predicate is interpreted once for 
+every pattern of domain element arguments. 
+No functor or predicate may be interpreted more than once for an 
+argument pattern. 
+If a functor or predicate is not interpreted for a given 
+argument pattern then multiple interpretations are being represented, 
+in which that functor or predicate applied to the argument pattern is 
+interpreted as each of the possible values (each domain element for 
+a functor, both <EM>true</EM> and <EM>false</EM> for a predicate).
+<P>
+It is recommended that interpretations follow a standard layout, as
+illustrated by the examples above.
+However, the conjuncts of function and predicate interpretations can also 
+be separated into individual annotated formulae, and compact forms are 
+possible using more complex formulae, e.g.,
+<PRE>
+fof(equality_lost,interpretation_atoms,
+    ( ~ human("a")
+    & ~ human("f")
+    & human("john")
+    & human("got_A")
+    & ! [X] : ~ created_equal("a",X)
+    & ! [X] : ~ created_equal("f",X)
+    & ! [X] : ~ created_equal(X,"a")
+    & ! [X] : ~ created_equal(X,"f")
+    & created_equal("john","john")
+    & created_equal("john","got_A")
+    & created_equal("got_A","john")
+    & created_equal("got_A","got_A") )  ).
+</PRE>
+
+<H3> Verifying Models </H3>
+
+An interpretation can be verified as a model of a set of formulae by directly 
+evaluating each formula in the model.
+The TPTP format also provides an alternative approach -
+the interpretation is adjoined to the formulae, and a trusted
+model finder is then used to find a model of the combined formula set.
+<P>
+
+<H3> Infinite Interpretations </H3>
+
+Although there is no firm proposal for the representation of infinite interpretations, the 
+following ideas have arisen:
+<UL>
+<LI> Herbrand interpretations can be represented by term grammars, e.g.,
+     formulae of the form:
+<PRE>
+! [X,Y] : ( p(X,Y) <=> ( ( X != a & Y != a ) | ( X = a & Y = a ) ) )
+</PRE>
+     There are decision procedures for the validity of ground atoms in the
+     context of such formulae.
+<LI> Saturations can represent infinite models.
+     These would contain the saturated set of clauses and %$$ comments to
+     specify the ordering, etc.
+<LI> The forthcoming higher order format <TT>thof</TT> may be used to
+     capture fixed points.
+</UL>
+
+<P>
+<HR><!-- ------------------------------------------------------------------ -->
+<EM>This format was developed by
+<A HREF="http://www.cs.chalmers.se/~koen/">Koen Claessen</A> and
+<A HREF="https://www.cs.miami.edu/~geoff/">Geoff Sutcliffe</A>, and has
+benefited from input at the 
+<A HREF="http://tptp.org/TPTP/TPTPTParty/2005/">2005 TPTP Tea Party</A>.</EM>
+<HR><!-- ------------------------------------------------------------------ -->
+</BODY>
+</HTML>

@@ -1,0 +1,46 @@
+tff(student_type,type,student: $tType).
+
+tff(teacher_type,type,teacher: $tType).
+
+tff(joe_decl,type,joe: student).
+
+tff(geoff_decl,type,geoff: teacher).
+
+%----Students have many teachers (and teachers have many students)
+tff(teaches_decl,type,teaches: (teacher * student) > $o).
+
+tff(failed_decl,type,failed: student > $o).
+
+tff(stupid_decl,type,stupid: student > $o).
+
+%----Geoff is the only teacher of Joe.
+tff(geoff_teaches_joe,axiom,
+    ( teaches(geoff,joe) 
+    & ! [T: teacher] :
+        ( teaches(T,joe)
+       => T = geoff ) ) ).
+
+%----Joe is not stupid but Joe failed.
+tff(joe_failed,axiom,
+    ( ~ stupid(joe)
+    & failed(joe) ) ).
+
+%----If a student failed then either the student is stupid or there is is some other student with 
+%----the same teacher who also failed.
+tff(someone_stupid,axiom,
+    ! [S: student,T: teacher] : 
+      ( ( teaches(T,S)
+        & failed(S) )
+     => ( stupid(S)
+        | ? [C: student] :
+            ( C != S
+            & teaches(T,C)
+            & failed(C) ) ) ) ).
+
+%----Therefore there is some student other then Joe and also taught by Geoff,
+%----who failed.
+tff(some_other_student_failed,conjecture,
+    ? [S: student] :
+      ( S != joe
+      & teaches(geoff,S)
+      & failed(S) ) ).

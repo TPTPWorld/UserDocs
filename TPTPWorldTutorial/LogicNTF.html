@@ -1,0 +1,238 @@
+<HTML>
+<HEAD>
+<TITLE> Non-classical Typed Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Non-classical Typed Logic (NTF) </H1>
+
+<IMG SRC="LogicNTF.jpg" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> Many different logics
+<LI> Modal connectives <EM>necessary</EM>/<EM>obligatory</EM>/<EM>knows</EM>/etc. and
+     <EM>possible</EM>/<EM>permissible</EM>/<EM>believes</EM>/etc.
+<LI> Modal connectives can be indexed, for multi-modal logic
+<LI> Kripke semantics
+</UL>
+<P>
+<H3> Alethic Mono-Modal Logic M Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> If there is a product that a person works hard on, then it's
+          possible that the person will get rich.
+     <LI> Nobody necessarily gets rich.
+     <LI> Alex and Chris work hard on Leo-III.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> It's possible that Alex gets rich but it's also possible that
+          Chris does not.
+     </UL>
+</UL>
+
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Modal connectives: &#9633;&nbsp;&nbsp;&loz; (<EM>necessary</EM>&nbsp;&nbsp;<EM>possible</EM>)
+<LI> Type information
+     <UL>
+     <LI> <EM>person</EM> is a type.
+     <LI> <EM>product</EM> is a type.
+     <LI> <EM>Alex</EM> and <EM>Chris</EM> are <EM>person</EM>s
+     <LI> <EM>Leo</EM> is a <EM>product</EM>
+     <LI> <EM>works_hard</EM> takes a <EM>person</EM> and a <EM>product</EM>
+          argument, and returns a <EM>boolean</EM>.
+     <LI> <EM>gets_rich</EM> takes a <EM>person</EM> argument, and
+          returns a <EM>boolean</EM>.
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> &forall; <EM>P:person</EM>
+          <EM>(</EM> &exist; <EM>R:product</EM>
+          <EM>works_hard(P,R)</EM> &rarr; &loz; <EM>gets_rich(P))</EM>
+     <LI> &not; &exist; <EM>P:person</EM> &#9633; <EM>gets_rich(P)</EM>
+     <LI> <EM>works_hard(alex,leo)</EM> &and; <EM>works_hard(chris,leo)</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &loz; <EM>gets_rich(alex)</EM> &and; 
+          &loz; &not; <EM>gets_rich(chris)</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Non-classical eXtended First-order (NXF) and Higher-order (NHF)
+<LI> See the 
+     <A HREF="https://github.com/leoprover/logic-embedding/blob/master/README.md" TARGET=_blank>
+     table of non-classical logics in the TPTP World</A>
+     For modal logics, see the 
+     <A HREF="https://plato.stanford.edu/entries/logic-modal/#MapRelBetModLog" TARGET=_blank>
+     modal logic cube</A>
+<LI> Modal connectives <TT>{</TT><EM>connective</EM><TT>}</TT>, can be indexed for multi-modal 
+     forms
+     <TT>{</TT><EM>connective</EM><TT>(#</TT><EM>index</EM><TT>)}</TT>
+<LI> Logic specification in an annotated formula with <TT>logic</TT> role, specifying the
+     logic e.g., <TT>$modal</TT>, <TT>$deontic_modal</TT>, <TT>epistemic_modal</TT>, etc., with 
+     parameters
+<LI> <TT>tff</TT> and <TT>thf</TT> <EM>annotated formulae</EM> have a name (lowercase), 
+     a role (<TT>axiom</TT>, <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+tff(semantics,logic,
+    $alethic_modal ==
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_M ] ).
+
+tff(person_type,type,person: $tType).
+tff(product_type,type,product: $tType).
+tff(alex_decl,type,alex: person).
+tff(chris_decl,type,chris: person).
+tff(leo_decl,type,leo: product).
+tff(work_hard_decl,type,work_hard: (person * product) > $o).
+tff(gets_rich_decl,type,gets_rich: person > $o).
+
+tff(work_hard_to_get_rich,axiom,
+    ! [P: person] :
+      ( ? [R: product] : work_hard(P,R) => ( {$possible} @ (gets_rich(P)) ) ) ).
+
+tff(not_all_get_rich,axiom,
+    ~ ? [P: person] : ( {$necessary} @ (gets_rich(P)) ) ).
+
+tff(alex_works_on_leo,axiom,
+    work_hard(alex,leo) ).
+
+tff(chris_works_on_leo,axiom,
+    work_hard(chris,leo) ).
+
+tff(only_alex_gets_rich,conjecture,
+    ( ( {$possible} @ (gets_rich(alex)) ) & ( {$possible} @ (~ gets_rich(chris)) ) ) ).
+</PRE>
+<LI> Check the syntax in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>
+     SystemB4TPTP</A> using BNFParser.
+<LI> Try prove it using Leo-III in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>
+     SystemOnTPTP</A>.
+<!--
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+-->
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+Every student thinks that it's possible that some exam is unfair towards them.
+If some student is cheating on an exam, then the exam is necessarily unfair to every student.
+Donald is cheating on the CSC101 exam.
+Therefore it's possible that there's an exam that is unfair to Alex.
+Use alethic mono-modal logic M.
+
+<H3> Epistemic Multi-Modal Logic S4 Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> The bank knows that if Geoff has an account with a given number then 
+          Geoff has some amount of money (in the account)
+     <LI> Geoff's account number is 42
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> There is an amount that the teller can know is Geoff's balance
+     </UL>
+</UL>
+<P>
+<H3> In logic </H3>
+<UL>
+<LI> Type information
+     <UL>
+     <LI> <EM>customer</EM> is a type
+     <LI> <EM>amount</EM> is a type
+     <LI> Account numbers are integers
+     <LI> <EM>geoff</EM> is a <EM>customer</EM>
+     <LI> <EM>account</EM> takes a <EM>customer</EM> and an acount number
+          and returns a <EM>boolean</EM>
+     <LI> <EM>balance_of</EM> takes a <EM>customer</EM> and returns an
+          <EM>amount</EM>.
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> &#9633;<SUB>bank</SUB> (&exist; <EM>N:integer</EM>
+          <EM>account(geoff,N)</EM> &rarr;
+          &exist; <EM>A:amount A = balance_of(geoff))</EM>
+     <LI> <EM>account(geoff,42)</EM>
+     </UL>
+<LI> Conjecture
+     <UL
+     <LI> &exist; <EM>A:amount</EM> &loz;<SUB>teller</SUB> 
+          <EM>A = balance_of(geoff)</EM>
+     </UL>
+</UL>
+<P>
+<H3> In TPTP format </H3>
+<UL>
+<LI>
+<PRE>
+tff(semantics,logic,
+    $epistemic_modal ==
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_S4 ] ).
+
+tff(customer_decl,type,customer: $tType).
+tff(amount_decl,type,amount: $tType).
+tff(geoff_decl,type,geoff: customer).
+tff(account_decl,type,account: (customer * $int) > $o).
+tff(balance_decl,type,balance_of: customer > amount).
+
+tff(bank_knows_accounts,axiom,
+    {$knows(#bank)} @
+      ( ? [N: $int] : account(geoff,N)
+     => ? [A: amount] : A = balance_of(geoff) ) ).
+
+tff(geoffs_account_42,axiom,
+    account(geoff,42) ).
+
+tff(teller_can_know_balance,conjecture,
+    ? [A: amount]: {$canKnow(#teller)} @ (A = balance_of(geoff)) ).
+</PRE>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Try prove it using Leo-III in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+</UL>
+<P>
+<H3> Challenge problem </H3>
+For all logics, Geoff knows they are complicated.
+Prove that Geoff can know that Alex knows that Geoff knows that
+modal logic is complicated.
+Use epistemic multi-modal logic S4.
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

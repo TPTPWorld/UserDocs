@@ -1,0 +1,44 @@
+tff(level_type,type,level: $tType).
+tff(low_decl,type,low: level).
+tff(high_decl,type,high: level).
+tff(state_decl,type, state: ($int * level * $int) > $o).
+
+tff(only_two_levels,axiom,
+    ( ! [L: level] :
+        ( L = low
+      <~> L = high )
+    & low != high ) ).
+
+tff(start_position,axiom,
+    state(0,low,1) ).
+
+tff(move_closer,axiom,
+    ! [T: $int,L: level,D: $int] :
+      ( ( state(T,L,D)
+        & $greatereq(D,2) )
+     => state($sum(T,1),L,$difference(D,1)) ) ).
+
+tff(move_further,axiom,
+    ! [T: $int,L: level,D: $int] :
+      ( ( state(T,L,D)
+        & $less(D,10) )
+     => state($sum(T,1),L,$sum(D,1)) ) ).
+
+tff(move_vertical,axiom,
+    ! [T: $int,D: $int] :
+      ( ( state(T,low,D)
+       => state($sum(T,1),high,D) )
+      & ( state(T,high,D)
+       => state($sum(T,1),low,D) ) ) ).
+
+tff(can_fly,conjecture,
+    state(5,high,5) ).
+
+% tff(can_fly,conjecture,
+%     state(21,high,5) ).
+
+% tff(can_fly,conjecture,
+%     state(20,high,5) ).
+
+% tff(can_fly,conjecture,
+%     ? [T: $int] : state(T,high,5) ).

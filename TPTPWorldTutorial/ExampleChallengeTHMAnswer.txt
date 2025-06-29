@@ -1,0 +1,58 @@
+tff(cat_type,type,
+    cat: $tType ).
+
+tff(dog_type,type,
+    dog: $tType ).
+
+tff(pet_type,type,
+    pet: $tType ).
+
+tff(human_type,type,
+    human: $tType ).
+
+tff(garfield_decl,type,
+    garfield: cat ).
+
+tff(odie_decl,type,
+    odie: dog ).
+
+tff(jon_decl,type,
+    jon: human ).
+
+tff(cat_to_pet_decl,type,
+    cat2pet: cat > pet ).
+
+tff(dog_to_pet_decl,type,
+    dog2pet: dog > pet ).
+
+tff(owner_decl,type,
+    owner: pet > human ).
+
+tff(chases_decl,type,
+    chases: ( dog * cat ) > $o ).
+
+tff(hates_decl,type,
+    hates: ( human * human ) > $o ).
+
+tff(pets_owned,axiom,
+    ! [P: pet] :
+    ? [H: human] : ( owner(P) = H ) ).
+
+tff(jon_owns,axiom,
+    ( ( owner(cat2pet(garfield)) = jon )
+    & ( owner(dog2pet(odie)) = jon )
+    & ! [P: pet] :
+        ( ( owner(P) = jon )
+       => ( ( P = cat2pet(garfield) )
+          | ( P = dog2pet(odie) ) ) ) ) ).
+
+tff(chase_hate,axiom,
+    ! [D: dog,C: cat] :
+      ( chases(D,C)
+     => hates(owner(cat2pet(C)),owner(dog2pet(D))) ) ).
+
+tff(odie_chased_garfield,axiom,
+    chases(odie,garfield) ).
+
+tff(jon_hates_himself,conjecture,
+    hates(jon,jon) ).

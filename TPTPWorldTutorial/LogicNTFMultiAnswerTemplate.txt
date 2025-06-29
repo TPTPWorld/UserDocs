@@ -1,0 +1,18 @@
+tff(semantics,logic,
+    $epistemic_modal == 
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_S4 ] ).
+
+tff(logic_decl,type,logic: ???).
+tff(modal_logic_decl,type,modal_logic: ???).
+tff(complicated_decl,type,complicated: ???).
+
+%----For all logics, Geoff knows they are complicated
+tff(complicated_logics,axiom,
+    ! [L:logic]: ???
+
+%----Geoff finds it possible that Alex knows that Geoff knows that modal 
+%----logic is complicated.
+tff(possible_knowledge,conjecture, ???).

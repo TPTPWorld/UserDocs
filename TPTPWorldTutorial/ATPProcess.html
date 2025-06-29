@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<TITLE> The ATP Process </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<H1>The ATP Process</H1>
+
+<A HREF="ATPProcessGIF.html">
+<IMG SRC="ATPProcess.png" ALIGN=RIGHT WIDTH=30%>
+</A>
+
+<UL>
+<LI> Specify the problem - the axioms and the conjecture
+     <UL>
+     <LI> Write the problem's axioms and conjecture in the domain language
+     <LI> Write the problem in a logic
+     <LI> Write the problem in a machine readable syntax 
+          (using a <A HREF="../TPTPLanguage/Summary.html">TPTP language</A>).
+     <LI> Check the syntax of the problem 
+          (using <A HREF="../SystemOnTPTP/Online/Summary.html">SystemB4TPTP</A>)
+          <UL>
+          <LI> Yes - move on to check the semantics of the problem
+          <LI> No - return to creating the machine readable file
+          </UL>
+     <LI> Check the semantics (types) of the problem 
+          (using <A HREF="../SystemOnTPTP/Online/Summary.html">SystemB4TPTP</A>)
+          <UL>
+          <LI> Yes - move on to check the consistency of the axioms
+          <LI> No - return to creating the machine readable file
+          </UL>
+     </UL>
+<P>
+<LI> Check the consistency of the axioms 
+     (using <A HREF="../SystemOnTPTP/Online/Summary.html">SystemOnTPTP</A>)
+     <UL>
+     <LI> Establish that the axioms are satisfiable
+          <UL>
+          <LI> Yes - move on to establish logical consequence
+          <LI> No - examine model/saturation, return to specify the problem
+          <LI> Unknown - establish that the axioms are unsatisfiable
+          </UL>
+     <LI> Establish that the axioms are unsatisfiable
+          <UL>
+          <LI> Yes - examine the refutation 
+               (using <A HREF="https://tptp.org/Seminars//IDV/Summary.html">IDV</A>), 
+               return to specify the problem
+          <LI> No - move on to establish logical consequence
+          <LI> Unknown - move on to establish logical consequence (and worry)
+          </UL>
+     </UL>
+<P>
+<LI> Establish logical consequence 
+     (using <A HREF="SystemOnTPTP/Online/Summary.html">SystemOnTPTP</A>)
+     <UL>
+     <LI> Prove the theorem
+          <UL>
+          <LI> Yes - move on to process the proof
+          <LI> No - return to specify the problem
+          <LI> Unknown - prove it's not a theorem
+          </UL>
+     <LI> Prove it's not a theorem
+          <UL>
+          <LI> Yes - return to specify the problem
+          <LI> No - move on to processing the proof
+          <LI> Unknown - return to specify the problem
+          </UL>
+     </UL>
+<P>
+<LI> Process the proof
+     <UL>
+     <LI> Are the axioms are known to be SAT?
+          <UL> 
+          <LI> Yes - verify the proof
+          <LI> No - check if the conjecture is used in proof
+          <LI> If the axioms used in the proof are a subset of all the axioms,
+               could check for their consistency.
+          </UL>
+     <LI> Check if the conjecture is used in proof
+          <UL>
+          <LI> Yes - assume the axioms are OK, verify the proof
+          <LI> No - return to specify the problem
+          <LI> Unknown - ask if the ATP system is trusted
+          </UL>
+     <LI> Verify the proof 
+          (using <A HREF="https://tptp.org/Seminars/GDV/Summary.html">GDV</A>)
+          <UL>
+          <LI> Yes - happiness
+          <LI> No - return to establish logical consequence with a different
+               ATP system
+          <LI> Unknown - ask if the ATP system is trusted
+          </UL>
+     <LI> Is the ATP system trusted?
+          <UL>
+          <LI> Yes - happiness
+          <LI> No - return to specify the problem
+          <LI> Unknown - confusion, return to specify the problem
+          </UL>
+     </UL>
+<P>
+<LI> Examples for the ATP Process 
+     <UL>
+     <LI> <A HREF="../TPTPWorldTutorial/ExampleSATAxiomsTHM.html">
+          A Theorem with Nice Axioms</A>
+     <LI> <A HREF="../TPTPWorldTutorial/ExampleSATAxiomsCSA.html">
+          A Non-Theorem with Nice Axioms</A>
+     <LI> <A HREF="../TPTPWorldTutorial/ExampleNonSATAxiomsTHM.html">
+          A Theorem with Nasty Axioms</A>
+     <LI> <A HREF="../TPTPWorldTutorial/ExampleChallengeTHM.html">
+          A Challenge Theorem</A>
+     </UL>
+<P>
+</UL>
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

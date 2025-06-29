@@ -1,0 +1,152 @@
+<HTML>
+<HEAD>
+<TITLE> Typed First-order Logic with Arithmetic</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Typed First-order Logic with Arithmetic (TFA) </H1>
+
+<IMG SRC="LogicTFA.png" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> Arithmetic types and constants: integer, rational, real
+<LI> Arithmetic functions and predicates
+</UL>
+<P>
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> Jon is not the owner of Hercules. 
+     <LI> Hercules bit Jon twice! 
+     <LI> If a dog bites a person more than once, and (s)he is not the owner of the dog, then 
+          (s)he hates the owner of the dog. 
+     <LI> If a dog bites a person at least once then the person chases the dog.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> There exists a dog that Jon chases and another person that Jon hates.
+     </UL>
+</UL>
+
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Type information
+     <UL>
+     <LI> <EM>person</EM> is a type
+     <LI> <EM>dog</EM> is a type
+     <LI> <EM>jon</EM> is a <EM>person</EM>
+     <LI> <EM>hercules</EM> is a <EM>dog</EM>
+     <LI> <EM>owner_of</EM> takes a <EM>dog</EM> argument and returns a <EM>person</EM>
+     <LI> <EM>bit</EM> takes a <EM>dog</EM>, a <TT>person</TT>, and an <TT>$int</TT> arguments 
+          and returns <EM>boolean</EM>
+     <LI> <EM>hates</EM> takes two <EM>person</EM> arguments and returns <EM>boolean</EM>
+     <LI> <EM>chases</EM> takes a <EM>person</EM> and a <TT>dog</TT> arguments 
+          and returns <EM>boolean</EM>
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> <EM>owner_of(hercules) &ne; jon</EM>
+     <LI> <EM>bit(hercules,jon,2)</EM>
+     <LI> &forall; <EM>D: dog</EM> &forall; <EM>P: person</EM> &forall; <EM>N: integer</EM>
+          <EM>( ( bit(D,P,N) &and; N &gt; 1 &and; owner_of(D) &ne; P ) 
+           &rarr; hates(P,owner_of(D)) )</EM>
+     <LI> &forall; <EM>D: dog</EM> &forall; <EM>P: person</EM> &forall; <EM>N: integer</EM>
+          <EM>( ( bit(D,P,N) &and; N &gt; 0 ) &rarr; chases(P,D) )</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &exist; <EM>D: dog</EM> &exist; <EM>P: person</EM> 
+          <EM> ( chases(jon,D) &and; P &ne; jon &and; hates(jon,P) )</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> Arithmetic types: <TT>$int</TT>&nbsp;&nbsp;<TT>$rat</TT>&nbsp;&nbsp;<TT>$real</TT>
+<LI> Arithmetic <A HREF="../TPTPLanguage/TPTPLanguage.shtml#ArithmeticSystem">constants,
+     functions, and predicates</A>
+<LI> <TT>tff</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+tff(person_type,type,   person: $tType ).
+tff(dog_type,type,      dog: $tType ).
+tff(jon_decl,type,      jon: person ).
+tff(hercules_decl,type, hercules: dog ).
+tff(owner_of_decl,type, owner_of: dog > person ).
+tff(bit_decl,type,      bit: ( dog * person * $int ) > $o ).
+tff(hates_decl,type,    hates: ( person * person ) > $o ).
+tff(chases_decl,type,   chases: ( person * dog ) > $o ).
+
+tff(jon_not_owner_of_hercules,axiom,
+    owner_of(hercules) != jon ).
+
+tff(hercules_bit_jon_twice,axiom,
+    bit(hercules,jon,2) ).
+
+tff(biters_not_owned,axiom,
+    ! [D: dog,P: person,N: $int] :
+      ( ( bit(D,P,N)
+        & $greater(N,1)
+        & ( owner_of(D) != P ) )
+     => hates(P,owner_of(D)) ) ).
+
+tff(bites_then_chases,axiom,
+    ! [D: dog,P: person,N: $int] :
+      ( ( bit(D,P,N)
+        & $greater(N,0) )
+     => chases(P,D) ) ).
+
+tff(jon_chases_hates,conjecture,
+    ? [D: dog,P: person] :
+      ( chases(jon,D)
+      & P != jon
+      & hates(jon,P) ) ).
+</PRE>
+<LI> Check the syntax in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A> using TPTP4X.
+<LI> Check the axioms are satisfiable with cvc5-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+
+A (simplified) <A HREF="https://www.walmart.com/c/kp/tether-plane">tethered drone</A> can fly at 
+only two levels - low and high, and can fly from 1m to 10m from the operator.
+A drone starts at time 0s, at low level, 1m from the operator.
+A drone can transition levels, and change it's distance from the operator in steps of 1m.
+Each transition takes 1s.
+Prove that a drone can reach the high level, 5m from the operator, in 5s.
+Then try 21s, and compare the proofs in IDV.
+Then trys 22s.
+Then try "at some time" - how long did it take?
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

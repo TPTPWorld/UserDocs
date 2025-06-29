@@ -1,0 +1,39 @@
+%----Bob, Maggie, Jill, and Geoff are four distinct people
+fof(four_people,axiom,
+    $distinct(bob,maggie,jill,geoff) ).
+
+%----The oldest sibling of Geoff is Jill.
+fof(jill_oldest_sibling_geoff,axiom,
+    jill = oldest_sibling(geoff) ).
+
+%----If someone's oldest sibling is good looking then that someone is good looking.
+fof(good_looking_sibling,axiom,
+    ! [S] :
+      ( good_looking(oldest_sibling(S))
+     => good_looking(S) ) ).
+
+%----The (only) parents of Geoff are Bob and Maggie.
+fof(geoffs_parents,axiom,
+    ( parent(bob,geoff)
+    & parent(maggie,geoff)
+    & ! [P] :
+        ( parent(P,geoff)
+       => ( P = bob
+          | P = maggie ) ) ) ).
+
+%----If somone is good looking then one of their parents is good looking.
+fof(good_looking_inherited,axiom,
+    ! [C] : 
+      ( good_looking(C) 
+     => ? [P] : 
+          ( parent(P,C)
+          & good_looking(P) ) ) ).
+
+%----Jill is good looking, Bob is not.
+fof(family_looks,axiom,
+    ( good_looking(jill)
+    & ~ good_looking(bob) ) ).
+
+%----Therefore, Maggie is good looking.
+fof(maggie_good_looking,conjecture,
+    good_looking(maggie) ).

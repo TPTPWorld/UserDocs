@@ -1,0 +1,36 @@
+tff(semantics,logic,
+    $alethic_modal ==
+      [ $domains == $constant,
+        $designation == $rigid,
+        $terms == $local,
+        $modalities == $modal_system_M ] ).
+
+tff(student_type,type,student: $tType).
+tff(exam_type,type,exam: $tType).
+tff(donald_decl,type,donald: student).
+tff(alex_decl,type,alex: student).
+tff(csc101_decl,type,csc101: exam).
+tff(unfair_decl,type,unfair: (student * exam) > $o).
+tff(cheating_decl,type,cheating: (student * exam) > $o).
+
+%----Every student thinks that it's possible that some exam is unfair towards 
+%----them.
+tff(possible_unfair_exam,axiom,
+    ! [S: student] :
+      ( {$possible} @ (? [E: exam]: unfair(S,E)) ) ).
+
+%----If some student is cheating on an exam, then the exam is necessarily 
+%----unfair to every student.
+tff(cheating_unfair,axiom,
+    ? [E: exam,C: student] : 
+      ( cheating(C,E)
+     => {$necessary} @ (! [S:student] : unfair(S,E)) ) ).
+
+%----Donald is cheating on the CSC101 exam.
+tff(donald_cheating,axiom,
+    cheating(donald,csc101) ).
+
+%----Therefore it's possible that there's an exam that is unfair to Alex.
+tff(sad_alex,conjecture,
+    {$possible} @ (? [E: exam] : unfair(alex,E)) ).
+

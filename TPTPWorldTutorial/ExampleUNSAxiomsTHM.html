@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<TITLE> A Theorem with Contradictory Axioms </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<H1>A Theorem with Contradictory Axioms</H1>
+
+The USA is a country.
+The capital of every country is a beautiful big city
+Washington is the capital of the USA, and it's not a big city.
+Every big city has crime.
+A big city is a city.
+Prove there is some city that is beautiful and has no crime.
+Then prove there is some city that is beautiful and has crime.
+<PRE>
+%------------------------------------------------------------------------------
+%----The USA is a country.
+fof(usa,axiom,
+    country(usa) ).
+
+%----The capital of every country is a beautiful big city
+fof(country_big_city,axiom,
+    ! [C] :
+      ( country(C)
+     => ( big_city(capital_of(C))
+        & beautiful(capital_of(C)) ) ) ).
+
+%----Washington is the capital of the USA, and it's not a big city.
+fof(usa_capital_axiom,axiom,
+    ( capital_of(usa) = washington
+    & ~ big_city(washington) ) ).
+
+%----Every big city has crime.
+fof(crime_axiom,axiom,
+    ! [C] :
+      ( big_city(C)
+     => has_crime(C) ) ).
+
+%----A big city is a city.
+fof(big_city_city,axiom,
+    ! [C] :
+      ( big_city(C)
+     => city(C) ) ).
+
+%----There is some city that is beautiful and has (no) crime.
+fof(some_beautiful_crime,conjecture,
+    ? [C] :
+      ( city(C)
+      & beautiful(C)
+      & ~ has_crime(C) ) ).
+%------------------------------------------------------------------------------
+</PRE>
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

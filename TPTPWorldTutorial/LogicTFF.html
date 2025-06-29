@@ -1,0 +1,202 @@
+<HTML>
+<HEAD>
+<TITLE> Typed First-order Logic </TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPTut.png" type="image/png" />
+<SCRIPT type="text/javascript">
+  function hideshow(obj) {
+      var elem = document.getElementById(obj);
+      if (elem.style.display == 'block') {
+          elem.style.display = 'none';
+      } else if (elem.style.display == 'none') {
+          elem.style.display = 'block';
+      } else {
+          elem.style.display = 'none';
+      }
+  }
+</SCRIPT>
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-------------------------------------------------------------------------------------------->
+<H1 ALIGN=CENTER> Typed First-order Logic (TFF) </H1>
+
+<IMG SRC="LogicTFF.gif" ALIGN=RIGHT WIDTH=33%></A>
+
+<H3> New logic features </H3>
+<UL>
+<LI> TPTP define types, user types
+<LI> Signatures for predicates and functions, arguments not boolean
+<LI> Typed variables, not boolean
+</UL>
+<P>
+<H3> Problem </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> All humans are created equal.
+     <LI> John is a human.
+     <LI> John got an F grade. 
+     <LI> There is some human who got an A grade.
+     <LI> An A grade is not equal to an F grade.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> There is a human other than John, who was created equal to John
+     </UL>
+</UL>
+<P>
+<A HREF="" onClick="hideshow('in_logic');return false;"><H3> In logic </H3></A>
+<SPAN ID="in_logic" style="display:none">
+<UL>
+<LI> Type information
+     <UL>
+     <LI> <EM>human</EM> is a type
+     <LI> <EM>grade</EM> is a type
+     <LI> <EM>john</EM> is a <EM>human</EM>
+     <LI> <EM>a</EM> is a <EM>grade</EM>
+     <LI> <EM>f</EM> is a <EM>grade</EM>
+     <LI> <EM>grade_of</EM> takes one <EM>human</EM> argument and returns
+          their <EM>grade</EM>
+     <LI> <EM>created_equal</EM> takes two <EM>human</EM> arguments 
+          and returns <EM>boolean</EM>
+     </UL>
+<LI> Axioms
+     <UL>
+     <LI> &forall; <EM>H1:human</EM>
+          &forall; <EM>H2:human created_equal(H1,H2)</EM>
+     <LI> <EM>grade_of(john) = f</EM>
+     <LI> &exist; <EM>H:human grade_of(H) = a</EM>
+     <LI> <EM>a &ne; f</EM>
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> &exist; <EM>H:human (H &ne; john &and; created_equal(H,john))</EM>
+     </UL>
+</UL>
+</SPAN>
+
+<A HREF="" onClick="hideshow('in_tptp');return false;"><H3>In TPTP format</H3></A>
+<SPAN ID="in_tptp" style="display:none">
+<UL>
+<LI> TPTP defined types: <TT>$i</TT>&nbsp;&nbsp;<TT>$o</TT>
+<LI> User types: Declared of "type" <TT>$tType</TT>, in annotated formulae with <TT>type</TT> role
+<LI> Predicate and function signatures: Declared in annotated formulae with <TT>type</TT> role,
+     arguments not <TT>$o</TT>
+<LI> Variables: Given type in quantification, not <TT>$o</TT>
+<LI> <TT>tff</TT> <EM>annotated formulae</EM> have a name (lowercase), a role (<TT>axiom</TT>,
+     <TT>conjecture</TT>, and others), a formula, and end with <TT>.</TT>
+<LI>
+<PRE>
+tff(human_type,type,human: $tType).
+tff(grade_type,type,grade: $tType).
+tff(john_decl,type,john: human).
+tff(a_decl,type,a: grade).
+tff(f_decl,type,f: grade).
+tff(grade_of_decl,type,grade_of: human > grade).
+tff(created_equal_decl,type,created_equal: (human * human) > $o).
+
+tff(all_created_equal,axiom,
+    ! [H1:human,H2:human] : created_equal(H1,H2) ).
+tff(john_got_an_f,axiom,
+    grade_of(john) = f ).
+tff(someone_got_an_a,axiom,
+    ? [H:human] : grade_of(H) = a ).
+tff(a_is_not_f,axiom,
+    a != f ).
+
+tff(there_is_someone_else,conjecture,
+    ? [H:human] :
+      ( H != john
+      & created_equal(H,john) ) ).
+</PRE>
+<LI> Check the syntax in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>
+     SystemB4TPTP</A> using TPTP4X.
+<LI> Check the axioms are satisfiable with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>
+     SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>
+     SystemOnTPTP</A>.
+<LI> View the derivation using IDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+<LI> Verify the derivation using GDV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>
+     SystemOnTSTP</A>.
+</UL>
+</SPAN>
+
+<H3> Challenge problem </H3>
+Joe is not stupid but Joe failed.
+If a student failed then either the student is stupid or there is is some other student with the 
+same teacher who also failed.
+Geoff is the only teacher of Joe.
+Therefore there is some student other than Joe, also taught by Geoff, who also failed.
+
+<H3> Non-theorems </H3>
+<UL>
+<LI> Axioms
+     <UL>
+     <LI> Jon is the only human.
+     <LI> Garfield, Arlene, and Nermal are the only (distinct) cats.
+     <LI> Jon owns Garfield, but does not own Arlene.
+     <LI> All cats love only one cat, and that cat is Garfield.
+     </UL>
+<LI> Conjecture
+     <UL>
+     <LI> Jon owns all cats that love Garfield, except for Arlene.
+     </UL>
+<P>
+<LI> In TPTP format 
+     <PRE>
+tff(human_type,type,      human: $tType ).
+tff(cat_type,type,        cat: $tType ).
+tff(jon_decl,type,        jon: human ).
+tff(garfield_decl,type,   garfield: cat ).
+tff(arlene_decl,type,     arlene: cat ).
+tff(nermal_decl,type,     nermal: cat ).
+tff(loves_decl,type,      loves: cat > cat ).
+tff(owns_decl,type,       owns: ( human * cat ) > $o ).
+
+tff(only_jon,axiom, ! [H: human] : H = jon ).
+
+tff(only_garfield_and_arlene_and_nermal,axiom,
+    ! [C: cat] :
+      ( C = garfield | C = arlene | C = nermal ) ).
+
+tff(distinct_cats,axiom,
+    ( garfield != arlene & arlene != nermal
+    & nermal != garfield ) ).
+
+tff(jon_owns_garfield_not_arlene,axiom,
+    ( owns(jon,garfield) & ~ owns(jon,arlene) ) ).
+
+tff(all_cats_love_garfield,axiom,
+    ! [C: cat] : ( loves(C) = garfield ) ).
+
+tff(jon_owns_garfields_lovers,conjecture,
+    ! [C: cat] :
+      ( ( loves(C) = garfield & C != arlene )
+     => owns(jon,C) ) ). </PRE>
+<P>
+<LI> Check the syntax using TPTP4X in 
+     <A HREF="http://tptp.org/cgi-bin/SystemB4TPTP" target=”_blank”>SystemB4TPTP</A>.
+<LI> Check the axioms are satisfiable with Vampire-SAT in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Try prove it using Vampire in 
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>.
+<LI> Disprove it using Vampire-FMo
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTPTP" target=”_blank”>SystemOnTPTP</A>. 
+     That produces a (non-TPTP-compliant) finite countermodel.
+     Here's a <A HREF="LogicTFFCounterModel.txt">counter model in the new TPTP format</A>.
+<LI> View the finite countermodel using IIV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+<LI> Verify the finite countermodel using AGMV in
+     <A HREF="http://tptp.org/cgi-bin/SystemOnTSTP" target=”_blank”>SystemOnTSTP</A>.
+     Use the concatenation of the problem and the countermodel as input.
+</UL>
+
+<P>
+<HR><!-------------------------------------------------------------------------------------------->
+</BODY>
+</HTML>

@@ -1,0 +1,528 @@
+<A NAME="ArithmeticSystem">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>The Arithmetic System</H3>
+
+Arithmetic must be done in the context of the THF or TFF types logics, which 
+support the predefined atomic numeric types
+<!-- OMIT FOR NOW
+<TT>$nat1</TT>, <TT>$nat0</TT>, 
+-->
+<TT>$int</TT>, <TT>$rat</TT>, and <TT>$real</TT>.
+Using THF or TFF enforces semantics that separate 
+<!-- OMIT FOR NOW
+<TT>$nat1</TT> from <TT>$nat0</TT> from 
+-->
+<TT>$int</TT> from <TT>$rat</TT> from <TT>$real</TT> from <TT>$i</TT> from <TT>$o</TT>.
+<!--
+Here are some strange cases that show what can happen if you don't use a
+type system:
+<UL>
+<LI> <TT>! [X] : X = a</TT> is unsatisfiable if <TT>X</TT> in an integer,
+     but satisfiable otherwise.
+<LI> <TT> ! [X] : X &lt; X+1</TT> will not hold automatically.
+<LI> The conjecture <TT>? [X] : X != a</TT> ...
+     <UL>
+     <LI> Is CounterSatisfiable if there are no types and no integers in the
+          problem.
+     <LI> Is a Theorem if there are no types and there are integers in
+          the problem.
+     <LI> Is a Theorem if there are types and <TT>X</TT> and <TT>a</TT> are
+          both integers.
+     <LI> Is CounterSatisfiable if there are types and <TT>X</TT> and 
+          <TT>a</TT> are not integers.
+     </UL>
+     The first two cases show why it might be considered insane to do 
+     arithmetic without types - the status can be changed by adding an 
+     axiom that has an integer in it. 
+     If <TT>a</TT> is not intended to be an integer, then there's unsoundness
+     wrt proving.
+     <LI> Given the axiom <TT>![X: bool] : (X=false | X=true)</TT>, if you
+          take away the typing and mix in integers, then you get a 
+          contradiction (since 1!=2, 2!=3, and 1!=3).
+          (Koen thinks) this is the only type of contradiction you can get 
+          when you ignore types (i.e., the sizes of domains are restricted 
+          by using positive equality on variables).
+</UL>
+TPTP file names for TFF problems with arithmetic will use a <TT>=</TT> 
+separator (in the way that <TT>^</TT> is used for THF, <TT>+</TT> is used 
+for FOF and <TT>-</TT> is used for CNF).
+-->
+The numbers are unbounded, and the reals of infinite precision (rather 
+than some specific implementation such as 32 bit 2's complement integer, or
+IEEE floating point).
+Systems that implement limited arithmetic must halt in an 
+<A HREF="http://tptp.org/cgi-bin/SeeTPTP?Category=Documents&File=SZSOntology">
+SZS error state</A> if they hit overflow.
+<!--
+Cesare says "Determining SAT/UNS with reals requires only rational arithmetic.
+Computing and printing answers is worse, especially infinitely precise reals.
+
+Cesare says "Always, at least in the SMT-LIB theory called "Real". That theory  
+models the mathematical real numbers. So there are no issues of  
+precision to consider.
+ From the point of view of SMT solvers this means that to support  
+Real they have to implement infinite precision rational numbers,  
+floating point numbers will not do. (SMT-COMP explicitly included at  
+some point benchmarks that would break a solver that used FP numbers  
+to represent rational constants.) 
+Incidentally, we have just started working on a theory of floating
+point numbers. There, precision issues will be modeled according to
+the IEEE standard."
+-->
+<P>
+The following interpreted predicates and interpreted functions are defined.
+Each symbol is ad-hoc polymorphic over the numeric types 
+exception - <TT>$quotient</TT> is not defined for <TT>$int</TT>).
+All arguments must have the same numeric type. 
+All the functions, except for <TT>$quotient</TT> of two <TT>$int</TT>s, and the coercion functions 
+<TT>$to_int</TT> and <TT>$to_rat</TT>, have the same range type as their arguments. 
+For example,
+<TT>$sum</TT> can be used with the type signatures
+<TT>($int&nbsp;*&nbsp;$int)&nbsp;>&nbsp;$int</TT>,
+<TT>($rat&nbsp;*&nbsp;$rat)&nbsp;>&nbsp;$rat</TT>,
+and
+<TT>($real&nbsp;*&nbsp;$real)&nbsp;>&nbsp;$real</TT>.
+The <TT>$quotient</TT> of two <TT>$int</TT>s is a <TT>$rat</TT>.
+The coercion function <TT>$to_int</TT> always has a <TT>$int</TT> result,
+and the coercion function <TT>$to_rat</TT> always has a <TT>$rat</TT> result.
+<!---unless otherwise noted.-->
+All the predicates have a <TT>$o</TT> result. 
+For example,
+<TT>$less</TT> can be used with the type signatures
+<TT>($int&nbsp;*&nbsp;$int)&nbsp;>&nbsp;$o</TT>,
+<TT>($rat&nbsp;*&nbsp;$rat)&nbsp;>&nbsp;$o</TT>,
+and
+<TT>($real&nbsp;*&nbsp;$real)&nbsp;>&nbsp;$o</TT>.
+<P>
+<!--
+At this stage all the functions are written in prefix form.
+The general issue of flexible specification of infix operators in the
+TPTP syntax is an orthogonal issue, which must be addressed separately.
+<P>
+-->
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=2>
+<TR VALIGN=TOP>
+     <TH ALIGN=LEFT> Symbol
+     <TH ALIGN=LEFT> Operation
+     <TH ALIGN=LEFT> Comments,&nbsp;examples<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>-
+<TR VALIGN=TOP>
+     <TD> $int
+     <TD> The type of integers
+     <TD> <TT>123</TT>, <TT>-123</TT><BR>
+          <PRE>
+&lt;integer>            ::- (&lt;signed_integer>|&lt;unsigned_integer>)
+&lt;signed_integer>     ::- &lt;sign>&lt;unsigned_integer>
+&lt;unsigned_integer>   ::- &lt;decimal>
+&lt;decimal>            ::- (&lt;zero_numeric>|&lt;positive_decimal>)
+&lt;positive_decimal>   ::- &lt;non_zero_numeric>&lt;numeric>*
+&lt;sign>               ::: [+-]
+&lt;zero_numeric>       ::: [0]
+&lt;non_zero_numeric>   ::: [1-9]
+&lt;numeric>            ::: [0-9]</PRE>
+<TR VALIGN=TOP>
+     <TD> $rat
+     <TD> The type of rationals
+     <TD> <TT>123/456</TT>, <TT>-123/456</TT>, <TT>+123/456</TT>
+          <PRE>
+&lt;rational>           ::- (&lt;signed_rational>|&lt;unsigned_rational>)
+&lt;signed_rational>    ::- &lt;sign>&lt;unsigned_rational>
+&lt;unsigned_rational>  ::- &lt;decimal>&lt;slash>&lt;positive_decimal>
+&lt;slash>              ::: [/]</PRE>
+<TR VALIGN=TOP>
+     <TD> $real
+     <TD> The type of reals
+     <TD> <TT>123.456</TT>, <TT>-123.456</TT>,<BR>
+          <TT>123.456E789</TT>, <TT>123.456e789</TT>,
+          <TT>-123.456E789</TT>, <BR>
+          <TT>123.456E-789</TT>, <TT>-123.456E-789</TT>
+          <PRE>
+&lt;real>               ::- (&lt;signed_real>|&lt;unsigned_real>)
+&lt;signed_real>        ::- &lt;sign>&lt;unsigned_real>
+&lt;unsigned_real>      ::- (&lt;decimal_fraction>|&lt;decimal_exponent>)
+&lt;decimal_exponent>   ::- (&lt;decimal>|&lt;decimal_fraction>)&lt;exponent>&lt;decimal>
+&lt;decimal_fraction>   ::- &lt;decimal>&lt;dot_decimal>
+&lt;dot_decimal>        ::- &lt;dot>&lt;numeric>&lt;numeric>*
+&lt;dot>                ::: [.]
+&lt;exponent>           ::: [Ee]</PRE>
+<TR VALIGN=TOP>
+     <TD> <TT>=</TT> (infix)
+     <TD> Comparison&nbsp;of&nbsp;two&nbsp;numbers.
+     <TD> The numbers must be the same atomic type (see the 
+          <A HREF="##TypeSystem">type system</A>).
+<TR VALIGN=TOP>
+     <TD> <TT>$less</TT>/2
+     <TD> Less-than comparison&nbsp;of&nbsp;two&nbsp;numbers.
+     <TD ROWSPAN=4> <TT>$less</TT>, <TT>$lesseq</TT>, <TT>$greater</TT>,
+          and <TT>$greatereq</TT> are related by<BR>
+          &nbsp;&nbsp;<TT>! [X,Y] : ( $lesseq(X,Y) <=> ( $less(X,Y) | X = Y ) )</TT><BR>
+          &nbsp;&nbsp;<TT>! [X,Y] : ( $greater(X,Y) <=> $less(Y,X) )</TT><BR>
+          &nbsp;&nbsp;<TT>! [X,Y] : ( $greatereq(X,Y) <=> $lesseq(Y,X) )</TT><BR>
+          i.e, only <TT>$less</TT> and equality need to be implemented
+          to get all four relational operators.
+<TR VALIGN=TOP>
+     <TD> <TT>$lesseq</TT>/2
+     <TD> Less-than-or-equal-to comparison of two numbers.
+<TR VALIGN=TOP>
+     <TD> <TT>$greater</TT>/2
+     <TD> Greater-than comparison of two numbers.
+<TR VALIGN=TOP>
+     <TD> <TT>$greatereq</TT>/2
+     <TD> Greater-than-or-equal-to comparison of two numbers.
+<TR VALIGN=TOP>
+     <TD> <TT>$uminus</TT>/1
+     <TD> Unary minus of a number.
+     <TD ROWSPAN=3 <TT>$uminus</TT>, <TT>$sum</TT>, and <TT>$difference</TT> are 
+          related by<BR>
+          &nbsp;&nbsp;<TT>! [X,Y] : $difference(X,Y) = $sum(X,$uminus(Y))</TT><BR>
+          i.e, only <TT>$uminus</TT> and <TT>$sum</TT> need to 
+          be implemented to get all three additive operators.
+<TR VALIGN=TOP>
+     <TD> <TT>$sum</TT>/2
+     <TD> Sum of two numbers.
+<TR VALIGN=TOP>
+     <TD> <TT>$difference</TT>/2
+     <TD> Difference between two numbers.
+<!-- ---- OMIT FOR NOW
+<TR VALIGN=TOP>
+     <TD> <TT>$succ</TT>/2
+     <TD> Successor of a number.
+     <TD> For use with <TT>$int</TT>, but adds one for <TT>$rat</TT> and
+          <TT>$real</TT>.
+<TR VALIGN=TOP>
+     <TD> <TT>$pred</TT>/2
+     <TD> Predecessor of a number.
+     <TD> For use with <TT>$int</TT>, but subtracts one for <TT>$rat</TT> and
+          <TT>$real</TT>.
+-->
+<TR VALIGN=TOP>
+     <TD> <TT>$product</TT>/2
+     <TD> Product of two numbers.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$quotient</TT>/2
+     <TD> Exact quotient of two numbers of the same type.
+     <TD> For non-zero divisors, the result can be computed.
+          For zero divisors the result is not specified.
+          In practice, if an ATP system does not "know" that the divisor 
+          is non-zero, it should simply not evaluate the <TT>$quotient</TT>.
+          Users should always guard their use of <TT>$quotient</TT> using
+          inequality, e.g.,<BR>
+          &nbsp;&nbsp;<TT>! [X: $real] : ( X != 0.0 => p($quotient(5.0,X)) )</TT><BR>
+          For <TT>$rat</TT> or <TT>$real</TT> operands the result is the same type.
+          For <TT>$int</TT> operands the result is <TT>$rat</TT>; the result might be simplied.
+<TR VALIGN=TOP>
+     <TD> <TT>$quotient_e</TT>/2, <TT>$quotient_t</TT>/2, <TT>$quotient_f</TT>/2
+     <TD> Integral quotient of two numbers.
+     <TD> The three variants use different rounding to an integral result:
+          <UL>
+          <LI> <TT>$quotient_e(N,D)</TT> - the Euclidean quotient, which
+               has a non-negative remainder.
+               If <TT>D</TT> is positive then <TT>$quotient_e(N,D)</TT> is 
+               the floor (in the type of <TT>N</TT> and <TT>D</TT>) of the 
+               real division <TT>N/D</TT>, and if <TT>D</TT> is negative 
+               then <TT>$quotient_e(N,D)</TT> is the ceiling of <TT>N/D</TT>.
+          <LI> <TT>$quotient_t(N,D)</TT> - the truncation of the real
+               division <TT>N/D</TT>.
+          <LI> <TT>$quotient_f(N,D)</TT> - the floor of the real
+               division <TT>N/D</TT>.
+          </UL>
+          For zero divisors the result is not specified.
+<!--
+          The following relates <TT>$quotient</TT> to <TT>$product</TT>,
+          for <TT>&tau;</TT>&nbsp;&isin;&nbsp;{<TT>$int</TT>,<TT>$rat</TT>,<TT>$real</TT>}<BR>
+          &nbsp;&nbsp;<TT>! [X: &tau;,Y: &tau;, Z: &tau;] :</TT><BR>
+          &nbsp;&nbsp;<TT>&nbsp;&nbsp;( Y != 0 => ( Z = $quotient(X,Y) <=> X = $product(Y,Z) ) )</TT><BR>
+          (with <TT>0</TT> replaced by <TT>0/1</TT> for the <TT>$rat</TT> case,
+          and <TT>0.0</TT> for the <TT>$real</TT> case).
+-->
+<TR VALIGN=TOP>
+     <TD> <TT>$remainder_e</TT>/2, <TT>$remainder_t</TT>/2, <TT>$remainder_f</TT>/2
+     <TD> Remainder after integral division of two numbers.
+     <TD> For <TT>&tau;</TT>&nbsp;&isin;&nbsp;{<TT>$int</TT>,<TT>$rat</TT>,
+          <TT>$real</TT>}, <TT>&rho;</TT>&nbsp;&isin;&nbsp;{<TT>e</TT>,
+          <TT>t</TT>,<TT>f</TT>}, <TT>$quotient_&rho;</TT> and
+          <TT>$remainder_&rho;</TT> are related by<BR>
+          &nbsp;&nbsp;<TT>! [N:&tau;,D:&tau;] : 
+          $sum($product($quotient_&rho;(N,D),D),$remainder_&rho;(N,D)) = N</TT>
+          <BR>
+          For zero divisors the result is not specified.
+<TR VALIGN=TOP>
+     <TD> <TT>$floor</TT>/1
+     <TD> Floor of a number.
+     <TD> The largest integral value (in the type of the argument) not greater than 
+          the argument.
+<TR VALIGN=TOP>
+     <TD> <TT>$ceiling</TT>/1
+     <TD> Ceiling of a number.
+     <TD> The smallest integral value (in the type of the argument) not less than 
+          the argument.
+<TR VALIGN=TOP>
+     <TD> <TT>$truncate</TT>/1
+     <TD> Truncation of a number.
+     <TD> The nearest integral value (in the type of the argument) with magnitude 
+          not greater than the absolute value of the argument.
+<TR VALIGN=TOP>
+     <TD> <TT>$round</TT>/1
+     <TD> Rounding of a number.
+     <TD> The nearest integral value (in the type of the argument) to the argument. 
+          If the argument is halfway between two integral values, the nearest even integral
+          value to the argument.
+<TR VALIGN=TOP>
+     <TD> <TT>$abs</TT>/1
+     <TD> Absolute value of a number.
+     <TD> <TT>$abs</TT> is related to other operators by
+          <PRE>
+    ! [X] :
+      ( ( $greatereq(X,0)
+       => $abs(X) = X )
+      & ( $less(X,0)
+       => $abs(X) = $uminus(X) ) ) </PRE>
+<!--
+         i.e, <TT>$abs</TT> can be implemented in terms of other operators.
+<TR VALIGN=TOP>
+     <TD> <TT>$min</TT>/2
+     <TD> Smallest (towards negative infinity) of the arguments, which must
+          be of the same type.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$max</TT>/2
+     <TD> Largest (towards positive infinity) of the arguments, which must
+          be of the same type.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$pow</TT>/2
+     <TD> Exponentiation of two numbers.
+     <TD> Note: <TT>0<SUP>0</SUP> = 1</TT>.
+-->
+<!--
+<TR VALIGN=TOP>
+     <TD> <TT>$evaleq</TT>/2
+     <TD> The implementation of <TT>$evaleq</TT> behaves like (but of course
+          cannot be implemented as) an infinite set of ground atoms for each
+           type of number, i.e.,
+          <TT>{&nbsp;$evaleq(0,0), $evaleq(1,1), $evaleq(-1,-1),&nbsp;...&nbsp;}</TT> for
+          integers, and analogously for rationals and reals.
+          Operationally, this is not the same as the (semantically equivalent)
+          fact <TT>!&nbsp;[X:&nbsp;$int]&nbsp;:&nbsp;$evaleq(X,X)</TT>,
+          because a use of <TT>$evaleq</TT> reduces to <TT>$true</TT> only if 
+          its arguments are variables or numbers. 
+          It thus forces, as part of the implementation, grounding and 
+          evaluation of non-variable arguments.
+          <P>
+          (ATP systems that include induction will have to turn it off for
+          <TT>$evaleq</TT> to avoid concluding, e.g.,
+          <TT>?&nbsp;[X:&nbsp;$int]&nbsp;:&nbsp;$evaleq(b,X)</TT>).
+     <TD> Examples:<BR>
+          <TT>? [X: $int] : $evaleq($sum(4,5),X)</TT> is valid, with <TT>X</TT> being instantiated to 9.<BR>
+          <TT>? [X: $int] : $evaleq(X,$sum(4,5))</TT> is valid, with <TT>X</TT> being instantiated to 9.<BR>
+          <TT>$evaleq($sum(4,5),9)</TT> is valid<BR>
+          <TT>$evaleq(9,$sum(4,5))</TT> is valid<BR>
+          <TT>$evaleq($sum(4,5),$product(3,3))</TT> is valid<BR>
+          <TT>$evaleq($sum(4,5),8)</TT> is invalid<BR>
+          <TT>? [X: $int] : $evaleq($sum(4,X),9)</TT> is neither valid nor invalid<BR>
+          <TT>$evaleq($sum(4,5),foo)</TT> is neither valid nor invalid<BR>
+          <TT>?&nbsp;[X:&nbsp;$int]&nbsp;:&nbsp;$evaleq(X,X)</TT> is valid, with <TT>X</TT> being instantiated to any integer.<BR>
+          <P>
+          This is a specially restricted equality relation.
+          It ensures that ground arithmetic expressions are evaluated before
+          unification.
+          For example, the conjecture ... 
+<PRE>fof(do,conjecture, ? [X] : $sum(2,3) = X).</PRE>
+          ... could be proved without setting X to 5. By using the
+          <TT>$evaleq</TT>/2 predicate ...
+<PRE>fof(do,conjecture, ? [X] : $evaleq($sum(2,3),X)).</PRE>
+          ... the summation is evaluated.
+<TR VALIGN=TOP>
+     <TD> <TT>$sqrt</TT>/1
+     <TD> Square root of a number. 
+          The range type is <TT>$real</TT>.
+     <TD> This is a partial function, being undefined for negative numbers.
+<TR VALIGN=TOP>
+     <TD> <TT>$log10</TT>/1
+     <TD> Logarithm of a number, base <TT>10</TT>.
+          The range type is <TT>$real</TT>.
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$e</TT>/0
+     <TD> Real constant <TT>e</TT>
+     <TD> 
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$exp</TT>/1
+     <TD> Exponentiation of a number base <TT>e</TT>.
+          The range type is <TT>$real</TT>.
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$log</TT>/1
+     <TD> Logarithm of a number, base <TT>e</TT>.
+          The range type is <TT>$real</TT>.
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$pi</TT>/0
+     <TD> Real constant <TT>pi</TT>
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$sin</TT>/1
+     <TD> Sine of a number (in radians).
+          The range type is <TT>$real</TT>.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$cos</TT>/1
+     <TD> Real cosine of a number (in radians).
+          The range type is <TT>$real</TT>.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$tan</TT>/1
+     <TD> Real tangent of a number (in radians).
+          The range type is <TT>$real</TT>.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$asin</TT>/1
+     <TD> Real inverse sine (in radians) of a number.
+          The range type is <TT>$real</TT>.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$acos</TT>/1
+     <TD> Real inverse cosine (in radians) of a number.
+          The range type is <TT>$real</TT>.
+     <TD>
+<TR VALIGN=TOP>
+     <TD> <TT>$atan</TT>/1
+     <TD> Real inverse tangent (in radians) of a number.
+          The range type is <TT>$real</TT>.
+     <TD>
+-->
+<TR VALIGN=TOP>
+     <TD> <TT>$is_int</TT>/1
+     <TD> Test for coincidence with an <TT>$int</TT> value.
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$is_rat</TT>/1
+     <TD> Test for coincidence with a <TT>$rat</TT> value.
+     <TD> 
+<TR VALIGN=TOP>
+     <TD> <TT>$to_int</TT>/1
+     <TD> Coercion of a number to <TT>$int</TT>.
+     <TD> The largest <TT>$int</TT> not greater than the argument.
+          If applied to an argument of type <TT>$int</TT> this is the 
+          identity function.
+<TR VALIGN=TOP>
+     <TD> <TT>$to_rat</TT>/1
+     <TD> Coercion of a number to <TT>$rat</TT>.
+     <TD> This function is not fully specified.
+          If applied to a <TT>$int</TT> the result is the argument over 
+          <TT>1</TT>.
+          If applied to a <TT>$rat</TT> this is the identity function.
+          If applied to a <TT>$real</TT> that is (known to be) rational the 
+          result is the <TT>$rat</TT> value.
+          For other reals the result is not specified.
+          In practice, if an ATP system does not "know" that the argument 
+          is rational, it should simply not evaluate the <TT>$to_rat</TT>.
+          Users should always guard their use of <TT>$to_rat</TT> using
+          <TT>$is_rat</TT>, e.g.,<BR>
+          &nbsp;&nbsp;<TT>! [X: $real] : ( $is_rat(X) => p($to_rat(X)) )</TT>
+<TR VALIGN=TOP>
+     <TD> <TT>$to_real</TT>/1
+     <TD> Coercion of a number to <TT>$real</TT>.
+     <TD> 
+</TABLE>
+
+<!--
+One option for semantics:
+The semantics is that of unbounded integer arithmetic, with all (and only)
+integers in the domain of interpretation.
+Why - if not you have to have a type system, because without a type
+system $sum(7,cat) has to be interpreted, so cat has to be
+interpreted as an integer.
+Hmmmm, why not have a special domain element for bullshit?
+Maybe because predicates then get messy, e.g., $less(7,$bullshit) cannot
+be interpreted as true or false (or it can be both), so I guess a paradox
+becomes possible.
+Stephan suggests:
+An ATP system working with this syntax should have a command line flag to
+set the semantics; if an integer term or interpreted function is encountered
+without the flag set then a syntax error should be raised.
+If a real number or <TT>"</TT>double quoted<TT>"</TT> term is encountered
+with the flag set then a syntax error should be raised because such terms
+are defined to be interpreted as themselves (not integers) - see the 
+<TT>&lt;defined term></TT> entry in the TPTP syntax.
+Geoff and Stephan's email exchange:
+> I just hit a snag with the various integer types. Namely, what is the
+> type of 1? $int32? $int? $int_mach?
+> 
+> Also, do we assume that $int and $int32 are disjoint?
+
+I'm kinda in favour of the ...
+
+theory(name,usefulino).
+
+... directive. One way that could be used is to say that integers are
+uninterpreted in the TPTP only if such a directive is present, e.g.,
+1 != 2 is provable iff such a directive is present.
+-->
+
+<!-- Other options discussed
+Ability: 1. Ground arithmetic. 
+         2. SMT style. 
+         3. Integer semantics and do your best.
+Semantics: A. Integer domain
+         B1. Integers plus more domain
+         B2. B1 + use of a $int guard in formulae
+         C. Sorted logic
+3 is not compatible with B1, because then strange things happen, e.g.,
+   Axioms: f(a) = 3
+           ! [X] : f(X) = f($sum(X,1))
+   Conj:   f(b) = 3
+Under 3 + A this is true, because f is a constant function mappping to some
+integer (the only things in the domain (to 3 by f(a) = 3)).
+Under 3 + B1 this is not provable, because the domain can contain some
+other things.
+One option is 3 + A, because it does a lot, and allows a clean upgrade path
+to 3 + C.
+-->
+
+<!-- 
+Stuff from Peter's Hyper-space
+
++ Type of operations
+ - Evaluation functions
+ - Equality predicates
+ - Inequality predicates
+ - Combined evaluation and comparison
++ Placement of variables in evaluation
+ - Evaluation (as defined above)
+ - Solving (as defined above)
++ Built-in functions
+ - Addition and subtraction
+ - A&S and Multiplication and division
+ - A&S and M&D and Exponents and roots
+ - A&S and M&D and E&R and Log (maybe put in with exponent)
+ - A&S and M&D and E&R and L and Trigometric
+ - ... etc. ... (wow, how far can we go here?)
++ Operation complexity
+ - Presburger
+ - Linear arithmetic
+ - Non-linear arithmetic
++ Number type
+ - Integer
+ - Rational
+ - Real
+ - Complex
++ Sign
+ - Positive
+ - Non-negative
+ - All
+
+-->
+
+<P>
+The extent to which ATP systems are able to work with the arithmetic
+predicates and functions can vary, from a simple ability to evaluate ground 
+terms, e.g., <TT>$sum(2,3)</TT> can be evaluated to <TT>5</TT>, through 
+an ability to instantiate variables in equations involving such functions, 
+e.g., <TT>$product(2,$uminus(X)) = $uminus($sum(X,2))</TT>
+can instantiate <TT>X</TT> to <TT>2</TT>, to extensive algebraic manipulation
+capability.
+The syntax does not axiomatize arithmetic theory, but may be used to write
+axioms of the theory.
+

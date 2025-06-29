@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+<TITLE>TPTP Format for Problems</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/QuickGuide.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<CENTER>
+<H1>TPTP Format for Problems </H1>
+</CENTER>
+
+<H3> Introduction </H3>
+
+A problem is a list of formulae.
+In THF, TFF, and FOF the formulae are typically any number of axioms and one conjecture.
+In CNF the formulae are typically any number of axioms and one or more negated conjectures.
+
+<H3> Specifying a TPTP Format Problem </H3>
+
+The top level building blocks of TPTP files are annotated formulae, include directives, and 
+comments. 
+An annotated formula has the form: <BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<EM>language</EM><TT>(</TT><EM>name</EM><TT>,</TT><EM>role</EM><TT>,</TT><EM>formula</EM><TT>,</TT><EM>source</EM><TT>,</TT><EM>useful info</EM>). <BR>
+The source and useful information are optional.
+The languages currently supported are 
+<TT>thf</TT> - typed higher-order form,
+<TT>tff</TT> - typed first-order form,
+<TT>fof</TT> - (full) first-order form, 
+and 
+<TT>cnf</TT> - in clause normal form.
+<P>
+A problem is a list of annotated formulae, typically without the source or useful information.
+(This is a description of an ordinary problem - the TPTP language can do more than this.)
+<UL>
+<LI> Name:
+     The name is a word starting lower case, e.g., <TT>original_f1</TT>, or a single quoted word, 
+     e.g., <TT>'A crazy $ name'</TT>.
+<LI> Role:
+     The role is typically one of <TT>axiom</TT> for axioms, 
+     <TT>conjecture</TT> for conjectures, or
+     <TT>negated_conjecture</TT> for negated conjectures.
+     A full list of the posssible roles is 
+     <A HREF="../TPTPLanguage/SyntaxBNF.html#formula_role">in the TPTP syntax</A>.
+<LI> Logical formula:
+     The logical formula uses a consistent and easily understood notation that can be seen in the 
+     <A HREF="http://tptp.org/TPTP/SyntaxBNF.html#thf_formula">BNF for THF</A>,
+     <A HREF="http://tptp.org/TPTP/SyntaxBNF.html#tff_formula">BNF for TFF</A>.
+     <A HREF="http://tptp.org/TPTP/SyntaxBNF.html#fof_formula">BNF for FOF</A>,
+     and
+     <A HREF="http://tptp.org/TPTP/SyntaxBNF.html#cnf_formula">BNF for CNF</A>.
+
+</UL>
+
+The <TT>SYN000*</TT> problem files are contrived to use most features of the TPTP language, and 
+are thus suitable for testing parsers, etc.
+
+<A NAME="Example">
+<H3>Example Problem</H3>
+
+Here is a toy FOF problem, to prove the conjecture from the axioms (not all the axioms are needed 
+for the proof).
+<PRE>
+%------------------------------------------------------------------------ 
+%----All (hu)men are created equal. John is a human. John got an F grade. 
+%----There is someone (a human) who got an A grade. An A grade is not 
+%----equal to an F grade. Grades are not human. Therefore there is 
+%----another human created equal to John. 
+fof(all_created_equal,axiom,( 
+    ! [H1,H2] : 
+      ( ( human(H1) 
+         & human(H2) ) 
+     => created_equal(H1,H2) ) )). 
+
+fof(john,axiom,( 
+    human(john) )). 
+
+fof(john_failed,axiom,( 
+    grade(john) = f )). 
+
+fof(someone_got_an_a,axiom,( 
+    ? [H] : 
+      ( human(H) 
+      & grade(H) = a ) )). 
+
+fof(distinct_grades,axiom,( 
+    a != f )). 
+
+fof(grades_not_human,axiom,( 
+    ! [G] : ~ human(grade(G)) )). 
+
+fof(someone_not_john,conjecture,( 
+    ? [H] : 
+      ( human(H) 
+      & created_equal(H,john)
+      & H != john ) )). 
+%-------------------------------------------------------------------- 
+</PRE>
+
+<H3>Checking a Problem</H3>
+
+A quick way to check the syntax of a problem is to run it through tptp4X, available online in 
+<A HREF="http://tptp.org/cgi-bin/SystemB4TPTP">SystemB4TPTP</A>.
+Select the "Input formulae" option and paste the formulae into the text box. 
+Select tptp4X as the system, and ensure that the output mode is System. 
+ProcessProblem and if the syntax is faulty an error massage will be returned. 
+<P>
+Once the syntax is OK, go to
+<A HREF="http://tptp.org/cgi-bin/SystemOnTPTP">SystemOnTPTP</A>
+and choose an ATP System (E is a safe bet). 
+RunSelectedSystems and see if it solves the problem.
+<P>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+</BODY>
+</HTML>

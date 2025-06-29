@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+<TITLE>The TPTP Convention for New Symbol Names</TITLE>
+</HEAD>
+<BODY ALIGN="JUSTIFY">
+<A NAME="NewSymbolNames">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H1 ALIGN="LEFT">The TPTP Convention for New Symbol Names</H1>
+
+This page describes the TPTP convention for the names of new symbols that are introduced by ATP 
+systems when processing a TPTP problem.
+
+<UL>
+<LI> New non-variable symbol names are recommended to be of the form <TT>s</TT><EM>KN</EM>, 
+     where <EM>K</EM> is an uppercase letter indicating the type of new symbol, and <EM>N</EM> 
+     is a non-negative integer used to make the basic symbol name unique.
+     <UL>
+     <LI> The conventions for <EM>K</EM> are
+          <UL>
+          <LI> <TT>K</TT> for Skolems
+          <LI> <TT>F</TT> for defined functions
+          <LI> <TT>G</TT> for function symbols with other uses
+          <LI> <TT>P</TT> for defined predicates
+          <LI> <TT>Q</TT> for predicate symbols with other uses, e.g., for splitting
+          </UL>
+     <LI> The index <EM>N</EM> should be global across all symbol types, or local to each symbol 
+          type.
+     <LI> Examples: <TT>sK1</TT>, <TT>sF99</TT>, <TT>sP127</TT>.
+     </UL>
+<P>
+<LI> New symbol names can optionally be extended by an underscore then one or more alphanumeric 
+     and underscore characters.
+     For examples, <TT>sK1_iProver</TT>, <TT>sF99_Splitting</TT>, <TT>sP127_3</TT>, 
+     <TT>SV99_ForallIntro</TT>.
+     The names should remain unique without the extension, using the <EM>N</EM> suffix.
+<P>
+<!--
+<LI> New variable symbol names are recommended to be of the form <TT>SV</TT><EM>N</EM>, where
+     <EM>N</EM> is a decimal number used to make the symbol name unique.
+     (Thus the form mimics that form of new non-variable symbol names, but with an uppercase first 
+     letter as dictated by the TPTP language.)
+     For examples, <TT>SV1</TT>, <TT>SV99</TT>.
+     The index <EM>N</EM> can be global across all formulae, or local to each formula.
+<P>
+-->
+<LI> The introduction of new non-variable symbols should be recorded in a 
+     <A HREF="https://tptp.org/UserDocs/TPTPLanguage/SyntaxBNF.html#new_symbol_record"><TT>
+     &lt;new_symbol_record&gt;</TT></A> in the <TT>&lt;useful_info&gt;</TT> field of the
+     <A HREF="https://tptp.org/UserDocs/TPTPLanguage/SyntaxBNF.html#inference_record">
+     <TT>&lt;inference_record&gt;</TT></A> of a derived formula, or in the
+     <TT>&lt;optional_info&gt;</TT> field of the
+     <A HREF="https://tptp.org/UserDocs/TPTPLanguage/SyntaxBNF.html#internal_source">
+     <TT>&lt;internal_source&gt;</TT></A> of an introduced formula.
+     The new form will have the format
+     <TT>new_symbols(</TT><EM>Type</EM><TT>,[</TT><EM>Symbols</EM><TT>])</TT>.
+     The <EM>Type</EM> indicates the type of new symbol, with possible values
+     <TT>skolem</TT>, <TT>definition</TT>, <TT>other</TT>.
+     <EM>Symbols</EM> is a comma separated list of new symbols of that type.
+     The <TT>&lt;useful_info&gt;</TT> field can have multiple <TT>new_symbols()</TT> terms.
+     For examples,
+<PRE>
+    fof(50,plain,(
+        ! [X3] : ~ hates(X3,sK1(X3)) ),
+        inference(skolemize,[status(esa),new_symbols(skolem,[sK1]),skolemized(X4)],[49])).
+    
+    fof(64,plain,
+        ( ~ sP1
+      <=> ! [X8] : ~ has_job(X8,boxer) ),
+        introduced(definition,[new_symbols(definition,[sP1])])).</PRE>
+<P>
+<LI> ATP systems should check for clashes whenever they generate a new symbol, and whenever 
+     they read input after any new symbols have been generated.
+</UL>
+<P>
+<EM>If you are interested in the history and motivations behind this convention, read the source 
+of this web page.</EM>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<!--
+This issue was raised in an email to 12 known ATP system developers:
+Koen Claessen (Paradox, Equinox, Infinox),
+Hans De Nivelle (Bliksem, Geo),
+Damien Doligez (Zenon),
+Alexander Fuchs (Darwin).
+Joe Hurd (Metis),
+Konstantin Korovin (iProver),
+Bill McCune (Prover9, Mace4),
+Stephan Schulz (E),
+Mark Stickel (SNARK),
+Andrei Voronkov (Vampire),
+Russell Wallace (Ayane),
+Christoph Weidenbach (SPASS),
+and
+Jens Otten (leanCoP).
+(I apologize to any developers who I left out - your feedback is also
+of interest).
+
+<H2> Constraints and Requirements and Features </H2>
+
+<OL>
+<LI> A recommended, but not required, naming convention for new symbols 
+     would help.
+<LI> The recommendation must accomodate various types of new symbols,
+     including Skolems, defined functions, defined predicates, and variables.
+<LI> The recommended new symbol names should not open new name spaces, 
+     which would require changes to the existing TPTP syntax.
+     If the output from one system is to be used as input to other systems,
+     then it is not possible to open a new name space for new symbol names.
+     Thus new non-variable symbol names should start with lowercase and
+     consist of only alphnumerics and underscore.
+     Similarly, new variable symbol names should start with uppercase and
+     consist of only alphnumerics and underscore.
+<LI> If the recommended new non-variable symbol names are in the name space 
+     of input symbols, then the recommended new symbol names should minimize 
+     the possibility of clashes with input symbol names.
+     <UL>
+     <LI> The convention minimizes the possibility of clashes with input 
+          non-variable symbol names - evidence for this is that no problem 
+          in the TPTP has any lines that match 
+          <TT>'[(, ] *s[A-Z][0-9]+(_[A-Za-z0-9_]+)?'</TT>.
+     <UL>
+<LI> New symbol names should be easy to recognize, by having an uncommon
+     format.
+     The naming convention has these features:
+     <UL>
+     <LI> New non-variable function symbols are easily found in formulae 
+          using the regular expression
+          <TT>'[(, ] *s[A-Z][0-9]+(_[A-Za-z0-9_]+)?'</TT>.
+     </UL>
+<LI> The recommended new symbol names should not have to be long or ugly, 
+     for the sake of those who look at a lot of clauses and proofs.
+     <UL>
+     <LI> The convention's basic new symbol names are short.
+     </UL>
+<LI> It should be possible to annotate new symbol names, reflecting some extra meaning behind 
+     the symbols, e.g., introduced via splitting, domain name as in finite interpretations, 
+     system that introduced the name etc.
+     <UL>
+     <LI> The convention allows arbitrary annotation for particular applications.
+     </UL>
+<LI> It is necessary to check for clashes when a new symbol name is generated in an ATP system.
+     If a clash occurs, options are:
+     <UL>
+     <LI> Report an error.
+     <LI> Retrospectively rename the clashing generated symbol.
+     <LI> Rename the clashing input symbol.
+     </UL>
+<LI> The introduction of new non-variable symbols should be documented in ATP systems' output.
+</OL>
+
+<P>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+</BODY>
+</HTML>

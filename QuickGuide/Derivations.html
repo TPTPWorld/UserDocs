@@ -1,0 +1,373 @@
+<HTML>
+<HEAD>
+<TITLE>TPTP Format for Derivations</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/QuickGuide.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<CENTER>
+<H1>TPTP Format for Derivations </H1>
+</CENTER>
+
+<H3> Introduction </H3>
+
+A derivation is a directed acyclic graph (DAG) whose leaf nodes are formulae from the input, 
+whose interior nodes are formulae inferred from parent formulae, and whose root nodes are the 
+final derived formulae. 
+For example, a proof of a FOF theorem from some axioms, by refutation of the CNF of the axioms 
+and negated conjecture, is a derivation whose leaf nodes are the FOF axioms and conjecture, 
+whose internal nodes are formed from the process of clausification and then from inferences 
+performed on the clauses, and whose root node is the <EM>false</EM> formula. 
+<P>
+The information required to record a derivation is, minimally, the leaf formulae, and each 
+inferred formula with references to its parent formulae. 
+More detailed information that might be recorded and useful includes: 
+the role of each formula;
+the name of the inference rule used in each inference step; 
+sufficient details of each inference step to deterministically reproduce the inference; 
+the semantic relationships of inferred formulae with respect to their parents. 
+<P>
+The TPTP format requires certain of these features.
+
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3> Specifying a TPTP Format Derivation </H3>
+
+The top level building blocks of TPTP derivations are annotated formulae.
+An annotated formula has the form: <BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<EM>language</EM><TT>(</TT><EM>name</EM><TT>,</TT><EM>role</EM><TT>,</TT><EM>formula</EM><TT>,</TT><EM>source</EM><TT>,</TT><EM>useful info</EM>). <BR>
+The source and useful information are optional.
+The languages currently supported are 
+<TT>thf</TT> - formulae in typed higher-order form, 
+<TT>tff</TT> - formulae in typed first-order form, 
+<TT>fof</TT> - formulae in first-order form, 
+and 
+<TT>cnf</TT> - formulae in clause normal form.
+<P>
+A derivation written in the TPTP language is a list of annotated formulae. 
+Each leaf formula has a file record or an introduced record, and each inferred formula has an 
+inference record.
+<UL>
+<LI> Name:
+     The name is a word starting lower case, e.g., <TT>original_f1</TT>, or a single quoted word, 
+     e.g., <TT>'A crazy $ name'</TT>, or a non-negative integer.
+<LI> Role:
+     The role is typically one of
+     <TT>axiom</TT> for axiom leaves, 
+     <TT>definition</TT> for definition axiom leaves, 
+     <TT>conjecture</TT> for FOF conjecture leaves, 
+     <TT>negated_conjecture</TT> for negated conjectures, or 
+     <TT>plain</TT> for inferred formulae.
+     A full list of the posssible roles is in the
+     <A HREF="https://tptp.org/UserDocs/TPTPLanguage/SyntaxBNF.html#formula_role">TPTP syntax</A>.
+<LI> Logical formula:
+     The logical formula use the 
+     <A HREF="https://tptp.org/UserDocs/TPTPLanguage/SyntaxBNF.html#formula_role">TPTP syntax</A>.
+<LI> Source: This is normally either a file recorda, an introduced record, or an inference record 
+     (see below).
+<LI> Useful information: The useful information is a <TT>[]</TT>ed list of 'Prolog-like' terms.
+</UL>
+<P>
+<UL>
+<LI> File record:
+     A file record contains the problem file name and the corresponding annotated formulae 
+     name in the problem file.
+     Example: 
+     <PRE>
+     fof(john,axiom,
+         human(john),
+         file('CreatedEqual.p',john) ).</PRE>
+<LI> Introduced record:
+     Example: 
+     <PRE>
+     fof(64,plain,
+         ( ~ sP1 <=> ! [X8] : ~ has_job(X8,boxer) ),
+         introduced(definition,[new_symbols(definition,[sP1])])).</PRE>
+<LI> Inference record:
+     An inference record contains the inference rule name (starting with lowercase), 
+     a list of useful inference information, and a list of references to its parent formulae. 
+     Example: 
+     <PRE>
+     cnf(c_0_20,negated_conjecture,
+         sK0 = john,
+         inference(cn,[status(thm)],[inference(rw,[status(thm)],[c_0_16,c_0_17])]) ).</PRE>
+     Common types of useful inference information are:
+     <UL>
+     <LI> The semantic relationship of the formula to its parents as an 
+          <A HREF="https://tptp.org/cgi-bin/SeeTPTP?Category=Documents&File=SZSOntology">
+          SZS ontology</A> value in a <TT>status</TT> record.
+          The most common ones are:
+          <UL>
+          <LI> <TT>status(thm)</TT> when the inferred formula is a theorem (logical consequence)
+               of its parents.
+               This used for most inference rules.
+          <LI> <TT>status(cth)</TT> when the negation of the inferred formula is a theorem 
+               (logical consequence) of its parents.
+               This used for, e.g., the step negating the conjecture for a proof by refutation.
+          <LI> <TT>status(esa)</TT> when the inferred formula is equisatisfiable with its
+               single parent.
+               This used for, e.g., Skolemization steps.
+          </UL>
+     <LI> An indicator that special reasoning was involved, e.g., <TT>theory(equality)</TT> 
+          or <TT>theory(ac)</TT>.
+     <LI> Special information about recognized types of inferences, e.g., splitting, in a 
+          record whose principle symbol is the inference rule name, whose first argument is 
+          a keyword in TPTP conventions, and whose second argument is a list of useful
+          information about that type of inference.
+          <UL>
+          <LI> Explicit splitting, as done by SPASS: 
+               The keyword is <TT>split</TT>.
+               The list of useful information can contain a <TT>position</TT> that record the 
+               history of splits down to this formula.
+               Each split in the history adds an 's' and a digit to the position so far, 
+               where the digit records the split child number.
+               For example, the third split child of a formula that is in the branch of the 
+               first split child of an earlier split would have the position 
+               <TT>position(s1s3)</TT>.
+          </UL>
+     <LI> Details of new symbols introduced in the inference.
+     </UL>
+</UL>
+
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3> New Symbols </H3>
+
+If a formula introduces a new symbol, e.g., a definition, or a Skolem function, the new symbol 
+should follow the <A HREF="https://tptp.org/UserDocs/TPTPLanguage/NewSymbolNames.html">TSTP 
+conventions for new symbol names</A>, and be correspondingly documented in the inference record.
+Example:
+<PRE>
+fof(50,plain,(
+    ! [X3] : ~ hates(X3,sK0(X3)) ),
+    inference(skolemize,[status(esa),new_symbols(skolem,[sK0])],[49])).</PRE>
+<P>
+
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3> Skolemization </H3>
+
+Each Skolemization step of one variable should be recorded separately. 
+For each step:
+<UL>
+<LI> Optimally, output an &epsilon;-term
+<LI> Output the Skolemized formulae
+<LI> Record the new symbol, in the &epsilon;-term if it is output, else the Skolemized formulae
+<LI> Record which variable was Skolemized (assuming variables have been uniquely renamed) in the
+     Skolemized formulae
+<LI> Optionally record the existentially quantified variable's binding in the Skolemized formulae
+</UL>
+<PRE>
+fof(marriage,plain,
+    ! [Marriage] :
+    ? [Bride] :
+    ? [Groom] :
+      in_love(Groom,Bride) ).
+
+tff(sK0_defn,definition,
+    ! [Marriage: $i] :
+      ( sK0(Marriage)
+      = ( # [Bride: $i] :
+          ? [Groom] : in_love(Groom,Bride) ) ),
+    introduced(definition,[new_symbols(skolem,[sK0])],[marriage]) ).
+
+fof(bride,plain,
+    ! [Marriage] :
+    ? [Groom] :
+      in_love(Groom,sK0(Marriage)),
+    inference(skolemize,[status(esa),skolemized(Bride),bind(Bride,sK0(Marriage))],[marriage]) ).
+
+tff(sK0_defn,definition,
+    ! [Marriage: $i] :
+      ( sK0(Marriage)
+      = ( # [Groom: $i] : in_love(Groom,sK0(Marriage)) ) ),
+    introduced(definition,[new_symbols(skolem,[sK0])],[bride]) ).
+
+fof(groom,plain,
+    ! [Marriage] :
+      in_love(sK0(Marriage),sK0(Marriage)),
+    inference(skolemize,[status(esa),skolemized(Groom),bind(Groom,sK0(Marriage))],[bride]) ).
+</PRE>
+
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Example Derivation</H3>
+
+Consider the toy FOF problem <A HREF="Problems.html#Example">in the problem quick guide</A>.
+Here is a derivation recording a proof by refutation of the CNF (adapted from the one produced 
+by the ATP system <A HREF="https://www.eprover.org">EP</A>):
+
+<PRE>
+%------------------------------------------------------------------------------
+fof(someone_not_john,conjecture,
+    ? [X3] :
+      ( human(X3)
+      & created_equal(X3,john)
+      & X3 != john ),
+    file('CreatedEqual.p',someone_not_john) ).
+
+fof(all_created_equal,axiom,
+    ! [X1,X2] :
+      ( ( human(X1)
+        & human(X2) )
+     => created_equal(X1,X2) ),
+    file('CreatedEqual.p',all_created_equal) ).
+
+fof(someone_got_an_a,axiom,
+    ? [X3] :
+      ( human(X3)
+      & grade(X3) = a ),
+    file('CreatedEqual.p',someone_got_an_a) ).
+
+fof(john,axiom,
+    human(john),
+    file('CreatedEqual.p',john) ).
+
+fof(distinct_grades,axiom,
+    a != f,
+    file('CreatedEqual.p',distinct_grades) ).
+
+fof(john_failed,axiom,
+    grade(john) = f,
+    file('CreatedEqual.p',john_failed) ).
+
+fof(c_0_6,negated_conjecture,
+    ~ ? [X3] :
+        ( human(X3)
+        & created_equal(X3,john)
+        & X3 != john ),
+    inference(fof_simplification,[status(thm)],[inference(assume_negation,[status(cth)],[someone_not_john])]) ).
+
+fof(c_0_7,plain,
+    ! [X6,X7] :
+      ( ~ human(X6)
+      | ~ human(X7)
+      | created_equal(X6,X7) ),
+    inference(fof_nnf,[status(thm)],[inference(variable_rename,[status(thm)],[inference(fof_nnf,[status(thm)],[all_created_equal])])]) ).
+
+fof(c_0_8,negated_conjecture,
+    ! [X5] :
+      ( ~ human(X5)
+      | ~ created_equal(X5,john)
+      | X5 = john ),
+    inference(fof_nnf,[status(thm)],[inference(variable_rename,[status(thm)],[inference(fof_nnf,[status(thm)],[c_0_6])])]) ).
+
+tff(sK0_defn,definition,
+    ( sK0
+    = ( # [X3: $i] :
+          ( human(X3)
+          & ( grade(X3) = a ) ) ) ),
+    introduced(definition,[new_symbols(skolem,[sK0])],[someone_got_an_a]) ).
+
+fof(someone_got_an_a_ASked,axiom,
+    ( human(sK0)
+    & grade(sK0) = a ),
+    introduced(assumption,[status(esa),skolemized(X3),bind(X3,sK0)],[someone_got_an_a]) ).
+
+cnf(c_0_10,plain,
+    ( created_equal(X1,X2)
+    | ~ human(X1)
+    | ~ human(X2) ),
+    inference(split_conjunct,[status(thm)],[c_0_7]) ).
+
+cnf(c_0_11,plain,
+    human(john),
+    inference(split_conjunct,[status(thm)],[john]) ).
+
+cnf(c_0_12,negated_conjecture,
+    ( X1 = john
+    | ~ human(X1)
+    | ~ created_equal(X1,john) ),
+    inference(split_conjunct,[status(thm)],[c_0_8]) ).
+
+cnf(c_0_13,plain,
+    human(sK0),
+    inference(split_conjunct,[status(thm)],[c_0_9]) ).
+
+cnf(c_0_14,plain,
+    ( created_equal(X1,john)
+    | ~ human(X1) ),
+    inference(spm,[status(thm)],[c_0_10,c_0_11]) ).
+
+fof(c_0_15,plain,
+    a != f,
+    inference(fof_simplification,[status(thm)],[distinct_grades]) ).
+
+cnf(c_0_16,negated_conjecture,
+    ( sK0 = john
+    | ~ created_equal(sK0,john) ),
+    inference(spm,[status(thm)],[c_0_12,c_0_13]) ).
+
+cnf(c_0_17,plain,
+    created_equal(sK0,john),
+    inference(spm,[status(thm)],[c_0_14,c_0_13]) ).
+
+fof(c_0_18,plain,
+    a != f,
+    inference(fof_nnf,[status(thm)],[c_0_15]) ).
+
+cnf(c_0_19,plain,
+    grade(sK0) = a,
+    inference(split_conjunct,[status(thm)],[c_0_9]) ).
+
+cnf(c_0_20,negated_conjecture,
+    sK0 = john,
+    inference(cn,[status(thm)],[inference(rw,[status(thm)],[c_0_16,c_0_17])]) ).
+
+cnf(c_0_21,plain,
+    grade(john) = f,
+    inference(split_conjunct,[status(thm)],[john_failed]) ).
+
+cnf(c_0_22,plain,
+    a != f,
+    inference(split_conjunct,[status(thm)],[c_0_18]) ).
+
+cnf(c_0_23,plain,
+    $false,
+    inference(sr,[status(thm)],[inference(rw,[status(thm)],[inference(rw,[status(thm)],[c_0_19,c_0_20]),c_0_21]),c_0_22]),
+    [proof] ).
+%------------------------------------------------------------------------------
+</PRE>
+
+<A NAME="Checking">
+<H3>Checking a Derivation</H3>
+
+To check the syntax of a derivation you can run it through tptp4X, available in 
+<A HREF="https://tptp.org/cgi-bin/SystemOnTSTP">SystemOnTSTP</A>.
+Select the "TSTP formulae" option and paste the formulae into the text box. 
+Select "TPTP4X" as the system, and ensure that the "Output mode" is "System". 
+Click "ProcessSolution". 
+If the syntax is faulty you'll get an error massage. 
+<P>
+You can download and install TPTP4X on your own Linux computer, from 
+<A HREF="https://github.com/TPTPWorld/TPTP4X">Github</A>.
+You must get the JJParser submodule too, i.e.,<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;git clone --recurse-submodules https://github.com/TPTPWorld/TPTP4X</TT>.
+<P>
+You can verify a derivation using GDV, also available in
+<A HREF="https://tptp.org/cgi-bin/SystemOnTSTP">SystemOnTSTP</A>.
+Select the "TSTP formulae" option and paste the formulae into the text box. 
+Select "GDV" as the system, and ensure that the "Output mode" is "System". 
+Click "ProcessSolution".
+It might take a while for output to appear.
+If the derivation is dubious or faulty, you'll get an WARNING/ERROR messages.
+If you'd like to check only the structure of the derivation, e.g., for 
+<A HREF="https://tptp.org/CASC/30/Design.html#Evaluation">CASC-30</A>, in SystemOnTSTP change 
+GDV's "Command" to <TT>run_GDV %s 30 -d</TT> (i.e., add <TT>-d</TT> on the end).
+<P>
+You can download and install GDV on your own Linux computer, from 
+<A HREF="https://github.com/TPTPWorld/GDV.git">Github</A>.
+You must get the JJParser submodule too, i.e.,<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;git clone --recurse-submodules https://github.com/TPTPWorld/GDV.git</TT>.
+<P>
+For more information about GDV, you can read ...<PRE>
+@Article{Sut06,
+    Author       = "Sutcliffe, G.",
+    Year         = "2006",
+    Title        = "{Semantic Derivation Verification}",
+    Journal      = "International Journal on Artificial Intelligence Tools",
+    Volume       = "15",
+    Number       = "6",
+    Pages        = "1053-1070"
+}</PRE>
+
+<P>
+<HR><!-- -------------------------------------------------------------------------------------- -->
+</BODY>
+</HTML>
