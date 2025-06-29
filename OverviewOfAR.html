@@ -1,0 +1,213 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.6 (Macintosh; I; PPC) [Netscape]">
+   <meta name="Author" content="Geoff Sutcliffe">
+   <title>An Overview of Automated Theorem Proving</title>
+</HEAD>
+<BODY ALIGN=JUSTIFY text="#000000" bgcolor="#FFFFC0" link="#0000FF" vlink="#800080" alink="#FF00FF">
+
+<CENTER>
+Geoff Sutcliffe's Overview of
+
+<H1> Automated Theorem Proving </H1>
+</CENTER>
+
+<HR WIDTH="100%">
+<CENTER>
+<H2> What is Automated Theorem Proving?  </H2>
+</CENTER>
+
+<P>
+<B>Automated Theorem Proving</B> (ATP) deals with the development of computer
+programs that show that some statement (the <EM>conjecture</EM>) is a
+<EM>logical consequence</EM> of a set of statements (the <EM>axioms</EM> 
+and <EM>hypotheses</EM>).
+ATP systems are used in a wide variety of domains. For examples, a mathematician
+might prove the conjecture that groups of order two are commutative, from
+the axioms of group theory; a management consultant might formulate axioms
+that describe how organizations grow and interact, and from those axioms
+prove that organizational death rates decrease with age; a hardware developer
+might validate the design of a circuit by proving a conjecture that describes
+a circuit's performance, given axioms that describe the circuit itself;
+or a frustrated teenager might formulate the jumbled faces of a Rubik's
+cube as a conjecture and prove, from axioms that describe legal changes
+to the cube's configuration, that the cube can be rearranged to the solution
+state. All of these are tasks that can be performed by an ATP system, given
+an appropriate formulation of the problem as axioms, hypotheses, and a
+conjecture.
+<P>
+The <B>language</B> in which the conjecture, hypotheses, and axioms
+(generically known as <EM>formulae</EM>) are written is a logic, often 
+classical 1st order logic, but possibly a non-classical logic and possibly 
+a higher order logic. 
+These languages allow a precise formal statement of the necessary 
+information, which can then be manipulated by an ATP system.
+This formality is the underlying strength of ATP: there is no ambiguity
+in the statement of the problem, as is often the case when using a natural
+language such as English. Users have to describe the problem at hand precisely
+and accurately, and this process in itself can lead to a clearer understanding
+of the problem domain. This in turn allows the user to formulate their
+problem appropriately for submission to an ATP system.
+<P>
+The <B>proofs</B> produced by ATP systems describe how and
+why the conjecture follows from the axioms and hypotheses, in a manner
+that can be understood and agreed upon by everyone, even other computer
+programs. The proof output may not only be a convincing argument that the
+conjecture is a logical consequence of the axioms and hypotheses, it often
+also describes a process that may be implemented to solve some problem.
+For example, in the Rubik's cube example mentioned above, the proof would
+describe the sequence of moves that need to be made in order to solve the
+puzzle.
+<P>
+<B>ATP systems</B> are enormously powerful computer programs, capable
+of solving immensely difficult problems. Because of this extreme capability,
+their application and operation sometimes needs to be guided by an expert
+in the domain of application, in order to solve problems in a reasonable
+amount of time. Thus ATP systems, despite the name, are often used by domain
+experts in an interactive way. The interaction may be at a very detailed
+level, where the user guides the inferences made by the system, or at a
+much higher level where the user determines intermediate lemmas to be proved
+on the way to the proof of a conjecture. 
+There is often a synergetic relationship between ATP system users and the 
+systems themselves:
+<UL>
+<LI> The system needs a precise description of the problem written in 
+     some logical form,
+<LI> the user is forced to think carefully about the problem in order to 
+     produce an appropriate formulation and hence acquires a deeper 
+     understanding of the problem,
+<LI> the system attempts to solve the problem,
+<LI> if successful the proof is a useful output,
+<LI> if unsuccessful the user can provide guidance, or try to prove some 
+     intermediate result, or examine the formulae to ensure that the 
+     problem is correctly described,
+<LI> and so the process iterates.
+</UL>
+
+ATP is thus a <B>technology</B> very suited to situations where a clear thinking domain expert 
+can interact with a powerful tool, to solve interesting and deep problems. 
+Potential ATP users need not be concerned that they need to write an ATP system themselves; there 
+are many ATP systems readily available for use. 
+Some well known and successful systems are listed in 
+<A HREF="https://tptp.org/cgi-bin/SystemOnTPTP">this interface</A> for users 
+to try out many ATP systems.
+For examples of problems written in classical 1st order logic, the 
+<A HREF="https://tptp.org/">TPTP World</A> is a useful resource.
+<P>
+<B>Fields</B> where ATP has been successfully used include logic, mathematics, computer science, 
+engineering, and social science; some outstanding successes are described below. 
+There are potentially many more fields where ATP could be used, including biological sciences, 
+medicine, commerce, etc. 
+The technology is waiting for users from such fields.
+
+<HR WIDTH="100%"><!-- -------------------------------------------------------->
+<CENTER>
+<H2> What has Automated Theorem Proving been Really Useful for?</H2>
+</CENTER>
+
+Many significant problems have been, and continue to be, solved using ATP.
+The fields where the most notable successes have been achieved are mathematics, software creation 
+and verification, and hardware verification, and knowledge based systems.
+<P>
+The most exciting recent success in <B>mathematics</B> has been the settling of the Robbins 
+problem by the ATP system <A HREF="http://www.mcs.anl.gov/AR/eqp/">EQP</A>.
+In 1933 Herbert Robbins conjectured that a particular group of axioms form a basis for Boolean 
+algebra, but neither he nor anyone else (until the solution by EQP) could prove this. 
+The proof that confirms that Robbins' axioms are a basis for Boolean algebra was found October 10, 
+1996, after about 8 days of search by EQP, on an RS/6000 processor. 
+This result was reported in the <A HREF="http://www.nytimes.com/library/cyber/week/1210math.html">
+New York Times</A>.
+<P>
+In the mathematical domain of quasi-groups there have been several successes using ATP systems. 
+Otter has been used by the mathematician Ken Kunen to prove several results in quasi-groups. 
+Fujita, Slaney, and Bennett (the first two being ATP researchers, the last a mathematician) 
+decided many quasi-group problems using a system built at ICOT in Japan. 
+William McCune and colleagues have <A HREF="http://www-unix.mcs.anl.gov/AR/new_results/">used 
+Otter to</A> find minimal axiom sets, find new single axioms, and solve other interesting 
+problems, in a range of algebraic structures. 
+The ATP system Waldmeister has been embedded into 
+<A HREF="http://www.wolfram.com/products/mathematica/newin6/content/EquationalTheoremProving/">
+Mathmatica</A>, extending Mathematica's already uniquely powerful algebraic theorem-proving 
+capabilities.
+ATP has been used at Charles University to cross-verify the 
+<A HREF="http://mizar.org/">Mizar Mathematical Library</A>.
+In the higher order setting 
+<A HREF="http://www.cs.cornell.edu/Info/Projects/NuPrl/nuprl.html">NUPRL</A>
+helped to confirm Higman's lemma and Gerard's paradox, both of which were under active 
+investigation by humans at the time. 
+The specialist geometry prover <A HREF="http://www.cs.twsu.edu/~chou/ge.html">Geometry Expert</A>,
+of Chou, Gao, and Zhang, has been used to obtain new results in Euclidean geometry.
+<P>
+<b>Software creation</b> is an economically important real world application of ATP. 
+Although the use of ATP in software creation is in its infancy, there have already been some 
+interesting results. 
+The <a href="http://www.kestrel.edu/HTML/prototypes/kids.html">KIDS</a> system developed at 
+Kestrel Institute has been used to derive scheduling algorithms that have outperformed currently 
+used algorithms. 
+KIDS provides intuitive, high level operations for transformational development of programs from 
+specifications. 
+The <A HREF="http://ic.arc.nasa.gov/ic/projects/amphion/">Amphion</a> project, sponsored by NASA, 
+is used to determine appropriate subroutines to be combined to produce programs for satellite 
+guidance. 
+By encapsulating usable functionality in software components (e.g., subroutines, object classes), 
+and then reusing those components, Amphion can develop software of greater functionality in less 
+time than human programmers, with some assurance that the overall system is correct because it 
+is built up from trusted components
+The <A HREF="http://ase.arc.nasa.gov/projects/certifiableSyn/">Certifiable Synthesis</A> project 
+at NASA goes even further, generating code with annotations that can be used to extract ATP 
+problems whose solution ensures various safety properties of the code.
+<P>
+<B>Software verification</B> is an obvious and attractive goal, which is slowly being realized 
+using ATP technology. 
+Three examples are given here, while many more are indexed at the 
+<A HREF="http://www.comlab.ox.ac.uk/archive/formal-methods.html">
+Formal Methods page</A>.
+The <A HREF="http://i11www.ira.uka.de/~kiv/KIV-KA.html">Karlsruhe Interactive Verifier</A> (KIV) 
+was designed as an experimental platform for interactive program verification at the University 
+of Karlsruhe, and has since been used to successfully verify a range of software applications.
+These include some case studies of academic software, e.g., implementation od set functions, tree 
+and graph representation and manipulation, and verification of a Prolog to WAM compiler. 
+The <A HREF="http://www.key-project.org/">KeY Project</A> in Europe integrates formal software 
+specification and verification into the industrial software engineering processes. 
+The starting point is a commercial CASE tool, which is augmented by capabilities for formal 
+specification and verification. 
+The ultimate goal is to make the verification process transparent for the user with respect to 
+the informal object-oriented model.
+<A HREF="http://pvs.csl.sri.com/">PVS</A> is a verification system that has been used in various 
+applications, including diagnosis and scheduling algorithms for fault tolerant architectures, and
+requirements specification for portions of the space shuttle flight control system.
+<A HREF="http://www.eschertech.com/">Escher Techologies</A> is a company that researches, develops 
+and delivers tools for the efficient construction of provably correct software for 
+mission-critical, business-critical or safety-critical systems.
+<P>
+<B>Hardware verification</B> is the largest industrial application of ATP. 
+IBM, Intel, and Motorola are among the companies that employ ATP technology for verification. 
+A few good examples of the use of ATP systems for hardware verification are listed here, while 
+many more are indexed at the <A HREF="http://www.comlab.ox.ac.uk/archive/formal-methods.html">
+Formal Methods page</A>. 
+The <A HREF="http://www.cs.utexas.edu/users/moore/acl2/">ACL2</A> system has been used to obtain 
+a proof of the correctness of the floating point divide code for AMD's PENTIUM-like AMD5K86 
+microprocessor, while ANALYTICA has been used to verify a division circuit that implements the
+floating point standard of IEEE. 
+<A HREF="http://pvs.csl.sri.com/">PVS</A> (mentioned above in the context of software verification) 
+has been used to verify a microprocessor for aircraft flight control. 
+The RRL system has verified commercial size adder and multiplier circuits. 
+The <A HREF="http://www.cl.cam.ac.uk/Research/HVG/HOL/">HOL</A>
+system has been used at Bell Laboratories for hardware verification. 
+<A HREF="http://www.cli.com/software/nqthm/">Nqthm</A>
+has been used to produce a mechanical proof of correctness of the FM9001
+microprocessor.
+<A HREF="http://www.jasper-da.com/">Jasper Design Automation, Inc</A> is a 
+company with a mission of making full formal IC verification a competitive 
+advantage for its customers.
+The company’s flagship product, JasperGold Verification System, is the first 
+verification product to deliver systematic complete verification, and
+accomplishes this task within predictable, finite schedule constraints.
+<P>
+<HR WIDTH="100%"><!-- -------------------------------------------------------->
+</BODY>
+</HTML>
+
