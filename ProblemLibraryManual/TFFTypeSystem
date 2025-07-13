@@ -1,0 +1,825 @@
+<A NAME="TypeSystem">
+<A NAME="TF0">
+<HR><!------------------------------------------------------------------------>
+<H3>The TFF Monomorphic Type System (TF0)</H3>
+
+<UL>
+<LI> <B>Defined atomic types</B><BR>
+     The atomic types <TT>$i</TT> (individuals), <TT>$o</TT> (Booleans), and
+     <TT>$tType</TT> are defined.
+     (<TT>$tType</TT> is the "type" of atomic types - it is not really 
+     a type, and in other places this is known as the "kind" of atomic types. 
+     See below for motivation for its existence and usage.)
+     Other defined atomic types are associated with specific theories.
+     In particular, <TT>$int</TT>, <TT>$rat</TT>, and <TT>$real</TT>
+     are atomic types for <A HREF="#Arithmetic">interpreted 
+     arithmetic</A>.
+<P>
+<LI> <B>User atomic type declarations</B>: <BR>
+     User atomic types can (but don't have to) be declared in advance of use, 
+     to be of "type" <TT>$tType</TT>.
+     Example: <PRE>
+    tff(food_type,type, 
+        food: $tType ).
+
+    tff(fruit_type,type, 
+        fruit: $tType ).
+
+    tff(list_type,type, 
+        list: $tType ).  </PRE>
+     Declaration of atomic types is not required, i.e., atomic types can be 
+     introduced on the fly. 
+     TPTP problems will have all atomic types declared, so as to provide a 
+     typo check.
+<P>
+<!--SUBTYPE Lotsa problems ...
+
+--------------------------------------------------------------------------
+Yikes. At the moment the definition says you cannot write a=b if the 
+(atomic) type of a is a proper subtype of b, but I can imagine such a 
+construct might occur naturally. Do you know any technical way to solve that?
+
+I am afraid, there is none. Consider a simple example:
+a = b
+a = c
+a : t1
+b : t2
+c : t3
+
+t2 < t1
+t3 < t1
+t2 is disjoint from t3
+
+You want to paramodulate from a = b into a = c deriving b = c, which is not
+well-typed.
+--------------------------------------------------------------------------
+
+<LI> <B>Subtypes</B>: (added on 29th September 2009)<BR>
+     An atomic type can be declared to be a subtype of maximally one other 
+     atomic type.
+     Example: <PRE>
+    tff(fruit_is_food,type, 
+        fruit << food ). </PRE>
+<P>
+-->
+<LI> <B>Defined functions and predicates</B><BR>
+     Defined functions and predicates have preassigned types.
+     <UL>
+     <LI> <TT>$true</TT> is of type <TT>$o</TT>
+     <LI> <TT>$false</TT> is of type <TT>$o</TT>
+     <LI> Distinct objects in <TT>"double quotes"</TT> are of type <TT>$i</TT>
+     <LI> <TT>=</TT> and <TT>!=</TT> are ad-hoc polymorphic over atomic 
+          types other than <TT>$o</TT>, with result type <TT>$o</TT>.
+     <LI> <TT>$distinct</TT> is ad-hoc polymorphic over all atomic types
+          other than <TT>$o</TT>, with result type <TT>$o</TT>.
+     <LI> The (atomic) types of numbers are defined in the 
+          <A HREF="#Arithmetic">interpreted arithmetic</A> section.
+     <LI> The types of the arithmetic predicates and functions are
+          defined in the <A HREF="#Arithmetic">interpreted 
+          arithmetic</A> section.
+     </UL>
+<P>
+<LI> <B>Function and predicate type declarations</B><BR>
+     Every function and predicate symbol has maximally one declared type.
+     Example: <PRE>
+    tff(cons_type,type, 
+        cons: (fruit * list) > list   ).
+
+    tff(is_empty_type,type, 
+        isEmpty: list > $o   ).</PRE>
+     The argument types must be atomic, and cannot be <TT>$o</TT>.
+     The range type of a function must be atomic, and cannot be <TT>$o</TT>. 
+     The range type of a predicate must be <TT>$o</TT>.
+     Note that symbols of arity greater than one use the <TT>*</TT> for
+     a cross-product type.
+     Currying is not possible, i.e., the first example above cannot be
+     written<PRE>
+    tff(cons_type,type, 
+        cons: fruit > list > list   ). </PRE>
+     <P>
+     If a symbol's type is declared more than once, and the types
+     are not the same, that's an error.
+<!--
+     Multiple type declarations can be conjoined in a single annotated
+     formula.
+     Example: <PRE>
+    tff(some_type,type, 
+        ( cons: fruit > list > list
+        & isEmpty: list > $o )  ).</PRE>
+-->
+<P>
+<LI> <B>Types of variables</B><BR>
+     Every variable can be given an atomic type at quantification time.
+     Example: 
+    <PRE>tff(list_not_empty,axiom, 
+    ! [X: fruit,Xs: list] : ~isEmpty(cons(X,Xs))   ).</PRE>
+<P>
+<LI> <B>Implicit typing for functions and predicates</B><BR>
+     If a symbol is used and its type has not been declared, then 
+     default types are assumed.
+     <UL>
+     <LI> All untyped predicates get type <TT>($i * ... * $i) > $o</TT>.
+     <LI> All untyped functions get type <TT>($i * ... * $i) > $i</TT>.
+     <LI> All untyped variables get type <TT>$i</TT>.
+     </UL>
+     If a symbol's type is declared later to be different from the assumed
+     type, that's an error.
+<P>
+<LI> <B>Interpretations</B><BR>
+     An interpretation has a non-empty domain for each atomic type.
+     These domains are pairwise disjoint.
+<!--SUBTYPE for types that are unrelated by a subtype relation -->
+<!--SUBTYPE All subtypes of a type are disjoint. -->
+     It also maps function and predicate symbols to functions and predicates 
+     that respect the types of those symbols.
+<!--
+<P>
+<LI> <B>Type checking</B><BR>
+     It is a simple matter to check that all terms and atoms respect the 
+     types that have been declared.
+-->
+<P>
+<LI> <B>Translation</B><BR>
+     A set of well-typed TFF formulae can be translated to an equisatisfiable 
+     set of FOF formulae.
+     Each atomic type becomes a new unary predicate in the untyped world.
+     <UL>
+     <LI> All atomic types are inhabited, so a type declaration
+          <PRE>tff(one_type_decl,type,
+    one_type: $tType ).</PRE>
+          produces the axiom:
+          <PRE>fof(one_type_inhabited,axiom,
+    ? [X] : one_type(X) ).</PRE>
+     <LI> Domains are pairwise disjoint, so pair of type declarations
+          <PRE>tff(one_type_decl,type,
+    one_type: $tType ).
+
+tff(two_type_decl,type,
+    two_type: $tType ).</PRE>
+          can be used to produce the axiom:
+          <PRE>fof(one_two_distinct,axiom,
+    ! [X,Y] :
+      ( ( one_type(X)
+        & two_type(Y) )
+     => X != Y ) ).</PRE>
+          These axioms are not logically necessary, because a model of
+          the FOF formulae without these axioms can be used to construct
+          a model of the TFF formulae. For resolution-based theorem proving
+          it is impossible to claim that terms of different types 
+          are equal in a well-typed formula, and every inferred formula
+          is well typed. However, for model generation these axioms are
+          useful because they force terms with different types to be
+          interpreted as different domain elements, i.e., the domain of
+          the FOF model can be divided into subdomains for the different
+          types.
+<!--Example: 
+tff(australian_type,type,australian: $tType).
+tff(english_type,type,english: $tType).
+tff(geoff_type,type,geoff: australian).
+tff(joe_type,type,joe: english).
+tff(geoff_australian,axiom,australian(geoff)).
+tff(joe_english,axiom,english(joe)).
+Without the inequalities in the translation you can get a unit model with
+Geoff and Joe interpreted as the one element, and all predicates true.
+With the inequalities the model is as expected.
+-->
+<!--SUBTYPE
+     <LI> All subtypes of an atomic type are disjoint, so that type 
+          declarations
+          <PRE>tff(supertype_decl,type,
+    supertype: $tType ).
+
+tff(subtype1_decl,type,
+    subtype1 << super_type ).
+
+tff(subtype2_decl,type,
+    subtype2 << super_type ).</PRE>
+          produce the axiom:
+          <PRE>fof(subtype1_not_subtype2,axiom,
+    ! [X,Y] :
+      ( ( subtype1(X)
+        & subtype2(Y) )
+     => X != Y ) ).</PRE>
+     <LI> A subtype declaration of the form
+          <PRE>tff(subtype_supertype,type,
+     subtype << supertype ).</PRE>
+          is translated into:
+          <PRE>fof(subtype_supertype,axiom,
+    ! [X,Y] :
+      ( subtype(X)
+     => supertype(X) ) ).</PRE>
+-->
+     <LI> A function type declaration of the form 
+          <PRE>tff(f_type,type,
+    f: (t1 * ... * tn) > tf  ).</PRE> 
+          is translated into:
+          <PRE>fof(f_type,axiom, 
+    ! [X1,...,Xn] : tf(f(X1,...,Xn)) ).</PRE>
+          It is unnecessary to have an implication with the antecedent
+          checking the types of the arguments <TT>X1,...,Xn</TT> because
+          it is impossible to use incorrectly typed arguments in a 
+          well-typed formula.
+     <LI> Predicate type declarations are ignored (!).
+     <LI> A quantification of the form 
+          <PRE>! [X1: t1,...,Xn: tn] : p(X1,...,Xn)</PRE>
+          is translated into:
+          <PRE>! [X1,...,Xn] : 
+      ( ( t1(X1) 
+        & ... 
+        & tn(Xn) ) 
+     => p(X1,...,Xn) )</PRE>
+<!--
+         <EM>Geoff thinks that for problems that do not contain equality it is
+         unnecessary to have an implication with the antecedent checking the 
+         types of the arguments <TT>X1,...,Xn</TT> because they could never
+         become instantiated to a term of the wrong type in a wel-typed
+         problem. 
+         If equality is present the check is necessary because of 
+         paramodulation, either into those variables (most ATP systems won't
+         do that), or paramodulation from a variable of another type.
+         The latter is a case that needs to be checked in a system that deals
+         with TFF natively.</EM>
+-->
+     <LI> A quantification of the form 
+          <PRE>? [X1: t1,...,Xn: tn] : p(X1,...,Xn)</PRE>
+          is translated into:
+          <PRE>? [X1,...,Xn] : 
+      ( t1(X1) 
+      & ... 
+      & tn(Xn)
+      & p(X1,...,Xn) )</PRE>
+     </UL>
+</UL>
+
+<A NAME="TF0">
+<HR><!------------------------------------------------------------------------>
+<H3>The TFF Polymorphic Type System (TF1)</H3>
+
+The polymorphic type system an extension of the monomorphic type system,
+with rank-1 polymorphism. 
+Syntactically, the types, terms, and formulas of TF1 are analogous to those of 
+TF0, except that function and predicate symbols can be declared to be 
+polymorphic, types can contain type variables, and n-ary type constructors 
+are allowed. 
+Type variables in type signatures and formulas are explicitly bound. 
+Instances of polymorphic symbols are specified by explicit type arguments, 
+rather than inferred.
+Refer to the <a href="http://www4.in.tum.de/~blanchet/tff1spec.pdf">TF1
+specification</a> for more details on type checking and semantics, and much
+more.
+
+<UL>
+<LI> Types<BR>
+The <EM>types</EM> of TF1 are built from <EM>type
+variables</EM> and <EM>type constructors</EM> of fixed arities. 
+Nullary type constructors are called <EM>type constants</EM>. 
+The usual conventions of TPTP apply: Type variables start with an uppercase 
+letter and type constructors with a lowercase letter. 
+A type is <EM>polymorphic</EM> if it contains type variables; otherwise, it is
+<EM>monomorphic</EM>.
+<P>
+As in TF0, the type <TT>$i</TT> of individuals is predefined but has no 
+peculiar semantics, whereas the arithmetic types <TT>$int</TT>, <TT>$rat</TT>, 
+and <TT>$real</TT> are modeled by <STRONG>Z</STRONG>, <STRONG>Q</STRONG>, and 
+<STRONG>R</STRONG>, respectively. 
+Refer to the TF0 specification for the semantics of the arithmetic types and
+their operations. 
+It is perfectly acceptable for a TFF implementation not to support arithmetic. 
+"TFF<EM>k</EM> with arithmetic" is sometimes called "TFA<EM>k</EM>".
+<P>
+<LI> Type Signatures<BR>
+Each function and predicate symbol occurring in a formula must be associated
+with a <EM>type signature</EM> that specifies the types of the arguments and, 
+for functions, the return type. 
+Type signatures can take any of the following forms:
+<OL TYPE="a">
+<LI> a type (predefined or user-defined);
+<LI> the Boolean pseudotype <TT>$o</TT>;
+<LI> <TT>(&tau;1 * ... * &tau;n) > &upsilon;</TT>
+     for <TT>n</TT> > 0, where <TT>&tau;1</TT>, ..., <TT>&tau;n</TT> are 
+     types and &upsilon; is a type or <TT>$o</TT>;
+<LI> <TT>!>[&alpha;1 : $tType, ..., &alpha;n : $tType]: &varsigma;</TT>
+     for <TT>n</TT> &gt; 0, where <TT>&alpha;1</TT>, ..., <TT>&alpha;n</TT> 
+     are distinct type variables and &varsigma; has one of the previous three 
+     forms.
+</OL>
+The parentheses in form (c) are omitted if <TT>n</TT> = 1.
+The binder <TT>!></TT> in form (d) denotes universal quantification.
+If &varsigma; is of form (c), it must be put in parentheses.
+<P>
+Form (a) is used for monomorphic constants; form (b), for
+propositional constants, including the predefined symbols <TT>$true</TT> and
+<TT>$false</TT>; form (c), for monomorphic functions and predicates;
+and form (d), for polymorphic functions and predicates. 
+It is often convenient to regard all forms above as instances of the general 
+syntax
+
+<BLOCKQUOTE>
+<TT>!>[&alpha;1 : $tType, ..., &alpha;m : $tType]: ((&tau;1 * ... * &tau;n) &gt; &varsigma;)</TT>
+</BLOCKQUOTE>
+
+where <TT>m</TT> and <TT>n</TT> can be 0.
+<P>
+Type variables that are bound by <TT>!></TT> without occurring in the type 
+signature's body are called <EM>ghost type variables</EM>.
+These make it possible to specify operations and relations directly on types,
+providing a convenient way to encode type classes.
+For example, we can declare a polymorphic propositional constant 
+<TT>is_linear</TT> with the signature
+<TT>!>[A</TT> <TT>:</TT> <TT>$tType]:</TT> <TT>$o</TT> and use it as a guard 
+to restrict the axioms specifying that a binary predicate <TT>less_eq</TT> 
+with the signature
+<TT>!>[A</TT> <TT>:</TT> <TT>$tType]:</TT> <TT>((A</TT> <TT>*</TT> <TT>A)</TT> <TT>&gt;</TT> <TT>$o)</TT>
+is a linear order to those types that satisfy the <TT>is_linear</TT> predicate.
+<P>
+<LI> Type Declarations<BR>
+Type constructors, like function and predicate symbols, can optionally be 
+declared.
+The following declarations introduce a type constant <TT>bird</TT>, a unary 
+type constructor <TT>list</TT>, and a binary type constructor <TT>map</TT>:
+<BLOCKQUOTE>
+<PRE>
+tff(bird_t, type, bird: $tType).
+tff(list_t, type, list: $tType &gt; $tType).
+tff(map_t, type, map: ($tType * $tType) &gt; $tType).
+</PRE>
+</BLOCKQUOTE>
+If a type constructor is used before being declared, its arity is determined 
+by the first occurrence. 
+Any later declaration must give it the same arity.
+<P>
+A declaration of a function or predicate symbol specifies its
+<EM>type signature</EM>.
+Every type variable occurring in a type signature must be bound by a
+<TT>!></TT>-binder.
+The following declarations introduce a monomorphic constant <TT>pi</TT>, a 
+polymorphic predicate <TT>is_empty</TT>, and a pair of polymorphic functions 
+<TT>cons</TT> and <TT>lookup</TT>:
+<BLOCKQUOTE>
+<PRE>
+tff(pi_t, type, pi: $real).
+tff(is_empty_t, type, is_empty : !>[A : $tType]: (list(A) > $o)).
+tff(cons_t, type, cons : !>[A : $tType]: ((A * list(A)) > list(A))).
+tff(lookup_t, type, lookup : !>[A : $tType, B : $tType]: ((map(A, B) * A) > B)).
+</PRE>
+</BLOCKQUOTE>
+If a function or predicate symbol is used before being declared, a
+default type signature is assumed: <TT>($i * ... * $i) &gt; $i</TT>
+for functions and <TT>($i * ... * $i) &gt; $o</TT> for predicates.
+If a symbol is declared after its first use, the declared signature
+must agree with the assumed signature.
+<P>
+If a type constructor, function symbol, or predicate symbol is declared more
+than once, it must be given the same type signature up to renaming of bound
+type variables.
+All symbols share the same namespace; in particular, a type constructor
+cannot have the same name as a function or predicate symbol.
+<P>
+<LI> Function and Predicate Application<BR>
+To keep the required type inference to a minimum, every use of a polymorphic 
+symbol must explicitly specify the type instance. 
+A function or predicate symbol with a type signature 
+<TT>!>[$&alpha;1$ : $tType, ..., $&alpha;m$ : $tType]: 
+(($&tau;1$ * ... * $&tau;n$) &gt; &upsilon;)</TT>
+must be applied to <TT>m</TT> type arguments and <TT>n</TT> term arguments. 
+Given the above signatures for <TT>is_empty</TT>, <TT>cons</TT>, and 
+<TT>lookup</TT>, the term <TT>lookup($int, list(A), M, 2)</TT>
+and the atom <TT>is_empty($i, cons($i, X, nil($i)))</TT>
+are well-formed and contain free occurrences of the type variable <TT>A</TT>
+and the term variable <TT>X</TT>, respectively.
+<P>
+In keeping with TF1's rank-1 polymorphic nature, type variables can only be
+instantiated with actual types. 
+In particular, <TT>$o</TT>, <TT>$tType</TT>, and <TT>!></TT>-binders cannot 
+occur in type arguments of polymorphic symbols.
+<P>
+For systems that implement type inference, the following nonstandard extension
+of TF1 might be useful. 
+When a type argument of a polymorphic symbol can be inferred automatically, 
+it may be replaced with the wildcard <TT>$_</TT>. 
+For example:
+<BLOCKQUOTE>
+<TT>is_empty($_, cons($_, X, nil($_)))</TT>
+</BLOCKQUOTE>
+Although <TT>nil</TT>'s type argument cannot be inferred locally from the 
+types of its term arguments (since there are none), the Hindley&ndash;Milner 
+type inference can deduce it. 
+The producer of a TF1 problem must be aware of the type inference algorithm 
+implemented in the consumer to omit only redundant type arguments.
+<P>
+<LI> Type and Term Variables<BR>
+Every variable in a TF1 formula must be bound. It can be given a type at
+binding time:
+<BLOCKQUOTE>
+<PRE>
+tff(bird_list_not_empty, axiom,
+    ![B : bird, Bs : list(bird)]: ~ is_empty(bird, cons(bird, B, Bs))).
+</POST>
+</BLOCKQUOTE>
+If the type and the preceding colon (<TT>:</TT>) are omitted, the variable 
+is given type <TT>$i</TT>. 
+Every type variable occurring in a TF1 formula (whether in a type argument 
+or in the type of a bound variable) must also be bound, with the pseudotype 
+<TT>$tType</TT>:
+<BLOCKQUOTE>
+<PRE>
+tff(lookup_update_same, axiom,
+    ![A : $tType, B : $tType, M : map(A, B), K : A, V : B]:
+        lookup(A, B, update(A, B, M, K, V), K) = V).
+</PRE>
+</BLOCKQUOTE>
+A single quantifier cluster can bind both type variables and term variables.
+Universal and existential quantifiers over type variables are allowed under the
+propositional connectives, including equivalence, as well as under other
+quantifiers over type variables, but not in the scope of a quantifier over a
+term variable.
+Rationale: A statement of the form "for every integer <EM>k</EM>, there 
+exists a type &alpha; such that ..." effectively makes &alpha; a dependent 
+type.
+On such statements, type skolemization is impossible, and there is no easy 
+translation to ML-style polymorphic formalisms.
+Moreover, type handling in an automatic prover would be more difficult were
+such constructions allowed, since they require paramodulation into types.
+<P>
+On the other hand, all the notions and procedures described in the TF1
+specification&mdash;except for type skolemization&mdash;are independent of this
+restriction. 
+The rules of type checking and the notion of interpretation are directly 
+applicable to unrestricted formulas. 
+The encoding into a monomorphic is sound and complete on unrestricted 
+formulas, and the proofs require no adjustments. 
+This prepares the ground for TFF2, which is expected to lift the restriction 
+and support more elaborate forms of dependent types. 
+Implementations of TF1 are encouraged to support unrestricted formulas, 
+treating them according to the semantics given here, if practicable.
+<P>
+<LI> Terms and Formulas<BR>
+Apart from the differences described above, the terms and formulas of TF1 
+are identical to those of TF0. 
+Refer to the <A HREF="#TF0">TF0 specification</A> for further information.
+<P>
+<LI> Example<BR>
+The following problem gives the general flavor of TF1.
+It first declares and axiomatizes <TT>lookup</TT> and <TT>update</TT> 
+operations on maps, then conjectures that <TT>update</TT> is idempotent for 
+fixed keys and values. 
+Its SZS status is Theorem.
+<BLOCKQUOTE>
+<PRE>
+tff(map_t,type,(
+    map: ( $tType * $tType ) > $tType )).
+
+tff(lookup_t,type,(
+    lookup: 
+      !>[A: $tType,B: $tType] :
+        ( ( map(A,B) * A ) > B ) )).
+
+tff(update_t,type,(
+    update: 
+      !>[A: $tType,B: $tType] :
+        ( ( map(A,B) * A * B ) > map(A,B) ) )).
+
+tff(lookup_update_same,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),K: A,V: B] : 
+      lookup(A,B,update(A,B,M,K,V),K) = V )).
+
+tff(lookup_update_diff,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),V: B,K: A,L: A] :
+      ( K != L
+     => lookup(A,B,update(A,B,M,K,V),L) = lookup(A,B,M,L) ) )).
+
+tff(map_ext,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),N: map(A,B)] :
+      ( ! [K: A] : lookup(A,B,M,K) = lookup(A,B,N,K)
+     => M = N ) )).
+
+tff(update_idem,conjecture,(
+    ! [A: $tType,B: $tType,M: map(A,B),K: A,V: B] : 
+      update(A,B,update(A,B,M,K,V),K,V) = update(A,B,M,K,V) )).
+</PRE>
+</BLOCKQUOTE>
+</UL>
+
+<HTML>
+<HEAD>
+<TITLE>Polymorphic Typed First-order Form</TITLE>
+</HEAD>
+<BODY ALIGN="JUSTIFY">
+<HR><!------------------------------------------------------------------------>
+<H1 ALIGN="LEFT">Polymorphic Typed First-order Form</H1>
+
+by 
+<A href="http://www4.in.tum.de/~blanchet/">Jasmin Blanchette</A>,
+<A href="http://tertium.org/">Andrei Paskevich</A>,
+and others.
+<P>
+<HR><!------------------------------------------------------------------------>
+The TPTP untyped conjunctive normal form (CNF) and first-order form (FOF) are
+implemented in dozens of reasoning tools, and a growing number of reasoners can
+process the "core" typed first-order form (TFF0), which provides simple
+monomorphic types and interpreted arithmetic, or the corresponding higher-order
+form (THF0). 
+A polymorphic version of THF0, the full THF, is in the works.
+Despite the variety of this offering, there is a strong desire in parts of 
+the automated reasoning community for a polymorphic first-order format. 
+Many applications require polymorphism, notably interactive theorem provers 
+and program specification languages, but lacking a suitable interchange 
+format these must communicate via monomorphic formats. 
+Moreover, there is no entirely satisfactory way to eliminate polymorphism: 
+Monomorphization is generally incomplete, and it is difficult to encode 
+polymorphism in a sound, complete, and efficient manner, especially in the 
+presence of interpreted types. 
+Tool authors are reduced to developing their own monomorphizers and type 
+encodings, often using suboptimal schemes. 
+Ultimately, we contend that polymorphism belongs in provers, where it can 
+be implemented simply and efficiently, as demonstrated by the SMT solver 
+Alt-Ergo.
+<P>
+We aim to change this state of affairs by introducing the TFF1 format, an
+extension of TFF0 with rank-1 polymorphism.
+Syntactically, the types, terms, and formulas of TFF1 are analogous to those 
+of TFF0, except that function and predicate symbols can be declared to be 
+polymorphic, types can contain type variables, and <TT>n</TT>-ary type 
+constructors are allowed.
+Type variables in type signatures and formulas are explicitly bound. 
+Instances of polymorphic symbols are specified by explicit type arguments, 
+rather than inferred.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Resources</H2>
+<UL>
+<LI> Check out the latest version of the 
+     <A HREF="http://www4.in.tum.de/~blanchet/tff1spec.pdf">
+     TFF1 specification</A> and the project's 
+     <A HREF="https://sites.google.com/site/polymorphictptptff/">wiki</A>
+<LI> Browse 
+     <A HREF="http://www.cs.miami.edu/~tptp/cgi-bin/SeeTPTP?Category=Problems&Domain=PFF">
+     sample TFF1 problems</A> online
+<LI> Download <A HREF="TFF1Problems.tgz">a <TT>.tgz</TT> of the problems</A>
+</UL>
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Types</H2>
+
+The <EM>types</EM> of TFF1 are built from <EM>type
+variables</EM> and <EM>type constructors</EM> of fixed arities. 
+Nullary type constructors are called <EM>type constants</EM>. 
+The usual conventions of TPTP apply: Type variables start with an uppercase 
+letter and type constructors with a lowercase letter. 
+A type is <EM>polymorphic</EM> if it contains type variables; otherwise, it is
+<EM>monomorphic</EM>.
+<P>
+As in TFF0, the type <TT>$i</TT> of individuals is predefined but has no 
+peculiar semantics, whereas the arithmetic types <TT>$int</TT>, <TT>$rat</TT>, 
+and <TT>$real</TT> are modeled by <STRONG>Z</STRONG>, <STRONG>Q</STRONG>, and 
+<STRONG>R</STRONG>, respectively. 
+Refer to the TFF0 specification for the semantics of the arithmetic types and
+their operations. 
+It is perfectly acceptable for a TFF implementation not to support arithmetic. 
+"TFF<EM>k</EM> with arithmetic" is sometimes called "TFA<EM>k</EM>".
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Type Signatures</H2>
+
+Each function and predicate symbol occurring in a formula must be associated
+with a <EM>type signature</EM> that specifies the types of the arguments and, 
+for functions, the return type. 
+Type signatures can take any of the following forms:
+
+<OL TYPE="a">
+<LI> a type (predefined or user-defined);
+<LI> the Boolean pseudotype <TT>$o</TT>;
+<LI> <TT>(&tau;1 * ... * &tau;n) > &upsilon;</TT>
+     for <TT>n</TT> > 0, where <TT>&tau;1</TT>, ..., <TT>&tau;n</TT> are 
+     types and &upsilon; is a type or <TT>$o</TT>;
+<LI> <TT>!>[&alpha;1 : $tType, ..., &alpha;n : $tType]: &varsigma;</TT>
+     for <TT>n</TT> &gt; 0, where <TT>&alpha;1</TT>, ..., <TT>&alpha;n</TT> 
+     are distinct type variables and &varsigma; has one of the previous three 
+     forms.
+</OL>
+
+The parentheses in form (c) are omitted if <TT>n</TT> = 1.
+The binder <TT>!></TT> in form (d) denotes universal quantification.
+If &varsigma; is of form (c), it must be put in parentheses.
+<P>
+Form (a) is used for monomorphic constants; form (b), for
+propositional constants, including the predefined symbols <TT>$true</TT> and
+<TT>$false</TT>; form (c), for monomorphic functions and predicates;
+and form (d), for polymorphic functions and predicates. 
+It is often convenient to regard all forms above as instances of the general 
+syntax
+
+<BLOCKQUOTE>
+<TT>!>[&alpha;1 : $tType, ..., &alpha;m : $tType]: ((&tau;1 * ... * &tau;n) &gt; &varsigma;)</TT>
+</BLOCKQUOTE>
+
+where <TT>m</TT> and <TT>n</TT> can be 0.
+<P>
+Type variables that are bound by <TT>!></TT> without occurring in the type 
+signature's body are called <EM>ghost type variables</EM>.
+These make it possible to specify operations and relations directly on types,
+providing a convenient way to encode type classes.
+For example, we can declare a polymorphic propositional constant 
+<TT>is_linear</TT> with the signature
+<TT>!>[A</TT> <TT>:</TT> <TT>$tType]:</TT> <TT>$o</TT> and use it as a guard 
+to restrict the axioms specifying that a binary predicate <TT>less_eq</TT> 
+with the signature
+<TT>!>[A</TT> <TT>:</TT> <TT>$tType]:</TT> <TT>((A</TT> <TT>*</TT> <TT>A)</TT> <TT>&gt;</TT> <TT>$o)</TT>
+is a linear order to those types that satisfy the <TT>is_linear</TT> predicate.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Type Declarations</H2>
+
+Type constructors, like function and predicate symbols, can optionally be 
+declared.
+The following declarations introduce a type constant <TT>bird</TT>, a unary 
+type constructor <TT>list</TT>, and a binary type constructor <TT>map</TT>:
+
+<BLOCKQUOTE>
+<PRE>
+tff(bird_t, type, bird: $tType).
+tff(list_t, type, list: $tType &gt; $tType).
+tff(map_t, type, map: ($tType * $tType) &gt; $tType).
+</PRE>
+</BLOCKQUOTE>
+
+If a type constructor is used before being declared, its arity is determined 
+by the first occurrence. 
+Any later declaration must give it the same arity.
+<P>
+A declaration of a function or predicate symbol specifies its
+<EM>type signature</EM>.
+Every type variable occurring in a type signature must be bound by a
+<TT>!></TT>-binder.
+The following declarations introduce a monomorphic constant <TT>pi</TT>, a 
+polymorphic predicate <TT>is_empty</TT>, and a pair of polymorphic functions 
+<TT>cons</TT> and <TT>lookup</TT>:
+
+<BLOCKQUOTE>
+<PRE>
+tff(pi_t, type, pi: $real).
+tff(is_empty_t, type, is_empty : !>[A : $tType]: (list(A) > $o)).
+tff(cons_t, type, cons : !>[A : $tType]: ((A * list(A)) > list(A))).
+tff(lookup_t, type, lookup : !>[A : $tType, B : $tType]: ((map(A, B) * A) > B)).
+</PRE>
+</BLOCKQUOTE>
+
+If a function or predicate symbol is used before being declared, a
+default type signature is assumed: <TT>($i * ... * $i) &gt; $i</TT>
+for functions and <TT>($i * ... * $i) &gt; $o</TT> for predicates.
+If a symbol is declared after its first use, the declared signature
+must agree with the assumed signature.
+<P>
+If a type constructor, function symbol, or predicate symbol is declared more
+than once, it must be given the same type signature up to renaming of bound
+type variables.
+All symbols share the same namespace; in particular, a type constructor
+cannot have the same name as a function or predicate symbol.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Function and Predicate Application</H2>
+  
+To keep the required type inference to a minimum, every use of a polymorphic 
+symbol must explicitly specify the type instance. 
+A function or predicate symbol with a type signature 
+<TT>!>[$&alpha;1$ : $tType, ..., $&alpha;m$ : $tType]: 
+(($&tau;1$ * ... * $&tau;n$) &gt; &upsilon;)</TT>
+must be applied to <TT>m</TT> type arguments and <TT>n</TT> term arguments. 
+Given the above signatures for <TT>is_empty</TT>, <TT>cons</TT>, and 
+<TT>lookup</TT>, the term <TT>lookup($int, list(A), M, 2)</TT>
+and the atom <TT>is_empty($i, cons($i, X, nil($i)))</TT>
+are well-formed and contain free occurrences of the type variable <TT>A</TT>
+and the term variable <TT>X</TT>, respectively.
+<P>
+In keeping with TFF1's rank-1 polymorphic nature, type variables can only be
+instantiated with actual types. 
+In particular, <TT>$o</TT>, <TT>$tType</TT>, and <TT>!></TT>-binders cannot 
+occur in type arguments of polymorphic symbols.
+<P>
+For systems that implement type inference, the following nonstandard extension
+of TFF1 might be useful. 
+When a type argument of a polymorphic symbol can be inferred automatically, 
+it may be replaced with the wildcard <TT>$_</TT>. 
+For example:
+<BLOCKQUOTE>
+<TT>is_empty($_, cons($_, X, nil($_)))</TT>
+</BLOCKQUOTE>
+Although <TT>nil</TT>'s type argument cannot be inferred locally from the 
+types of its term arguments (since there are none), the Hindley&ndash;Milner 
+type inference can deduce it. 
+The producer of a TFF1 problem must be aware of the type inference algorithm 
+implemented in the consumer to omit only redundant type arguments.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Type and Term Variables</H2>
+
+Every variable in a TFF1 formula must be bound. It can be given a type at
+binding time:
+
+<BLOCKQUOTE>
+<PRE>
+tff(bird_list_not_empty, axiom,
+    ![B : bird, Bs : list(bird)]: ~ is_empty(bird, cons(bird, B, Bs))).
+</POST>
+</BLOCKQUOTE>
+
+If the type and the preceding colon (<TT>:</TT>) are omitted, the variable 
+is given type <TT>$i</TT>. 
+Every type variable occurring in a TFF1 formula (whether in a type argument 
+or in the type of a bound variable) must also be bound, with the pseudotype 
+<TT>$tType</TT>:
+
+<BLOCKQUOTE>
+<PRE>
+tff(lookup_update_same, axiom,
+    ![A : $tType, B : $tType, M : map(A, B), K : A, V : B]:
+        lookup(A, B, update(A, B, M, K, V), K) = V).
+</PRE>
+</BLOCKQUOTE>
+
+A single quantifier cluster can bind both type variables and term variables.
+Universal and existential quantifiers over type variables are allowed under the
+propositional connectives, including equivalence, as well as under other
+quantifiers over type variables, but not in the scope of a quantifier over a
+term variable.
+Rationale: A statement of the form "for every integer <EM>k</EM>, there 
+exists a type &alpha; such that ..." effectively makes &alpha; a dependent 
+type.
+On such statements, type skolemization is impossible, and there is no easy 
+translation to ML-style polymorphic formalisms.
+Moreover, type handling in an automatic prover would be more difficult were
+such constructions allowed, since they require paramodulation into types.
+<P>
+On the other hand, all the notions and procedures described in the TFF1
+specification&mdash;except for type skolemization&mdash;are independent of this
+restriction. 
+The rules of type checking and the notion of interpretation are directly 
+applicable to unrestricted formulas. 
+The encoding into a monomorphic is sound and complete on unrestricted 
+formulas, and the proofs require no adjustments. 
+This prepares the ground for TFF2, which is expected to lift the restriction 
+and support more elaborate forms of dependent types. 
+Implementations of TFF1 are encouraged to support unrestricted formulas, 
+treating them according to the semantics given here, if practicable.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Terms and Formulas</H2>
+
+Apart from the differences described above, the terms and formulas of TFF1 
+are identical to those of TFF0. 
+Refer to the TFF0 specification for further information.
+<P>
+<HR><!------------------------------------------------------------------------>
+<H2>Example</H2>
+
+The following problem gives the general flavor of TFF1.
+It first declares and axiomatizes <TT>lookup</TT> and <TT>update</TT> 
+operations on maps, then conjectures that <TT>update</TT> is idempotent for 
+fixed keys and values. 
+Its SZS status is Theorem.
+
+<BLOCKQUOTE>
+<PRE>
+tff(map_t,type,(
+    map: ( $tType * $tType ) > $tType )).
+
+tff(lookup_t,type,(
+    lookup: 
+      !>[A: $tType,B: $tType] :
+        ( ( map(A,B) * A ) > B ) )).
+
+tff(update_t,type,(
+    update: 
+      !>[A: $tType,B: $tType] :
+        ( ( map(A,B) * A * B ) > map(A,B) ) )).
+
+tff(lookup_update_same,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),K: A,V: B] : 
+      lookup(A,B,update(A,B,M,K,V),K) = V )).
+
+tff(lookup_update_diff,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),V: B,K: A,L: A] :
+      ( K != L
+     => lookup(A,B,update(A,B,M,K,V),L) = lookup(A,B,M,L) ) )).
+
+tff(map_ext,axiom,(
+    ! [A: $tType,B: $tType,M: map(A,B),N: map(A,B)] :
+      ( ! [K: A] : lookup(A,B,M,K) = lookup(A,B,N,K)
+     => M = N ) )).
+
+tff(update_idem,conjecture,(
+    ! [A: $tType,B: $tType,M: map(A,B),K: A,V: B] : 
+      update(A,B,update(A,B,M,K,V),K,V) = update(A,B,M,K,V) )).
+</PRE>
+</BLOCKQUOTE>
+
+<HR><!------------------------------------------------------------------------>
+<H2>Type Checking and Semantics</H2>
+
+Refer to the <a href="http://www4.in.tum.de/~blanchet/tff1spec.pdf">TFF1
+specification</a> for more details on type checking and semantics, and much
+more.
+<P>
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

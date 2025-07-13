@@ -1,0 +1,1668 @@
+<A NAME="InsideTheTPTP">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H2>Inside the TPTP</H2>
+
+<STRONG>Scope.</STRONG><BR>
+The TPTP contains problems in classical and non-classical logic, with an interpreted equality 
+symbol.
+Release <!--#include file="MACRO_ReleaseNumber"--> of the TPTP contains:
+<UL>
+<LI> <!--#include file="MACRO_NumberOfAbstractProblems"--> abstract problems, which result in
+     <!--#include file="MACRO_NumberOfProblems"--> ATP problems (due to <A HREF="#ProblemVersions">
+     alternative presentations</A> and <A HREF="#ProblemGenerators">Problem Generators</A>).
+<LI> <!--#include file="MACRO_NumberOfClassicalProblems"--> problems in classical logic, and
+     <!--#include file="MACRO_NumberOfNonClassicalProblems"--> problems in non-classical logic
+<LI> <!--#include file="MACRO_NumberOfEqualityProblems"--> problems with equality
+<LI> <!--#include file="MACRO_NumberOfTHFAbstractProblems"--> THF abstract problems, which result 
+     in <!--#include file="MACRO_NumberOfTHFProblems"--> THF ATP problems
+<LI> <!--#include file="MACRO_NumberOfTFFAbstractProblems"--> TFF abstract problems, which result 
+     in <!--#include file="MACRO_NumberOfTFFProblems"--> TFF ATP problems, of which 
+     <!--#include file="MACRO_NumberOfTXFProblems"--> are TXF problems
+<LI> <!--#include file="MACRO_NumberOfFOFAbstractProblems"--> FOF abstract problems, which result 
+     in <!--#include file="MACRO_NumberOfFOFProblems"--> FOF ATP problems
+<LI> <!--#include file="MACRO_NumberOfCNFAbstractProblems"--> CNF abstract problems, which result 
+     in <!--#include file="MACRO_NumberOfCNFProblems"--> CNF ATP problems
+</UL>
+The TPTP documents
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=OverallSynopsis">
+<TT>OverallSynopsis</TT></A>, 
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=THFSynopsis">
+<TT>THFSynopsis</TT></A>, 
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=TFFSynopsis">
+<TT>TFFSynopsis</TT></A>, 
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=FOFSynopsis">
+<TT>FOFSynopsis</TT></A>, 
+and 
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=CNFSynopsis">
+<TT>CNFSynopsis</TT></A>
+provide some overall statistics about the TPTP.
+<P>
+The problems in the TPTP are syntactically diverse, as is indicated by 
+the ranges of the values in the tables.
+The problems in the TPTP are also semantically diverse, as is indicated 
+by the <A HREF="#DomainStructure">range of domains that are covered</A>. 
+The problems are grouped into domains, covering topics in the fields of logic, 
+mathematics, computer science, engineering, social sciences, arts and 
+humanities, and others.
+<P>
+<STRONG>Sources</STRONG><BR>
+The problems have been collected from various sources. 
+Early sources were existing electronic problem collections and the ATP 
+literature. 
+Other sources include logic programming, mathematics, puzzles, and 
+correspondence with ATP researchers.
+Many people and organizations have contributed towards the TPTP:
+the foundations of the TPTP were laid with David Plaisted's SPRFN collection;
+many problems were taken from Argonne National Laboratory's ATP problem library 
+(special thanks to Bill McCune here); Art Quaife provided several hundred 
+problems in set theory and algebra; the Journal of Automated Reasoning, CADE 
+Proceedings, and Association for Automated Reasoning Newsletters have provided 
+a wealth of material; many problems have been provided by ATP users and
+system developers (see the <A HREF="#Acknowledgements">Acknowledgements</A>).
+<P>
+<STRONG>Releases</STRONG><BR>
+The TPTP is managed in the manner of a software product, in the sense that fixed releases are made.
+Each release of the TPTP is identified by a release number, in the form 
+<TT>v</TT><EM>Version</EM><TT>.</TT><EM>Edition</EM><TT>.</TT><EM>Patch level</EM>. 
+The <TT>Version</TT> number enumerates major new releases of the TPTP, in which 
+important new features have been added. 
+The <TT>Edition</TT> number is incremented each time new problems are added to the current version. 
+The <TT>Patch</TT> level is incremented each time errors, found in the current edition, are 
+corrected. 
+All non-trivial changes are recorded in a history file, as well as in the file for an affected 
+problem.
+
+<A NAME="DomainStructure">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>The Domain Structure</H3>
+
+This section provides the structure according to which the problems are grouped into domains. 
+Some information about the domains is also given.
+<P>
+An attempt has been made to classify the totality of the TPTP problems in a systematic and natural 
+way. 
+The resulting domain scheme reflects the natural hierarchy of scientific domains, as presented 
+in standard subject classification literature. 
+The current classification is based mainly on the Dewey Decimal Classification (DDC) 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CB+89">CB+89</A>]
+and the Mathematics Subject Classification (MSC) 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MSC92">MSC92</A>]
+used for the Mathematical Reviews by the American Mathematical Society.
+Seven fields are defined: 
+logic, mathematics, computer science, engineering, social sciences, arts and humanities, and other.
+Each field contains further subdivisions, called <EM>domains</EM>. 
+Each domain is identified by a three-letter mnemonic.
+These mnemonics are also part of the TPTP 
+<A HREF="#ProblemAndAxiomatizationNaming">problem naming scheme</A>.
+The TPTP domains constitute the basic units of the classification. 
+The full classification scheme is shown in 
+Figure&nbsp;<A HREF="#The Domain Structure of the TPTP">
+The Domain Structure of the TPTP</A>,
+and the numbers of abstract problems, problems, and generic problems
+in each domain are shown in the TPTP document
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=OverallSynopsis">
+<TT>OverallSynopsis</TT></A>
+<P>
+<A NAME="The Domain Structure of the TPTP">
+<CENTER>
+<TABLE>
+     <TR VALIGN=TOP>
+          <TD> Logic
+          <TD> Combinatory logic
+          <TD>
+          <TD> <TT>COL</TT>
+     <TR> <TD>
+          <TD> Logic calculi
+          <TD>
+          <TD> <TT>LCL</TT>
+     <TR> <TD>
+          <TD> Henkin models
+          <TD>
+          <TD> <TT>HEN</TT>
+     <TR VALIGN=TOP>
+          <TD> Mathematics
+          <TD> Set theory
+          <TD>
+          <TD> <TT>SET</TT>, <TT>SEU</TT>, and <TT>SEV</TT>
+     <TR> <TD>
+          <TD> Graph theory
+          <TD>
+          <TD> <TT>GRA</TT>
+     <TR> <TD>
+          <TD> Algebra
+          <TD> Relation algebra
+          <TD> <TT>REL</TT>
+     <TR> <TD>
+          <TD>
+          <TD> MV Algebras
+          <TD> <TT>MVA</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Boolean algebra
+          <TD> <TT>BOO</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Robbins algebra
+          <TD> <TT>ROB</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Left distributive
+          <TD> <TT>LDA</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Lattices
+          <TD> <TT>LAT</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Quantales
+          <TD> <TT>QUA</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Kleene algebra
+          <TD> <TT>KLE</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Groups
+          <TD> <TT>GRP</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Rings
+          <TD> <TT>RNG</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Fields
+          <TD> <TT>FLD</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Homological algebra
+          <TD> <TT>HAL</TT>
+     <TR> <TD>
+          <TD>
+          <TD> Real Algebra
+          <TD> <TT>RAL</TT>
+     <TR> <TD>
+          <TD> 
+          <TD> General algebra
+          <TD> <TT>ALG</TT>
+     <TR> <TD>
+          <TD> Arithmetic
+          <TD>
+          <TD> <TT>ARI</TT>
+     <TR> <TD>
+          <TD> Number theory
+          <TD>
+          <TD> <TT>NUM</TT> and <TT>NUN</TT>
+     <TR> <TD>
+          <TD> Topology
+          <TD>
+          <TD> <TT>TOP</TT>
+     <TR> <TD>
+          <TD> Analysis
+          <TD>
+          <TD> <TT>ANA</TT>
+     <TR> <TD>
+          <TD> Geometry
+          <TD>
+          <TD> <TT>GEO</TT>
+     <TR> <TD>
+          <TD> Category theory
+          <TD>
+          <TD> <TT>CAT</TT>
+     <TR VALIGN=TOP>
+          <TD> Computer science
+          <TD> Computing theory
+          <TD>
+          <TD> <TT>COM</TT>
+     <TR> <TD>
+          <TD> Knowledge representation
+          <TD>
+          <TD> <TT>KRS</TT>
+     <TR> <TD>
+          <TD> Natural Language Processing
+          <TD>
+          <TD> <TT>NLP</TT>
+     <TR> <TD>
+          <TD> Planning
+          <TD>
+          <TD> <TT>PLA</TT>
+     <TR> <TD>
+          <TD> Agents
+          <TD>
+          <TD> <TT>AGT</TT>
+     <TR> <TD>
+          <TD> Commonsense Reasoning
+          <TD>
+          <TD> <TT>CSR</TT>
+     <TR> <TD>
+          <TD> Semantic Web
+          <TD>
+          <TD> <TT>SWB</TT>
+     <TR> <TD>
+          <TD> Interactive Theorem Proving
+          <TD>
+          <TD> <TT>ITP</TT>
+     <TR> <TD>
+          <TD> Data Structures
+          <TD>
+          <TD> <TT>DAT</TT>
+     <TR> <TD>
+          <TD> Software creation
+          <TD>
+          <TD> <TT>SWC</TT>
+     <TR> <TD>
+          <TD> Software verification
+          <TD>
+          <TD> <TT>SWV</TT> and <TT>SWW</TT> and <TT>SWX</TT>
+     <TR>
+          <TD> Science and Engineering
+          <TD> Biology
+          <TD>
+          <TD> <TT>BIO</TT>
+     <TR> <TD>
+          <TD> Hardware creation
+          <TD>
+          <TD> <TT>HWC</TT>
+     <TR> <TD>
+          <TD> Hardware verification
+          <TD>
+          <TD> <TT>HWV</TT>
+     <TR> <TD>
+          <TD> Medicine
+          <TD>
+          <TD> <TT>MED</TT>
+     <TR> <TD>
+          <TD> Processes
+          <TD>
+          <TD> <TT>PRO</TT>
+     <TR> <TD>
+          <TD> Products
+          <TD>
+          <TD> <TT>PRD</TT>
+     <TR> 
+          <TD> Social sciences
+          <TD> Social Choice Theory
+          <TD>
+          <TD> <TT>SCT</TT>
+     <TR> <TD>
+          <TD> Management
+          <TD>
+          <TD> <TT>MGT</TT>
+     <TR> <TD>
+          <TD> Geography
+          <TD>
+          <TD> <TT>GEG</TT>
+     <TR> 
+          <TD> Arts and Humanities
+          <TD> Philosophy
+          <TD>
+          <TD> <TT>PHI</TT>
+     <TR>
+          <TD> Other
+          <TD> Syntactic
+          <TD>
+          <TD> <TT>SYN</TT> and <TT>SYO</TT>
+     <TR> <TD>
+          <TD> Puzzles
+          <TD>
+          <TD> <TT>PUZ</TT>
+     <TR> <TD>
+          <TD> Miscellaneous
+          <TD>
+          <TD> <TT>MSC</TT>
+</TABLE>
+<U>The Domain Structure of the TPTP.</U>
+</CENTER>
+<P>
+
+A brief description of the domains, with a non-ATP reference for a
+general introduction and a generic ATP reference, is given below. 
+For each domain, appropriate DDC and MSC numbers are also given if available:
+<UL>
+<LI> <TT>AGT</TT> <EM>Agents.</EM> <BR>
+     An agent is an autonomous software component of a computer program, typically designed to act 
+     intelligently and communicate with other agents.<BR>
+     Indices: DDC ???; MSC 68T35.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=RN95">RN95</A>];
+     ATP --.
+<LI> <TT>ALG</TT> <EM>Algebra.</EM> <BR>
+     Algebra is a branch of mathematics concerning the study of structure, relation, and quantity.
+     An algebra is a set with a system of operations defined on it. <BR>
+     Indices: DDC 512; MSC 06XX, 20XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bou89">Bou89</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BM65">BM65</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BB70">BB70</A>]; 
+     ATP --.
+<LI> <TT>ARI</TT> <EM>Arithmetic.</EM> <BR>
+     Arithmetic problems that <EM>do</EM> arithmetic computations (but do not reason <EM>about</EM>
+     arithmetic (see the <TT>NUM</TT> domain).<BR>
+     Indices: DDC 513; MSC 97FXX.<BR>
+     References: General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Hig10">Hig10</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sim86">Sim86</A>].
+<LI> <TT>ANA</TT> <EM>Analysis.</EM> <BR>
+     Analysis is a branch of mathematics concerned with functions and limits.
+     The main parts of analysis are differential calculus, integral calculus, and the theory of 
+     functions. <BR>
+     Indices: DDC 515; MSC 26XX.<BR>
+     References: General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Ros90">Ros90</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Ble90">Ble90</A>].
+<LI> <TT>BIO</TT> <EM>Biology.</EM> <BR>
+     Biology is a natural science concerned with the study of life and living organisms, including 
+     their structure, function, growth, evolution, distribution, and taxonomy. <BR>
+     Indices: DDC 570; MSC 92XX.<BR>
+     References: General  
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=RU+13">RU+13</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CC+13">CC+13</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CDI13">CDI13</A>].
+<LI> <TT>BOO</TT> <EM>Boolean Algebra.</EM> <BR>
+     A Boolean algebra is a set of elements with two binary operations that are idempotent, 
+     commutative, and associative. 
+     These operations are mutually distributive, there exist universal bounds <TT>0</TT>, 
+     <TT>1</TT>, and there is a unary operation of complementation.<BR>
+     Indices: DDC 511.324, 512.89; MSC 06EXX.<BR>
+     References: 
+     General  
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Whi61">Whi61</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BM65">BM65</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BB70">BB70</A>]; 
+     ATP --.
+<LI> <TT>CAT</TT> <EM>Category Theory.</EM> <BR>
+     A category is a mathematical structure together with the morphisms that preserve this 
+     structure. <BR>
+     Indices: DDC 512.55; MSC 18XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Mac71">Mac71</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MOW76">MOW76</A>].
+<LI> <TT>COL</TT> <EM>Combinatory Logic.</EM> <BR>
+     Combinatory logic is about applying one function to another.
+     It can be viewed as an alternative foundation of mathematics (or, due to its 
+     Turing-completeness, as a programming language).
+     More formally, it is a system satisfying two combinators and satisfying reflexivity, symmetry,
+     transitivity, and two equality substitution axioms for the function that exists implicitly for
+     applying one combinator to another.<BR>
+     Indices: DDC 510.101; MSC 03B40.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CF58">CF58</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CHS72">CHS72</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bar81">Bar81</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WM88-CADE-9">WM88</A>].
+<LI> <TT>COM</TT> <EM>Computing Theory.</EM> <BR>
+     Computing theory is a subfield of computer science dealing with theoretical issues such as 
+     decidability (whether or not a given problem admits an algorithmic solution), completeness 
+     (does an algorithm always find a solution if one exists?), correctness (are only solutions 
+     produced?), and computational complexity (the resource requirements of algorithms).<BR>
+     Indices: DDC 004-006; MSC 68XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HU79">HU79</A>]; 
+     ATP --.
+<LI> <TT>CSR</TT> <EM>Commonsense Reasoning.</EM> <BR>
+     Commonsense reasoning is the branch of artificial intelligence concerned with replicating 
+     human thinking. 
+     There are several components to this problem, including:
+     developing adequately broad and deep commonsense knowledge bases;
+     developing reasoning methods that exhibit the features of human thinking, including
+         the ability to reason with knowledge that is true by default,
+         the ability to reason rapidly across a broad range of domains, and
+         the ability to tolerate uncertainty in your knowledge;
+     developing new kinds of cognitive architectures that support multiple reasoning methods and 
+     representations.<BR>
+     Indices: DDC 121.3; MSC 68TXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sha97">Sha97</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Lif95">Lif95</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC59">McC59</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SME04">SME04</A>]
+<LI> <TT>DAT</TT> <EM>Data Structures.</EM> <BR>
+     A data structure is a particular way of storing and organizing data in a computer so that it 
+     can be used efficiently.<BR>
+     Indices: DDC 005.73; MSC 68P05.<BR>
+     References: General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=AHU87">AHU87</A>]; 
+     ATP --.
+<LI> <TT>FLD</TT> <EM>Field Theory.</EM> <BR>
+     A field is ring (see below) in which the * operation is commutative, and for which there is an
+     identity element in G, and for which each non-identity element of G has an inverse in G.<BR>
+     Indices: DDC 512.32; MSC 12XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Ada82">Ada82</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Dra93">Dra93</A>].
+<LI> <TT>GEG</TT> <EM>Geography.</EM> <BR>
+     Geography is the study of the Earth and its lands, features, inhabitants, and phenomena.<BR>
+     Indices: DDC 910; MSC 91C99.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=NGS99">NGS99</A>];
+     ATP  --.
+<LI> <TT>GEO</TT> <EM>Geometry.</EM> <BR>
+     Geometry is a branch of mathematics that deals with the measurement, properties, and 
+     relationships of points, lines, angles, surfaces, and solids.<BR>
+     Indices: DDC 516; MSC 51.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Tar51">Tar51</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Tar59">Tar59</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua92-Book">Qua92</A>].
+<LI> <TT>GRA</TT> <EM>Graph Theory.</EM> <BR>
+     A graph consists of a finite non-empty set of vertices together with a prescribed set of 
+     edges, each edge connecting a pair of vertices. <BR>
+     Indices: DDC 510.09; MSC 05CXX, 68R10.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Har69">Har69</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BB70">BB70</A>]; 
+     ATP --.
+<LI> <TT>GRP</TT> <EM>Group Theory.</EM> <BR>
+     A group is a set G and a binary operation <TT>+:GxG -> G</TT> which is associative, and for 
+     which there is an identity element in G, and for which each element of G has an inverse 
+     in G.<BR>
+     Indices: DDC 512.2; MSC 20<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bou89">Bou89</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BM65">BM65</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MOW76">MOW76</A>].
+<LI> <TT>HAL</TT> <EM>Homological Algebra.</EM> <BR>
+     Homological algebra is an abstract algebra concerned with results valid for many different 
+     kinds of spaces. 
+     Modules are the basic tools used in homological algebra. <BR>
+     Indices: DDC 512.55; MSC 18XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Wei94">Wei94</A>]; 
+     ATP --.
+<LI> <TT>HEN</TT> <EM>Henkin Models.</EM><BR>
+     Henkin models provide a generalized semantics for higher order logics. 
+     This leads to a larger class of models and, as a consequence, fewer true sentences. 
+     However, in contrast to standard semantics, complete and correct calculi can be found.  <BR>
+     Indices: DDC 160; MSC 03CXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Hen50">Hen50</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Leb83">Leb83</A>]; 
+     ATP --.
+<LI> <TT>HWC</TT> <EM>Hardware Creation.</EM> <BR>
+     Computer hardware is created by inter-connecting logic gates. 
+     Hardware creation is used to form a circuit that will transform given input patterns to 
+     required output patterns.<BR>
+     Indices: DDC 621.395; MSC 94CXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Hay93">Hay93</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WW83">WW83</A>]. 
+<LI> <TT>HWV</TT> <EM>Hardware Verification.</EM> <BR>
+     Hardware verification is used to ensure that a previously designed circuit performs the 
+     desired transformation of input patterns to required output patterns.
+     One approach is to check the performance of the circuit for every possible combination of 
+     given inputs.
+     Other techniques are also used.<BR>
+     Indices: DDC 621.395; MSC 94CXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Hay93">Hay93</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Woj83">Woj83</A>].
+<LI> <TT>ITP</TT> <EM>Interactive Theorem Proving.</EM> <BR>
+     An interactive theorem prover is a software tool to assist with the development of formal 
+     proofs by human-machine collaboration. 
+     This involves some sort of interactive proof editor, or other interface, with which a human 
+     can guide the search for proofs, the details of which are stored in, and some steps provided 
+     by, a computer. <BR>
+     Indices: <BR>
+     References:
+     General
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Wie06">Wie06</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Geu09">Geu09</A>];
+     ATP
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Urb06">Urb06</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BG+19">BG+19</A>].
+<LI> <TT>KLE</TT> <EM>Kleene Algebra.</EM> <BR>
+     A Kleene Algebra is a bounded distributive lattice with an involution satisfying De Morgan's 
+     laws, and the inequality x∧−x ≤ y∨−y. 
+     Alternatively, a Kleene Algebra is an algebraic structure that generalizes the operations 
+     known from regular expressions. <BR>
+     Indices: DDC 512.74; MSC 06A99<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Koz90">Koz90</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BMS03">BMS03</A>]; 
+     ATP
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HS07">HS07</A>].
+<LI> <TT>KRS</TT> <EM>Knowledge Representation.</EM><BR>
+     Knowledge Representation is concerned with writing down descriptions that can be manipulated 
+     by a machine.<BR>
+     Indices: DDC 006.3; MSC 68T30.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BL85">BL85</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CM87-EKR">CM87</A>]; 
+     ATP --.
+<LI> <TT>LAT</TT> <EM>Lattice Theory.</EM> <BR>
+     A lattice is a set of elements, with two binary operations which are idempotent, commutative,
+     and associative, and which satisfy the absorption law. <BR>
+     Indices: DDC 512.865; MSC 06BXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BM65">BM65</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC88">McC88</A>].
+<LI> <TT>LCL</TT> <EM>Logic Calculi.</EM> <BR>
+     A logic calculus defines axioms and rules of inference that can be used to prove theorems.
+<!--
+     This domain currently contains the following logical calculi:
+     <UL>
+     <LI> Implication/Negation 2 valued modal
+     <LI> Implication/Negation 2 valued sentential (CN-calculus)
+     <LI> Implicational propositional 
+          (IC-calculus, negation-free part of sentential calculus)
+     <LI> Implication/Falsehood 2 valued sentential (C0-calculus)
+     <LI> Disjunction/Negation 2 valued sentential (AN-calculus)
+     <LI> Many valued sentential (MV-calculus)
+     <LI> Equivalential (EC-calculus, theorems represent group identity 
+          in Boolean groups)
+     <LI> R (under some constraint, theorems represent 
+          identity in Abelian groups)
+     <LI> Left group 
+          (LG-calculus, under some constraint theorems represent 
+          formulae equal to identity in groups)
+     <LI> Right group 
+          (RG-calculus, theorems are related to identity in groups)
+     <LI> Wajsberg Algebra. 
+     </UL>
+-->
+     Indices: DDC 511.3; MSC 03XX.
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Luk63">Luk63</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MW92-CADE-11">MW92</A>].
+<LI> <TT>LDA</TT> <EM>Left Distributive Algebra.</EM> <BR>
+     LD-algebras are related to large cardinals. 
+     Under a very strong large cardinal assumption, the free-monogenic LD-algebra can be 
+     represented by an algebra of elementary embeddings. 
+     Theorems about this algebra can be proven from a small number of properties, suggesting the 
+     definition of an embedding algebra.<BR>
+     Indices: DDC 512; MSC 20N02, 03E55, 08B20<BR>
+     References: 
+     General --; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Jec93">Jec93</A>].
+<LI> <TT>LIN</TT> <EM>Linear Algebra.</EM> <BR>
+     Linear algebra is the branch of mathematics concerning vector spaces and linear mappings 
+     between such spaces. 
+     Indices: DDC 512.5; MSC 15Axx.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=LH+01">LH+01</A>];
+     ATP --.
+<LI> <TT>MVA</TT> <EM>MV Algebras.</EM> <BR>
+     An MV algebra is an algebraic structure with a binary "plus" operation, a unary "negate" 
+     operation, and the constant 0, satisfying certain axioms. 
+     Indices: DDC 512; MSC 03G20<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Mun11">Mun11</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=GT75">GT75</A>]; 
+     ATP --.
+<LI> <TT>MED</TT> <EM>Medicine.</EM> <BR>
+     The science of diagnosing and treating illness, disease, and injury.<BR>
+     Indices: DDC 610; MSC --.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=LH+01">LH+01</A>];
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HLB05">HLB05</A>].
+<LI> <TT>MGT</TT> <EM>Management.</EM> <BR>
+     Management is the study of systems, and their use and production of resources.<BR>
+     Indices: DDC 302-303; MSC 90XX.<BR>
+     References: 
+     General --; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=PM94">PM94</A>,
+     <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=PB+94-ASR">PB+94</A>].
+<LI> <TT>MSC</TT> <EM>Miscellaneous.</EM> <BR>
+     A collection of problems which do not fit well into any 
+     other domain. 
+<LI> <TT>NLP</TT> <EM>Natural Language Processing.</EM> <BR>
+     Natural language processing considers the automated generation and comprehension of languages
+     used by humans.<BR>
+     Indices: DDC 006.3; MSC 68T50<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Obe89i">Obe89i</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=GWS86">GWS86</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bos00">Bos00</A>].
+<LI> <TT>NUM</TT> <EM>Number Theory.</EM> <BR>
+     Number theory is the study of integers and their properties.<BR>
+     Indices: DDC 512.7; MSC 11YXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HW92">HW92</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua92-Book">Qua92</A>].           
+<LI> <TT>PHI</TT> <EM>Philosophy.</EM> <BR>
+     Philosophy is the study of general and fundamental problems, such as those connected with 
+     reality, existence, knowledge, values, reason, mind, and language.<BR>
+     Indices: DDC 100; MSC -<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=TE99">TE99</A>];
+     ATP -.
+<LI> <TT>PLA</TT> <EM>Planning.</EM> <BR>
+     Planning is the process of determining the sequence of actions to be performed by an agent, 
+     to reach a specified desired state from a specified initial state.<BR>
+     Indices: DDC 006.3; MSC 68T99.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=AK+91">AK+91</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pla81">Pla81</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pla82">Pla82</A>].
+<LI> <TT>PRO</TT> <EM>Processes.</EM> <BR>
+     Process information includes production scheduling, process planning, workflow, business 
+     process reengineering, simulation, process realization process modeling, and project 
+     management.<BR>
+     Indices: DDC 670; MSC 93-XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sch99">Sch99</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Rei01">Rei01</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BG05">BG05</A>].
+<LI> <TT>PRD</TT> <EM>Products.</EM> <BR>
+     A product is anything that can be offered to a market that might satisfy a want or need.<BR>
+     Indices: DDC ???; MSC ??.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=KA+06">KA+06</A>]; 
+     ATP --.
+<LI> <TT>QUA</TT> <EM>Quantales.</EM> <BR>
+     Quantales are partially ordered algebraic structures that generalize locales (point free 
+     topologies) as well as various lattices of multiplicative ideals from ring theory and 
+     functional analysis. 
+     Quantales are sometimes referred to as complete residuated semigroups.<BR>
+     Indices: DDC 512; MSC 06F07.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Mul01">Mul01</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Con71">Con71</A>];
+     ATP --.
+<LI> <TT>PUZ</TT> <EM>Puzzles.</EM> <BR>
+     Puzzles are designed to test the ingenuity of humans.<BR>
+     Indices: DDC 510, 793.73; MSC --.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Car86">Car86</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Smu78,">Smu78</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Smu85">Smu85</A>]; 
+     ATP --.
+<LI> <TT>RAL</TT> <EM>Real Algebra.</EM> <BR>
+     Real algebra is the study of "real" objects such as real rings, real 
+     places and real varieties.
+     Indices: DDC 512; MSC 13J30<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Lam84">Lam84</A>];
+     ATP --.
+<LI> <TT>REL</TT> <EM>Relation Algebra.</EM> <BR>
+     A relation algebra is a residuated Boolean algebra supporting an 
+     involutary unary operation called converse. 
+     The motivating example of a relation algebra is the algebra 2^X^2 of 
+     all binary relations on a set X, with RoS interpreted as the usual 
+     composition of binary relations.<BR>
+     Indices: DDC 512; MSC 03G15, 06D99<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS93">SS93</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Mad06">Mad06</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HS08">HS08</A>]. 
+<LI> <TT>RNG</TT> <EM>Ring Theory.</EM> <BR>
+     A ring is a group (see above) in which the binary operation is
+     commutative, with an associative and distributive operation 
+     <TT>*:GxG -> G</TT> for which there is an identity element in G.<BR>
+     Indices: DDC 200; MSC -.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bou89">Bou89</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BB70">BB70</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MOW76">MOW76</A>].
+<LI> <TT>ROB</TT> <EM>Robbins Algebra.</EM> <BR>
+     The Robbins Algebra domain revolves around the question "Is every 
+     Robbins algebra Boolean?".
+     Most of the problems in this domain identify conditions that make a
+     near-Boolean algebra Boolean.<BR>
+     Indices: DDC 512; MSC 03G15.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HMT71">HMT71</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Win90">Win90</A>].
+<LI> <TT>SCT</TT> <EM>Social Choice Theory.</EM> <BR>
+     Social choice theory is a theoretical framework for measuring individual 
+     interests, values, or welfares as an aggregate towards collective 
+     decision..<BR>
+     Indices: DDC 330.1; MSC -.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Arr63">Arr63</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Nip09">Nip09</A>].
+<LI> <TT>SET</TT>, <TT>SEU</TT>, and <TT>SEV</TT> <EM>Set Theory.</EM> <BR>
+     Classically, a set is a totality of certain definite, distinguishable
+     objects of our intuition or thought - called the elements of the
+     set. Due to paradoxes that arise from such a naive definition, 
+     mathematicians now regard the notion of a set as an undefined, 
+     primitive concept 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=How72">How72</A>].<BR>
+     Indices: DDC 511.322, 512.817; MSC 03EXX, 04XX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Neu25">Neu25</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qui69">Qui69</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua92-Book">Qua92</A>].
+<LI> <TT>SWB</TT> <EM>Semantic Web.</EM> <BR>
+     Semantic Web is a group of methods and technologies to allow machines to 
+     understand the meaning – or "semantics" – of information on the World 
+     Wide Web.
+     <BR>
+     Indices: DDC ??.?; MSC --.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BHL01">BHL01</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HV06">HV06</A>]. 
+<LI> <TT>SWC</TT> <EM>Software Creation.</EM> <BR>
+     Software creation is used to form a computer program that meets given
+     specifications.<BR>
+     Indices: DDC ???.?; MSC 68N30.<BR>
+     References: 
+     General --; 
+     ATP --. 
+<LI> <TT>SWV</TT> and <TT>SWW</TT> and <TT>SWX</TT> <EM>Software Verification.</EM> <BR>
+     Software verification formally establishes that a computer program
+     does the task it is designed for. <BR>
+     Indices: DDC 005.14; MSC 68Q60.<BR>
+     References: 
+     General --; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WO+92">WO+92</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MOW76">MOW76</A>]. 
+<LI> <TT>SYN</TT> and <TT>SYO</TT> <EM>Syntactic.</EM> <BR>
+     Syntactic problems have no obvious semantic interpretation.<BR>
+     Indices: DDC --; MSC --.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Chu56">Chu56</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pel86-JAR">Pel86</A>]. 
+<LI> <TT>TOP</TT> <EM>Topology.</EM> <BR>
+     Topology is the study of properties of geometric configurations 
+     (e.g., point sets) which are unaltered by elastic deformations 
+     (homeomorphisms, i.e., functions that are 1-1 mappings between sets,
+     such that both the function and its inverse are continuous).<BR>
+     Indices: DDC 514; MSC 46AXX.<BR>
+     References: 
+     General 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Kel55">Kel55</A>,
+      <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Mun75">Mun75</A>]; 
+     ATP 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WM89">WM89</A>].
+</UL>
+<P>
+
+<A NAME="ProblemVersions">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Problem Versions and Standard Axiomatizations</H3>
+
+There are often many ways to formulate a problem for presentation 
+to an ATP system. 
+Thus, in the TPTP, there are often alternative presentations of a problem. 
+The alternative presentations are called <EM>versions</EM> 
+of the underlying <EM>abstract problem</EM>. 
+As the problem versions are the objects that ATP systems must deal
+with, they are referred to simply as problems, and the
+abstract problems are referred to explicitly as such. 
+Each problem is stored in a separate physical file. 
+In the TPTP the most coarse grain differentiation between problem versions
+is whether the problem is presented in THF (with the subdivisions TH0 for
+monomorphic logic and TH1 for polymorphic logic), TFF (with the subdivisions
+TXF for extended logic (with the subdivisions TX0 for monomorphic logic
+and TX1 for polymorphic logic), TF0 for monomorphic logic, and TF1 for
+polymorphic logic), FOF, or CNF.
+Within a given presentation, the primary reason for different versions of 
+an abstract problem is the use of different axiomatizations. 
+This issue is discussed below. 
+A secondary reason is different formulations of the problem to be solved,
+e.g., different clausal forms of a FOF problem.
+<P>
+<STRONG>Different Axiomatizations</STRONG><BR>
+Commonly, many different axiomatizations of a theory exist.
+By using different axiomatizations of a particular theory, different 
+versions of a problem can be formed.
+<P>
+In the TPTP an axiomatization is <EM>standard</EM> if it is a 
+complete axiomatization of 
+an established theory, 
+no lemmas have been added, and
+it is not designed specifically to be suited or 
+ill-suited to any ATP system, calculus, or control strategy.
+A problem version is standard if it uses a standard axiomatization.
+<! OLD The axiomatization must also be accepted within the community of human  >
+<! OLD theorem proving systems for the domain. >
+(Note: A standard axiomatization might be redundant, because some axioms are 
+dependent on others. 
+In general, it is not known whether or not an axiomatization is minimal, and 
+thus the possibility of redundancy in standard axiomatizations must be 
+tolerated.)
+In the TPTP, standard axiomatizations are kept in separate axiom files, 
+and are included in problems as appropriate. 
+Sets of <EM>specialization</EM> axioms might be used to extend or constrain an
+axiomatization.
+Specialization axioms are also kept in separate axiom files.
+<P>
+Within the ATP community, some problems have been created with 
+<EM>non-standard</EM> axiomatizations. 
+A non-standard axiomatization can be formed by modifying a standard 
+axiomatization:
+the standard axiomatization can be <EM>reduced</EM> (i.e., axioms are removed) and 
+the result is an <EM>incomplete</EM> axiomatization, or it can be 
+<EM>augmented</EM> 
+(i.e., lemmas are added) and the result is a <EM>redundant</EM> axiomatization. 
+Incomplete and redundant axiomatizations are typically used to find a proof 
+of a conjecture (based on the axiomatization) using a particular ATP system. 
+An axiomatization can also be non-standard because it is <EM>biased</EM>, 
+i.e., designed specifically to be suited or ill-suited to some ATP system, 
+calculus, or control strategy.
+A problem version is incomplete, redundant, or biased if its axiomatization is.
+Finally, an axiomatization can be non-standard because it does not capture 
+any established theory.  i.e., a standard axiomatization does not exist, but 
+the axioms are not biased.
+A problem version with such an axiomatization is <EM>especial</EM>.
+Typically, the axioms in an especial problem are specific to that problem,
+and are not used in any other problem.
+<P>
+In any 'real' application of an ATP system, a standard or especial 
+problem version would typically be used, at least initially. 
+The use of standard axiomatizations is particularly desirable.
+
+<P>
+<A NAME="Equality Axiomatization">
+<STRONG>Equality Axiomatization</STRONG><BR>
+In the TPTP equality is represented in infix using <TT>=</TT> and <TT>!=</TT>
+for equality and inequality.
+An inequality has the same meaning as a negated equality.
+If equality is present in a problem, axioms of equality are not provided; it is assumed that 
+equality reasoning is builtin to every ATP system.
+If equality axioms are required by an ATP system they can be added using the <A HREF="#TPTP2X">
+TPTP2X</A> or <A HREF="#TPTP4X">TPTP4X</A> utility.
+If any axioms are added when the problems are submitted to an ATP system, then the addition must 
+be <A HREF="#UsingTheTPTP">explicitly noted in reported results</A>/
+
+<A NAME="ProblemGenerators">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Problem Generators</H3>
+
+Some abstract problems have a generic nature, and particular instances of the abstract problem are 
+formed according to some size parameter(s). 
+An example of a generic problem is the N-queens problem: place N queens on a N by N chess board 
+such that no queen attacks another.
+The formulae for any size of this problem can be generated automatically, for any size of 
+N&nbsp;&gt;=&nbsp;2.
+Note that the <A HREF="#HeaderSection">problem status</A> might depend on the problem size.
+<P>
+Up to TPTP v1.1.3, the TPTP contained problem files for particular sizes of generic problems.
+This, however, was undesirable.
+Firstly, only a finite number of different problem sizes could be included, and therefore a 
+desired size might have been missing. 
+Secondly, even a small number of different problem sizes for each generic problem could consume a 
+considerable amount of disk space.
+To overcome these problems, the TPTP contains <EM>generator</EM> files.
+Generator files are used to generate instances of generic problems, according to user supplied 
+size parameters.
+The generators are used in conjunction with the <A HREF="#TPTP2X">tptp2X utility</A>.
+<P>
+For convenience, the TPTP still contains, where they exist, interesting size instances of each 
+generic problem. 
+The <EM>TPTP sizes</EM> were chosen to be non-trivial,
+The statistics in the TPTP documents take into account these instances of generic problems. 
+
+<A NAME="ProblemAndAxiomatizationNaming">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Problem and Axiomatization Naming</H3>
+
+Providing unambiguous names for all problems is necessary in a problem library.
+A naming scheme has been developed for the TPTP, to provide unique, stable names for abstract 
+problems, problems, axiomatizations, and generators. 
+Files are assigned names according to the schemes depicted in 
+Tables&nbsp;<A HREF="#Problem Naming">Problem Naming</A> and 
+<A HREF="#Axiom Naming">Axiom Naming</A>.
+The <TT>DDDNNN</TT> combination provides an unambiguous name for an abstract problem or 
+axiomatization. 
+The <TT>DDDNNNFV[.SSS]</TT> combination provides an unambiguous name for a problem or generator, 
+and the <TT>DDDNNNFE</TT> combination provides an unambiguous name for a set of axioms. 
+The complete file names are unique within the TPTP.
+For example, the file <TT>GRP135-1.002.p</TT> contains the group theory problem number 
+<TT>135</TT>, version number <TT>1</TT>, generated size <TT>2</TT>.
+Similarly, the file <TT>CAT001-0.ax</TT> contains the basic category theory axiomatization 
+number <TT>1</TT>.
+<P>
+A regular expression for recognizing problem file names is
+"<TT>[A-Z]{3}[0-9]{3}[-+^=_][1-9][0-9]*(\.[0-9]{3})*\.p</TT>".
+A regular expression for recognizing axiom file names is
+"<TT>[A-Z]{3}[0-9]{3}[-+^=_][1-9][0-9]*\.ax</TT>".
+<A NAME="Problem Naming">
+<P>
+<CENTER>
+<TABLE BORDER CELLSPACING=0%>
+<TR> <TH ALIGN=LEFT WIDTH=0%> <TT>DDD</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>NNN</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>F</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>V</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>.SSS</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>.T</TT>
+     <TH WIDTH=100%>
+<TR> <TD COLSPAN=7> <TT>DDD</TT> - <A HREF="DomainStructure">Domain name abbreviation</A>.
+<TR> <TD>
+     <TD COLSPAN=6> <TT>NNN</TT> - Abstract problem number.
+          It is unique within the domain.
+<TR> <TD> <TD>
+     <TD COLSPAN=5> <TT>F</TT> - Form. 
+          <TT>^</TT> for THF, <TT>_</TT> for TFF without arithmetic,
+          <TT>=</TT> for TFF with arithmetic,  <TT>+</TT> for FOF, and
+          <TT>-</TT> for CNF.
+<TR> <TD> <TD> <TD>
+     <TD COLSPAN=4> <TT>V</TT> - Version number. 
+          It differentiates between different <A HREF="#ProblemVersions">versions</A> of the 
+          abstract problem.
+<TR> <TD> <TD> <TD> <TD>
+     <TD COLSPAN=3> <TT>SSS</TT> - Size parameter(s).
+          These only occur for generated problems, and give the size parameter(s).
+<TR> <TD> <TD> <TD> <TD> <TD>
+     <TD COLSPAN=2> <TT>T</TT> - File name extension.
+          <TT>p</TT> for problem files, <TT>g</TT> for generator files.
+</TABLE>
+<P>
+<U>Problem file naming scheme.</U>
+</CENTER>
+<P>
+The version numbers used for each abstract problem do not always start at 1, and are not always 
+successive. 
+This is because the same version number is assigned (wherever possible) to all problems that come 
+from the same source, within each domain.
+<A NAME="Axiom Naming">
+<P>
+<CENTER>
+<TABLE BORDER CELLSPACING=0%>
+<TR> <TH ALIGN=LEFT WIDTH=0%> <TT>DDD</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>NNN</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>F</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>V</TT>
+     <TH ALIGN=LEFT WIDTH=0%> <TT>.TT</TT>
+     <TH WIDTH=100%>
+<TR> <TD COLSPAN=6> <TT>DDD</TT> - <A HREF="#DomainStructure">Domain name abbreviation</A>.
+<TR> <TD>
+     <TD COLSPAN=5> <TT>NNN</TT> - Axiomatization number.
+          It is unique within the domain.
+<TR> <TD> <TD>
+     <TD COLSPAN=4> <TT>F</TT> - Form. 
+          <TT>^</TT> for THF, <TT>_</TT> for TFF without arithmetic,
+          <TT>=</TT> for TFF with arithmetic,  <TT>+</TT> for FOF, and
+          <TT>-</TT> for CNF.
+<TR> <TD> <TD> <TD>
+     <TD COLSPAN=3> <TT>V</TT> - Specialization number. 
+          It identifies sets of axioms that are used to specialize an axiomatization.
+          Axiomatizations of basic theories are allocated the number <TT>0</TT>, and 
+          specialization axiom sets are numbered from <TT>1</TT> onwards.
+<TR> <TD> <TD> <TD> <TD>
+     <TD COLSPAN=2> <TT>T</TT> - File name extension.
+          An extension is always <TT>ax</TT>.
+</TABLE>
+<P>
+<U>Axiom file naming scheme.</U>
+</CENTER>
+<P>
+If a file is ever removed from or renamed in the TPTP, then its extension is changed to 
+<TT>.rm</TT>.
+The file is not physically removed, and a comment is added to the file to explain what has 
+happened. 
+This mechanism maintains the unique identification of problems and axiomatizations.
+
+<A NAME="ProblemPresentation">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Problem Presentation</H3>
+
+The physical presentation of the TPTP problem library is such that ATP researchers can easily use 
+the problems. 
+The syntax of all files is that of Prolog (with some operators defined).
+This conformance makes it trivial to manipulate the files using Prolog. 
+All information that is not for use by ATP systems is formatted as comments.
+Comments extend from a <TT>%</TT> character to the end of the line, or may be block comments 
+within <TT>/* ... */</TT> bracketing.
+
+The TPTP file format, for problem files and axiom files, has three main sections. 
+The first section is a header section that contains information for the user.
+This information is not for <A HREF="#UsingTheTPTP">use by ATP systems</A>.
+The second section contains <TT>include</TT> directives for axiom files. 
+The last section contains the formulae that are specific to the problem or axiomatization.
+TPTP generator files have three sections, different from the problem and axiom files.
+The header section of generator files is similar to that of problem and axiom files, but with 
+place-holders for information that is filled in based on the size of problem and the formulae 
+generated. 
+Following that comes Prolog source code to generate the formulae, and finally data describing the 
+permissible sizes and the chosen TPTP size for the problem. 
+More details are <A HREF="#ProblemGenerators">provided here</A>.
+<P>
+A <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=SyntaxBNF">full BNF specification</A> of 
+the problem and axiom file formats is provided in the <A HREF="#PhysicalOrganization">
+<TT>Documents</TT> directory</A> of the TPTP.
+The <A HREF="#TPTP2X">TPTP2X</A> and <A HREF="#TPTP4X">TPTP4X</A> utilities can be used to convert 
+TPTP files to other known ATP system formats.
+A description of the information contained in TPTP files is given below.
+<P>
+The problem files <TT>SYN000</TT>* are contrived to use most features of the TPTP language, and 
+are thus suitable for testing parsers, etc.
+They are not suitable for evaluating ATP systems' reasoning capabilities.
+
+<A NAME="HeaderSection">
+<H4>The Header Section</H4>
+
+This section contains information about the problem, for the user. 
+It is divided into four parts separated by blank lines. 
+The first part identifies and describes the problem.
+The second part provides information about occurrences of the problem in the literature and 
+elsewhere.
+The third part gives the problem's ATP status and a table of syntactic measurements made on the 
+problem. 
+
+The last part contains general information about the problem.
+An example of a TPTP header, from the problem file <TT>GRP194+1.p</TT>, is shown in 
+Figure&nbsp;<A HREF="#Header">Example header</A>.
+<P>
+<A NAME="Header">
+<PRE>
+%--------------------------------------------------------------------------
+% File     : GRP194+1 : TPTP v8.0.0. Released v2.0.0.
+% Domain   : Group Theory (Semigroups)
+% Problem  : In semigroups, a surjective homomorphism maps the zero
+% Version  : [Gol93] axioms.
+% English  : If (F,*) and (H,+) are two semigroups, phi is a surjective
+%            homomorphism from F to H, and id is a left zero for F,
+%            then phi(id) is a left zero for H.
+
+% Refs     : [Gol93] Goller (1993), Anwendung des Theorembeweisers SETHEO a
+% Source   : [Gol93]
+% Names    :
+
+% Status   : Theorem
+% Rating   : 0.22 v7.5.0, 0.25 v7.4.0, 0.10 v7.3.0, 0.14 v7.2.0, 0.10 v7.1.0, 0.13 v7.0.0, 0.20 v6.4.0, 0.23 v6.3.0, 0.21 v6.2.0, 0.36 v6.1.0, 0.47 v6.0.0, 0.35 v5.5.0, 0.37 v5.4.0, 0.50 v5.3.0, 0.48 v5.2.0, 0.40 v5.1.0, 0.33 v4.1.0, 0.35 v4.0.1, 0.30 v4.0.0, 0.29 v3.7.0, 0.15 v3.5.0, 0.16 v3.4.0, 0.21 v3.3.0, 0.14 v3.2.0, 0.18 v3.1.0, 0.11 v2.7.0, 0.17 v2.6.0, 0.14 v2.5.0, 0.12 v2.4.0, 0.25 v2.3.0, 0.33 v2.2.1, 0.00 v2.1.0
+% Syntax   : Number of formulae    :    8 (   2 unt;   0 def)
+%            Number of atoms       :   21 (   4 equ)
+%            Maximal formula atoms :    4 (   2 avg)
+%            Number of connectives :   13 (   0   ~;   0   |;   6   &)
+%                                         (   1 <=>;   6  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    3 (   2 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    5 (   5 usr;   3 con; 0-3 aty)
+%            Number of variables   :   15 (  14   !;   1   ?)
+% SPC      : FOF_THM_RFO_SEQ
+
+% Comments :
+%--------------------------------------------------------------------------
+</PRE>
+<CENTER>
+<U>Example of a problem file header (<TT>GRP194+1.p</TT>).</U>
+</CENTER>
+<P>
+<STRONG>The <TT>% File</TT> field.</STRONG><BR>
+This field contains three items of information. 
+The first item is the problem's name.
+The current TPTP release number is given next, followed by the TPTP release 
+in which the problem was released or last bugfixed (i.e., the formulae were 
+changed). 
+<P>
+<STRONG>The <TT>% Domain</TT> field.</STRONG><BR>
+The domain field identifies the <A HREF="#DomainStructure">domain</A>, and 
+possibly a subdomain, from which the problem is drawn.
+The domain corresponds to the first three letters of the problem name.
+<P>
+<STRONG>The <TT>% Problem</TT> field.</STRONG><BR>
+This field provides a one-line, high-level description of the abstract problem. 
+In axiom files, this field is called <TT>% Axioms</TT>, and provides a 
+one-line, high-level description of the axiomatization.
+<P>
+<STRONG>The <TT>% Version</TT> field.</STRONG><BR>
+This field gives information that differentiates this version of the problem 
+from other versions of the problem. 
+The first possible differentiation is the axiomatization that is used. 
+If a specific axiomatization is used, a citation is provided. 
+If the axiomatization is a pure equality axiomatization (uses only the 
+<TT>equal</TT>/2 predicate) then this is noted too.
+<P>
+The second possible differentiation is the <A HREF="#ProblemVersions">
+status of the axiomatization</A>.
+There are 12 possiblities:
+<UL>
+<LI> <EM>empty</EM>. Indicates that the axiomatization is standard, i.e., it is 
+     complete and has had no lemmas added (it might be redundant).
+<LI> <TT>Especial</TT>. Indicates that the axiomatization does not capture any 
+     established theory.
+<LI> <TT>Biased</TT>. Indicates that the axiomatization is designed 
+     specifically to be suited or ill-suited to some ATP system, calculus, 
+     or control strategy.
+<LI> <TT>Incomplete</TT>. Indicates that the axiomatization is incomplete.
+<LI> <TT>Reduced > Complete</TT>. Indicates that a existing standard 
+     axiomatization has had axioms removed, and the result is complete. 
+     The existing axiomatization is necessarily redundant.
+<LI> <TT>Reduced > Incomplete</TT>. Indicates that a existing standard 
+     axiomatization has had axioms removed, and the result is non-standard 
+     due to incompleteness.
+<LI> <TT>Augmented</TT>. Indicates that a existing standard axiomatization has 
+     had lemmas added, and the result is non-standard due to redundancy.
+<LI> <TT>Reduced & Augmented &gt; Complete</TT>. Indicates that a existing 
+     standard axiomatization has had axioms removed and lemmas added, and 
+     the result is complete. 
+<!  NOT IMPLEMENTED (would affect scripts, btw) >
+<!  If the axiomatization is known to be non-standard due to redundancy,  >
+<!  this is noted with <TT>(Non-standard)</TT> after <TT>Complete</TT>. >
+<LI> <TT>Reduced & Augmented &gt; Incomplete</TT>. Indicates that a existing 
+     standard axiomatization has had axioms removed and lemmas added, and 
+     the result is non-standard due to incompleteness.
+<LI> <TT>Incomplete &gt; Reduced &gt; Incomplete</TT>. Indicates that an 
+     existing incomplete axiomatization has had axioms removed, and the 
+     result is non-standard due to incompleteness.
+<LI> <TT>Incomplete &gt; Augmented &gt; Complete</TT>. Indicates that 
+     an existing incomplete axiomatization has had axioms added, and 
+     the result is complete.
+<LI> <TT>Incomplete &gt; Augmented &gt; Incomplete</TT>. 
+     Indicates that an existing 
+     incomplete axiomatization has had lemmas added, and the result is 
+     non-standard due to incompleteness.
+<LI> <TT>Incomplete &gt; Reduced & Augmented &gt; Complete</TT>. 
+     Indicates that an 
+     existing incomplete axiomatization has had axioms removed and lemmas 
+     added, and the result is complete.
+<!  NOT IMPLEMENTED (would affect scripts, btw) >
+<!  If the axiomatization is known to be non-standard due to redundancy,  >
+<!  this is noted with <TT>(Non-standard)</TT> after <TT>Complete</TT>. >
+<LI> <TT>Incomplete &gt; Reduced & Augmented &gt; Incomplete</TT>. 
+     Indicates that an 
+     existing incomplete axiomatization has had axioms removed and lemmas 
+     added, and the result is non-standard due to incompleteness.
+<LI> <TT>Especial &gt; Reduced &gt; Especial</TT>.
+     Indicates that an especial axiomatization has had axioms removed,
+     and the result remains especial.
+<LI> <TT>Especial &gt; Augmented &gt; Especial</TT>.
+     Indicates that an especial axiomatization has had axioms added,
+     and the result remains especial.
+</UL>
+
+The third possible differentiation between problem versions is in the
+theorem formulation. Variations in the theorem formulation are noted in
+a <TT>Theorem formulation</TT> entry, e.g.,<BR>
+<PRE>
+% Version  : [McCharen, et al., 1976] (equality) axioms.
+%            Theorem formulation : Explicit formulation of the commutator.
+</PRE>
+<P>
+<STRONG>The <TT>% English</TT> field.</STRONG><BR>
+This field provides a full description of the problem, if the one-line 
+description in the <TT>% Problem</TT> field is too terse.
+<P>
+<STRONG>The <TT>% Refs</TT> field.</STRONG><BR>
+This field provides a list of abbreviated references for material in which 
+the problem has been presented. 
+Other relevant references are also listed.
+The reference keys identify BibTeX entries in the <TT>Bibliography.bib</TT>
+file supplied with the TPTP.
+<P>
+<STRONG>The <TT>% Source</TT> field.</STRONG><BR>
+This field acknowledges the source of the problem, usually as a citation. 
+If the problem was sourced from an existing problem collection then the 
+collection name is given in <TT>[&nbsp;]</TT> brackets. 
+The problem collections used thus far are:
+<UL>
+<LI> ANL   - the Argonne National Laboratory library 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=ANL">ANL</A>]
+<LI> OTTER - the collection distributed with the Otter ATP system 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC98-Otter-URL">McC98</A>]
+<LI> Quaife - Art Quaife's collection of set theory (based) problems 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua92-Email">Qua92</A>]
+<LI> ROO - the problems used to test the ROO ATP system 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=LM92">LM92</A>]
+<LI> SPRFN - the collection distributed with the SPRFN ATP system 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SPRFN">SPRFN</A>]
+<LI> TPTP - the problem first ever appeared in the TPTP
+<LI> SETHEO - the collection used to test the SETHEO ATP system 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=LS+92">LS+92</A>]
+</UL>
+
+<STRONG>The <TT>% Names</TT> field.</STRONG><BR>
+Problems that have appeared in other problem collections or the literature, 
+often have names which are known in the ATP community. 
+This field lists such names for the problem, along with the source of the name. 
+If the source is an existing problem collection then the collection name 
+is cited, as in the <TT>% Source</TT> field.
+If the source of a name is a paper then a citation is given. 
+If a problem is not given a name in a paper then ``-'' is used as the known 
+name and a citation is given.
+Problems that first appeared in the TPTP have source TPTP, and no other name.
+In generator files all known names for instances of the abstract
+problem are listed, with the instance size given before the source.
+A reverse index, from known names to TPTP names, is distributed with the TPTP.
+<P>
+<STRONG>The <TT>% Status</TT> field.</STRONG><BR>
+This field gives the ATP status of the problem, according to the 
+<A HREF="https://tptp.org/UserDocs/SZSOntology/">SZS ontology</A>.
+For THF, TFF, and FOF problems it is one of the following values.
+For THF problems the default semantics is Henkin with extensionality and choice.
+If the status is different for other semantics, this is noted on lines after
+the <TT>%&nbsp;Status</TT> field.
+<UL>
+<LI> <TT>Theorem</TT> - Every model of the axioms (and other non-conjecture
+     formulae, e.g., hypotheses and lemmas), and there are some such models,
+     is a model of all the conjectures.
+<LI> <TT>ContradictoryAxioms</TT> - There are not models of the axioms (and 
+     other non-conjecture formulae, e.g., hypotheses and lemmas).
+<LI> <TT>CounterSatisfiable</TT> - Some models of the axioms (and there are 
+     some) are models of the negation of at least one of the conjectures.
+<LI> <TT>Unsatisfiable</TT> - There are no conjectures, and no interpretations
+     are models of the axioms.
+<LI> <TT>Satisfiable</TT> - There are no conjectures, and some interpretations
+     are models of the axioms.
+<LI> <TT>Unknown</TT> - The problem has never been solved by an ATP system.
+<LI> <TT>Open</TT> - The abstract problem has never been solved.
+</UL>
+
+For CNF problems it is one of:
+<UL>
+<LI> <TT>Unsatisfiable</TT> - No interpretations are models of the clauses.
+<LI> <TT>Satisfiable</TT> - Some interpretations are models of the clauses.
+<LI> <TT>Unknown</TT> - The problem has never been solved by an ATP system.
+<LI> <TT>Open</TT> - The abstract problem has never been solved.
+</UL>
+
+<STRONG>The <TT>% Rating</TT> field.</STRONG><BR>
+This field gives the difficulty of the problem, measured relative to
+state-of-the-art ATP systems.
+It is a comma separated list of ratings, each with a TPTP release number.
+The rating is a real number in the range 0.0 to 1.0, where 0.0 means that all 
+state-of-the-art ATP systems can solve the problem (i.e., the problem is easy), 
+and 1.0 means no state-of-the-art ATP system can solve the problem (i.e., the 
+problem is hard).
+The rating is followed by a TPTP release number, indicating in which release 
+the rating was assigned.
+If no rating has been assigned, a <TT>?</TT> is given.
+<P>
+<STRONG>The <TT>% Syntax</TT> field.</STRONG><BR>
+This field lists various syntactic measures of the problem's formulae. 
+The measures for THF problems are:
+<UL>
+<LI> the numbers of formulae, unit formulae,
+     type formulae, definition formulae,
+<LI> the numbers of atoms, equality atoms,
+     connective atoms,
+<LI> the maximal and average number of atoms in a formula,
+<LI> the numbers of logical connectives, each logical connective,
+<LI> the maximal and average formula depth,
+     the number of nested formulae,
+<LI> the numbers of tuples, if-then-else formulae, and let-in formulae,
+<LI> the numbers of arithmetic formulae, terms, numbers, and variables,
+<LI> the numbers of types, user types,
+<LI> the numbers of type connectives, each type connective,
+<LI> the numbers of distinct (non-variable) symbols, user symbols,
+     constant symbols,
+     and the arity range of the symbols,
+<LI> the numbers of uses of the &Pi;, &Sigma;, &epsilon;, &iota;, and typed
+     equality constants,
+<LI> the numbers of distinct variables,
+     lambda quantifications, universal quantifications, existential 
+     quantifications, typed variables, defined variables,
+     &Pi;, &Sigma;, &epsilon;, and &iota; binders.
+</UL>
+The measures for TFF problems are:
+<UL>
+<LI> the numbers of formulae, unit formulae,
+     type formulae, definition formulae,
+<LI> the numbers of atoms, equality atoms,
+<LI> the maximal and average number of atoms in a formula,
+<LI> the numbers of logical connectives, each logical connective,
+<LI> the maximal and average formula depth,
+<LI> the maximal and average term depth,
+<LI> the numbers of extended terms, nested formulae, boolean variables,
+<LI> the numbers of tuples, if-then-else formulae, and let-in formulae,
+<LI> the numbers of arithmetic formulae, terms, numbers, and variables,
+<LI> the numbers of types, user types,
+<LI> the numbers of type connectives, each type connective,
+<LI> the numbers of distinct predicates, user predicates, propositions,
+     and the arity range of the predicates.
+<LI> the numbers of distinct function, user functions, constants,
+     and the arity range of the functions,
+<LI> the numbers of distinct variables,
+     universal quantifications, existential quantifications,
+     typed variables, defined variables,
+     &Pi; and &Sigma; binders.
+</UL>
+The measures for FOF problems are:
+<UL>
+<LI> the numbers of formulae, unit formulae, definition formulae,
+<LI> the numbers of atoms, equality atoms,
+<LI> the maximal and average number of atoms in a formula,
+<LI> the numbers of logical connectives, each logical connective,
+<LI> the maximal and average formula depth,
+<LI> the maximal and average term depth,
+<LI> the numbers of distinct predicates, user predicates, propositions,
+     and the arity range of the predicates.
+<LI> the numbers of distinct function, user functions, constants,
+     and the arity range of the functions,
+<LI> the numbers of distinct variables,
+     universal quantifications, existential quantifications.
+</UL>
+The measures for CNF problems are:
+<UL>
+<LI> the numbers of clauses, unit clauses,
+     non-Horn clauses, range restricted clauses,
+<LI> the numbers of literals, equality literals, negated literals,
+<LI> the maximal and average clause size,
+<LI> the maximal and average term depth,
+<LI> the numbers of distinct predicates, user predicates, propositions,
+     and the arity range of the predicates.
+<LI> the numbers of distinct function, user functions, constants,
+     and the arity range of the functions,
+<LI> the numbers of distinct variables, singletons.
+</UL>
+See A HREF="#InsideTheTPTP">the summary</A> of this information over the 
+entire TPTP.
+<P>
+<STRONG>The <TT>% SPC</TT> field.</STRONG><BR>
+This field indicates to which <EM>Specialist Problem Class</EM> (SPC) the 
+problem belongs.
+SPCs are sets of problems that have similar syntactic characteristics, so
+that that the problems are reasonably homogeneous with respect ATP systems'
+performances on the problems.
+SPCs are used for caclulating the difficulty rating 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS01">SS01</A>], and 
+for recommending systems to use on problems
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS99-FLAIRS">SS99</A>].
+The characteristics used to build the SPCs are:
+<UL>
+<LI> The form of the problem:
+     <TT>TH1</TT>,
+     <TT>TH0</TT>,
+     <TT>TX1</TT>,
+     <TT>TX0</TT>,
+     <TT>TF1</TT>,
+     <TT>TF0</TT>,
+     <TT>FOF</TT>,
+     <TT>CNF</TT>
+<LI> The known or expected logical (SZS) status:
+     <TT>THM</TT> (theorem),
+     <TT>CAX</TT> (contradictory axioms),
+     <TT>CSA</TT> (countersatisfiable),
+     <TT>UNS</TT> (unsatisfiable),
+     <TT>SAT</TT> (satisfiable),
+     <TT>UNK</TT> (unknown),
+     <TT>OPN</TT> (open)
+<LI> The effective order of the logic 
+     (for <TT>FOF</TT> and <TT>CNF</TT> problems):
+     <TT>PRP</TT> (propositional),
+     <TT>EPR</TT> (effectively propositional),
+     <TT>RFO</TT> (really first-order),
+<LI> The amount of equality in the problem:
+     <TT>EQU</TT> (with equality),
+     <TT>SEQ</TT> (some, but not only, equality),
+     <TT>PEQ</TT> (pure equality),
+     <TT>UEQ</TT> (unit equality)
+     <TT>NUE</TT> (non-unit pure equality),
+     <TT>NEQ</TT> (no equality),
+<LI> The amount of arithmetic (for <TT>TFF</TT> problems):
+     <TT>ARI</TT> (with arithmetic)
+     <TT>NAR</TT> (no arithmetic),
+<LI> Horness (for <TT>CNF</TT> problems):
+     <TT>HRN</TT> (Horn),
+     <TT>NHN</TT> (non-Horn)
+</UL>
+<P>
+<STRONG>The <TT>% Comments</TT> field.</STRONG><BR>
+This field contains free format comments about the problem, e.g., 
+the significance of the problem, or the reason for creating the problem.
+If the problem was created using the <A HREF="#TPTP2X">TPTP2X</A> utility 
+then the TPTP2X parameters are given.
+<P>
+<STRONG>The <TT>% Bugfixes</TT> field.</STRONG><BR>
+This field describes any bugfixes that have been done to the formulae of
+the problem.
+Each entry gives the release number in which the bugfix was done, and 
+attempts to pinpoint the bugfix accurately. 
+
+<A NAME="IncludeSection">
+<H4>The Include Section</H4>
+
+The include section contains <TT>include</TT> directives for TPTP axiom 
+files. 
+An example extracted from the problem file <TT>GEO146+1.p</TT>
+is shown below.
+<P>
+<A NAME="IncludeSection">
+<PRE>
+%--------------------------------------------------------------------------
+%----Include simple curve axioms
+include('Axioms/GEO004+0.ax').
+%----Include axioms of betweenness for simple curves
+include('Axioms/GEO004+1.ax').
+%----Include oriented curve axioms
+include('Axioms/GEO004+2.ax').
+%----Include trajectory axioms
+include('Axioms/GEO004+3.ax',[connect_defn,symmetry_of_at_the_same_time]).
+%--------------------------------------------------------------------------
+</PRE>
+<CENTER>
+<U>Example of a problem file include section (adapted from <TT>GEO146+1.p</TT>).</U>
+</CENTER>
+<P>
+Each of the <TT>include</TT> directives indicates that the formulae in the
+named file should be included at that point. 
+Include files with relative path names are expected to be found either under
+the directory of the current file, or if not found there then under the 
+directory specified in the <TT>$TPTP</TT> environment variable.
+If the <TT>include</TT> directive has a <TT>[]</TT>ed list of formulae names
+as a second argument, the named file must be filtered to retain only those 
+formulae (this filter also applies to formulae that have been recursively 
+included into the named file).
+If any member of the list cannot be found, or there are multiple formulae
+with a given name, that is an error condition.
+If there is no second argument, or the second argument is <TT>all</TT>,
+then all the formulae in the file are included.
+In the example above only <TT>connect_defn</TT> and 
+<TT>symmetry_of_at_the_same_time</TT> are included from 
+<TT>Axioms/GEO004+3.ax</TT>.
+<P>
+Full versions of TPTP problems (without <TT>include</TT> directives) can be 
+created by using the <A HREF="#TPTP2X">TPTP2X</A> and 
+<A HREF="#TPTP4X">TPTP4X</A> utilities.
+<P>
+A side effect of separating out the axioms into axiom files is that the 
+formula order in the TPTP presentation of problems is typically different 
+from that of any original presentation.
+This reordering is acceptable because the performance of a decent ATP 
+system should not be very dependent on a particular formula ordering.
+
+<A NAME="FormulaeSection">
+<!--#include file="AnnotatedFormulae.html"-->
+<!--#include file="ArithmeticSystem.html"-->
+<!--#include file="NonClassicalLogics.html"-->
+
+<A NAME="PhysicalOrganization">
+<HR><!-- -------------------------------------------------------------------------------------- -->
+<H3>Physical Organization</H3>
+
+The TPTP is physically organized into six subdirectories, as follows:
+<UL>
+<LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Problems">
+     <TT>Problems</TT></A> 
+     - The problem files directory, with subdirectories for each domain. 
+     The <A HREF="#DomainStructure">domain name abbreviations</A> are used as subdirectory names. 
+     The subdirectories contain the problem files.
+<LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Axioms"><TT>Axioms</TT></A>
+     - The axiom files directory.
+<LI> <TT>Generators</TT> - The generator files directory.
+<LI> <TT>TPTP2X</TT> -   
+     The directory containing the <A HREF="#TPTP2X">TPTP2X</A> utility.
+<LI> <TT>Scripts</TT> -  
+     A directory containing the <A HREF="#TPTP4X">TPTP4X</A> and
+     <A HREF="#TPTP2T">TPTP2T</A> utilities (the directory is called "Scripts" because originally 
+     it was planned to put shell scripts there, but things changed).
+<LI> <TT>Documents</TT> - A directory containing documents that relate to the TPTP:
+     <UL>
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ReadMe"><TT>ReadMe</TT></A>
+          - General information about the TPTP.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=History"><TT>History</TT></A> 
+          - A history of the changes made to the TPTP up to the current release.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ProblemList">
+          <TT>ProblemList</TT></A> 
+          - A list of all the abstract problems in the TPTP, giving their names, number of THF, 
+            TFF, FOF, and CNF versions, and one-line descriptions. 
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=AxiomList"><TT>AxiomList</TT></A> 
+          - A list of the axiomatizations in the TPTP, giving their names, number of THF, TFF, 
+            FOF, and CNF specializations, and one-line descriptions.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=GeneratorList">
+          <TT>GeneratorList</TT></A> 
+          - A list of the generic problems in the TPTP, giving their names, number of FOF and CNF 
+            versions, and one-line descriptions.
+            For each version the constraints that determine the permissible sizes, and the TPTP 
+            sizes, are given.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ReverseIndex">
+          <TT>ReverseIndex</TT></A> 
+          - An index from existing known names for problems to their TPTP file names.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=Bibliography.bib">
+          <TT>Bibliography.bib</TT></A> 
+          - The BibTeX file containing references for all material cited in the TPTP.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ProblemAndSolutionStatistics">
+          <TT>ProblemAndSolutionStatistics</TT></A>
+          - Lists all the problems in the TPTP, giving statistics about the problems and 
+            information about ATP systems' performances on the problems.
+            The fields are listed and explained below.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=THFSynopsis">
+          <TT>THFSynopsis</TT></A>,
+          <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=TFFSynopsis">
+          <TT>TFFSynopsis</TT></A>,
+          <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=FOFSynopsis">
+          <TT>FOFSynopsis</TT></A>,
+          and
+          <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=CNFSynopsis">
+          <TT>CNFSynopsis</TT></A> 
+          - Statistics on the THF, TFF, FOF, and CNF probhlems in the TPTP, and charts showing 
+            the structure of the TPTP problem domains.
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=OverallSynopsis">
+          <TT>OverallSynopsis</TT></A> 
+          - Statistics on the overall TPTP, and a chart showing the structure of the TPTP problem 
+            domains.
+     <LI> <TT>VerySimilarProblemsLists</TT>
+          - A directory containing lists of very similar problems. 
+            Problems are considered to be be "very similar" if:
+          <UL>
+          <LI> They have many formulae in common, e.g., when the same axioms are used for very 
+               many conjectures.
+          <LI> They have every similar characteristics, e.g., when the problems have been created 
+               using different parameters in some automated process.
+          </UL>
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=SyntaxBNF"><TT>SyntaxBNF</TT></A> 
+          - BNF of the TPTP syntax
+     <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=Template"><TT>Template</TT></A> 
+          - A template for submitting new TPTP problems.
+     </UL>
+     The files in the <TT>Documents</TT> directory contain comprehensive online information about 
+     the TPTP. 
+     They summarize much of the information contained in this report, in specific files. 
+     Their format provides quick access to the data, using standard system tools (e.g., 
+     <TT>grep</TT>, <TT>awk</TT>). 
+     <P>
+     The fields in the problem lines of the
+     <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ProblemAndSolutionStatistics">
+     <TT>ProblemAndSolutionStatistics</TT></A> file are:
+     <UL>
+     <LI> Problem name
+     <LI> Frm - one of THF, TFF, FOF, or CNF.
+     <LI> SZS - The SZS status (using the <A HREF="https://tptp.org/UserDocs/SZSOntology/">
+          SZS ontology</A>)
+     <LI> Rtng   - The problem's difficulty rating.
+     <LI> SPC - The problem's Specialist Problem Class
+     <LI> FmlCls - The number of formulae/clauses
+     <LI> UnitF  - The number of unit formulae/clauses
+     <LI> TypeF  - The number of type declarations (THF and TFF)
+     <LI> Atoms  - The number of atoms
+     <LI> EquAts - The number of equality atoms
+     <LI> Conns  - The number of logical connectives
+     <LI> FOOLs  - The number of FOOL logic atoms/terms (TXF)
+     <LI> Ariths - The number of arithmetic atoms/terms (THF and TFF)
+     <LI> Types  - The number of Types (THF and TFF)
+     <LI> Symbls - The number of distinct non-variable symbols
+     <LI> Preds  - The number of disinct predicate symbols
+     <LI> Arity  - The arity range of predicate symbols
+     <LI> Funcs  - The number of distinct function symbols
+     <LI> Arity  - The arity range of function symbols
+     <LI> Vars   - The number of distinct variables
+     <LI> ^      - The number of lambda quantified variables (THF)
+     <LI> !      - The number of universally quantified variables
+     <LI> ?      - The number of existentially quantified variables
+     <LI> !>     - The number of lambda-pi quantified (polymorphic) variables (TH1 and TF1)
+<!--
+     <LI> nHrn - The number of non-Horn clauses.
+     <LI> Defn - The number of definitions
+     <LI> RR - The number of range restricted clauses
+     <LI> VarA - The number of variable atoms (THF)
+     <LI> MxFD - The maximal formula depth (nested connectives) - this
+          is the maximal number of literals in a clause in CNF problems
+     <LI> AvFD - The average formula depth - this is the average number of 
+                 literals per clause in CNF problems
+     <LI> Prop - The number of disinct propositional predicate symbols
+     <LI> TCon - The number of type connectives (THF and TFF)
+     <LI> Sgn - The number of singleton variables
+     <LI> MxTD - The maximal term depth
+     <LI> AvTD - The average term depth
+     <LI> Cnst - The number of distinct constant function symbols
+-->
+     </UL>
+     <P>
+     The fields in the solution lines of the
+     <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ProblemAndSolutionStatistics"><TT>ProblemAndSolutionStatistics</TT></A>
+     file are:
+     <UL>
+     <LI> System name
+     <LI> Res - The result established (using the<A HREF="https://tptp.org/UserDocs/SZSOntology/">
+          SZS ontology</A>)
+     <LI> RsT    - The CPU time taken to get the result
+     <LI> Out - The output claimed (using the
+          <A HREF="https://tptp.org/UserDocs/SZSOntology/">SZS ontology</A>)
+     <LI> SZS - The output detected during analysis (it might be difference from what was claimed, 
+          e.g., if the output was not in TPTP format)
+     <LI> DDpDSz - If the output is some form of derivation then the derivation depth.
+          If the output is a finite domain model then the domain size.
+     <LI> Leaves - The number of leaves if the output is a derivation.
+     <LI> All other fields as for a problem.
+     </UL>
+</UL>
+<HR><!-- -------------------------------------------------------------------------------------- -->

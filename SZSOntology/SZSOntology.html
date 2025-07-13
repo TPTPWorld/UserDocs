@@ -31,7 +31,7 @@ The ontologies are very fine grained ontology, which have more status values and
 commonly used by ATP systems. 
 Suitable subsets for practical purposes are as follows:
 <UL>
-<LI> For <TT>Success</TT>
+<LI> For <TT>Semantic Success</TT>
      <UL>
      <LI> For problems with conjectures - report <TT>Theorem</TT> or <TT>ContradictoryAxioms</TT> 
           or <TT>CounterSatisfiable</TT>
@@ -54,8 +54,8 @@ Suitable subsets for practical purposes are as follows:
      </UL>
 </UL>
 
-Success ontology values are also used in TPTP format proofs to record the relationship between 
-the parents and inferred formula of each inference step.
+Semantic success ontology values are also used in TPTP format proofs to record the relationship 
+between the parents and inferred formula of each inference step.
 Commonly used values are:
 <UL>
 <LI> The inferred formula is a theorem of the parents (logical consequences, e.g., resolvants, 
@@ -102,146 +102,172 @@ For examples:
 <HR> <!-- ------------------------------------------------------------------------------------- -->
 <H3> The <TT>Success</TT> Ontology </H3>
 
-The ontology assumes that the input is a 2-tuple of the form &lt;<EM>Ax</EM>,<EM>C</EM>&gt;,
-where <EM>Ax</EM> is a set (conjunction) of axioms and <EM>C</EM> is a set (conjunction) of 
-conjectures.
-This is a common standard usage of ATP systems (often there is only a single conjecture). 
-If the input does not have any conjectures, e.g., a set of axioms, then the set (conjunction)
-of formulae are used to form <EM>C</EM> and the 2-tuple is &lt;TRUE,<EM>C</EM>&gt;. 
-The ontology values are based on the possible relationships between the sets of models of 
-<EM>Ax</EM> and <EM>C</EM>. 
+The Success ontology has thee subontologies:
+<UL>
+<LI> The semantic success subontology is the original success ontology, designed for setting the
+     status of problems, and the reporting the results of reasoning.
+     The semantic success ontology assumes that the input is a 2-tuple of the form 
+     &lt;<EM>Ax</EM>,<EM>C</EM>&gt;, where <EM>Ax</EM> is a set (conjunction) of axioms and 
+     <EM>C</EM> is a set (conjunction) of 
+     conjectures.
+     This is a common standard usage of ATP systems (often there is only a single conjecture). 
+     If the input does not have any conjectures, e.g., a set of axioms, then the set (conjunction)
+     of formulae are used to form <EM>C</EM> and the 2-tuple is &lt;TRUE,<EM>C</EM>&gt;. 
+     The ontology values are based on the possible relationships between the sets of models of 
+     <EM>Ax</EM> and <EM>C</EM>. 
+<LI> The type checking success subontology is designed to specify the results of type checking
+     in typed logics.
+<LI> The verification success subontology is designed to specify the results of proof and model
+     verification.
+</UL>
 <P>
 <IMG SRC="Success.png" WIDTH=60%>
-
 <UL>
 <LI> <TT>Success</TT> (<TT>SUC</TT>):<BR>
      The logical data has been processed successfully.
-<LI> <TT>UnsatisfiabilityPreserving</TT> (<TT>UNP</TT>):<BR>
-     If there does not exist a model of <EM>Ax</EM> then there does not exist a model of 
-     <EM>C</EM>, i.e., if <EM>Ax</EM> is unsatisfiable then <EM>C</EM> is unsatisfiable.
-<LI> <TT>SatisfiabilityPreserving</TT> (<TT>SPT</TT>):<BR>
-     If there exists a model of <EM>Ax</EM> then there exists a model of <EM>C</EM>, 
-     i.e., if <EM>Ax</EM> is satisfiable then <EM>C</EM> is satisfiable.
-<LI> <TT>EquiSatisfiable</TT> (<TT>ESA</TT>):<BR>
-     There exists a model of <EM>Ax</EM> iff there exists a model of <EM>C</EM>, 
-     i.e., <EM>Ax</EM> is (un)satisfiable iff <EM>C</EM> is (un)satisfiable.
-<LI> <TT>ModelExtending</TT> (<TT>MEX</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and some interpretations are models of 
-     <EM>C</EM>, and all models of <EM>C</EM> are conservative extensions of models of <EM>Ax</EM> 
-     (which also means that all models of <EM>C</EM> are models of <EM>Ax</EM>).
-<LI> <TT>Satisfiable</TT> (<TT>SAT</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and some models of <EM>Ax</EM> are models of
-     <EM>C</EM>.
-<LI> <TT>FinitelySatisfiable</TT> (<TT>FSA</TT>):<BR>
-     Some finite interpretations are finite models of <EM>Ax</EM>, and some finite models of
-     <EM>Ax</EM> are finite models of <EM>C</EM>.
-<LI> <TT>FiniteTheorem</TT> (<TT>FTH</TT>):<BR>
-     All finite models of <EM>Ax</EM> are finite models of <EM>C</EM>.
-<LI> <TT>Theorem</TT> (<TT>THM</TT>):<BR>
-     All models of <EM>Ax</EM> are models of <EM>C</EM>.
-<LI> <TT>SatisfiableAxiomsTheorem</TT> (<TT>STH</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
-     <EM>C</EM>.
-<LI> <TT>Equivalent</TT> (<TT>EQV</TT>):<BR>
-     All models of <EM>Ax</EM> are models of <EM>C</EM>, and all models of <EM>C</EM> are models of
-     <EM>Ax</EM>.
-<LI> <TT>TautologousConclusion</TT> (<TT>TAC</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     <EM>C</EM>.
-<LI> <TT>WeakerConclusion</TT> (<TT>WEC</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
-     <EM>C</EM>, and some models of <EM>C</EM> are not models of <EM>Ax</EM>.
-<LI> <TT>EquivalentTheorem</TT> (<TT>ETH</TT>):<BR>
-     Some, but not all, interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are
-     models of <EM>C</EM>, and all models of <EM>C</EM> are models of <EM>Ax</EM>.
-<LI> <TT>Tautology</TT> (<TT>TAU</TT>):<BR>
-     All interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     <EM>C</EM>.
-<LI> <TT>WeakerTautologousConclusion</TT> (<TT>WTC</TT>):<BR>
-     Some, but not all, interpretations are models of <EM>Ax</EM>, and all interpretations are
-     models of <EM>C</EM>.
-<LI> <TT>WeakerTheorem</TT> (<TT>WTH</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
-     <EM>C</EM>, some models of <EM>C</EM> are not 
-     models of <EM>Ax</EM>, and some interpretations are not models of <EM>C</EM>.
-<LI> <TT>FiniteTautology</TT> (<TT>FTT</TT>):<BR>
-     All finite interpretations are models of <EM>Ax</EM>, and all finite interpretations are 
-     models of <EM>C</EM>.
-<LI> <TT>CounterUnsatisfiabilityPreserving</TT> (<TT>CUP</TT>):<BR>
-     If there does not exist a model of <EM>Ax</EM> then there does not exist a model of
-     ~<EM>C</EM>, i.e., if <EM>Ax</EM> is unsatisfiable then ~<EM>C</EM> is unsatisfiable.
-<LI> <TT>CounterSatisfiabilityPreserving</TT> (<TT>CPT</TT>):<BR>
-     If there exists a model of <EM>Ax</EM> then there exists a model of ~<EM>C</EM>, 
-     i.e., if <EM>Ax</EM> is satisfiable then ~C is satisfiable.
-<LI> <TT>EquiCounterSatisfiable</TT> (<TT>ECS</TT>):<BR>
-     There exists a model of <EM>Ax</EM> iff there exists a model of ~<EM>C</EM>, 
-     i.e., <EM>Ax</EM> is (un)satisfiable iff ~<EM>C</EM> is (un)satisfiable.
-<LI> <TT>CounterModelExtending</TT> (<TT>CMX</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and some interpretations are models of 
-     ~<EM>C</EM>, and all models of ~<EM>C</EM> are conservative extensions of models of 
-     <EM>Ax</EM> (which also means that all models of ~<EM>C</EM> are models of <EM>Ax</EM>).
-<LI> <TT>CounterSatisfiable</TT> (<TT>CSA</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and some models of <EM>Ax</EM> are models of
-     ~<EM>C</EM>.
-<LI> <TT>FinitelyCounterSatisfiable</TT> (<TT>FCS</TT>):<BR>
-     Some finite interpretations are finite models of <EM>Ax</EM>, and some finite models of
-     <EM>Ax</EM> are finite models of ~<EM>C</EM>.
-<LI> <TT>FiniteCounterTheorem</TT> (<TT>FCT</TT>):<BR>
-     All finite models of <EM>Ax</EM> are finite models of ~<EM>C</EM>.
-<LI> <TT>CounterTheorem</TT> (<TT>CTH</TT>):<BR>
-     All models of <EM>Ax</EM> are models of ~<EM>C</EM>.
-<LI> <TT>SatisfiableAxiomsCounterTheorem</TT> (<TT>SCT</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
-     ~<EM>C</EM>.
-<LI> <TT>CounterEquivalent</TT> (<TT>CEQ</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
-     ~<EM>C</EM>, and all models of ~<EM>C</EM> are models of <EM>Ax</EM>,
-     i.e., all interpretations are models of <EM>Ax</EM> xor of <EM>C</EM>.
-<LI> <TT>UnsatisfiableConclusion</TT> (<TT>UNC</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
-<LI> <TT>WeakerCounterConclusion</TT> (<TT>WCC</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
-     ~<EM>C</EM>, and some models of ~<EM>C</EM> are not models of <EM>Ax</EM>.
-<LI> <TT>EquivalentCounterTheorem</TT> (<TT>ECT</TT>):<BR>
-     Some, but not all, interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are
-     models of ~<EM>C</EM>, and all models of ~<EM>C</EM> are models of <EM>Ax</EM>.
-<LI> <TT>Unsatisfiable</TT> (<TT>UNS</TT>):<BR>
-     All interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
-<LI> <TT>WeakerUnsatisfiableConclusion</TT> (<TT>WUC</TT>):<BR>
-     Some, but not all, interpretations are models of <EM>Ax</EM>, and all interpretations are
-     models of ~<EM>C</EM>.
-<LI> <TT>WeakerCounterTheorem</TT> (<TT>WCT</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
-     ~<EM>C</EM>, some models of ~<EM>C</EM> are not models of <EM>Ax</EM>, and some
-     interpretations are not models of ~<EM>C</EM>.
-<LI> <TT>FinitelyUnsatisfiable</TT> (<TT>FUN</TT>):<BR>
-     Some finite interpretations are finite models of <EM>Ax</EM>, and all finite models of 
-     <EM>Ax</EM> are finite models of ~<EM>C</EM>, i.e., no finite models of <EM>Ax</EM> are 
-     finite models of <EM>C</EM>.
-<LI> <TT>ContradictoryAxioms</TT> (<TT>CAX</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>.
-<LI> <TT>SatisfiableConclusionContradictoryAxioms</TT> (<TT>SCA</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>, and some interpretations are models of
-     <EM>C</EM>.
-<LI> <TT>SatisfiableCounterConclusionContradictoryAxioms</TT> (<TT>SCC</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>, and some interpretations are models of
-     ~<EM>C</EM>.
-<LI> <TT>TautologousConclusionContradictoryAxioms</TT> (<TT>TCA</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     <EM>C</EM>.
-<LI> <TT>WeakerConclusionContradictoryAxioms</TT> (<TT>WCA</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>, and some, but not all, interpretations are
-     models of <EM>C</EM>.
-<LI> <TT>UnsatisfiableConclusionContradictoryAxioms</TT> (<TT>UCA</TT>):<BR>
-     No interpretations are models of <EM>Ax</EM>, and all interpretations are models of
-     ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
-<LI> <TT>NoConsequence</TT> (<TT>NOC</TT>):<BR>
-     Some interpretations are models of <EM>Ax</EM>, some models of <EM>Ax</EM> are models of
-     <EM>C</EM>, and some models of <EM>Ax</EM> are models of ~<EM>C</EM>.
-<LI> <TT>Verified</TT> (<TT>VER</TT>):<BR>
-     The solution output has been verified.
+<LI> <TT>SemanticSuccess</TT> (<TT>SSU</TT>):<BR>
+     The logical data has been reasoned about successfully.
+     <UL>
+     <LI> <TT>UnsatisfiabilityPreserving</TT> (<TT>UNP</TT>):<BR>
+          If there does not exist a model of <EM>Ax</EM> then there does not exist a model of 
+          <EM>C</EM>, i.e., if <EM>Ax</EM> is unsatisfiable then <EM>C</EM> is unsatisfiable.
+     <LI> <TT>SatisfiabilityPreserving</TT> (<TT>SPT</TT>):<BR>
+          If there exists a model of <EM>Ax</EM> then there exists a model of <EM>C</EM>, 
+          i.e., if <EM>Ax</EM> is satisfiable then <EM>C</EM> is satisfiable.
+     <LI> <TT>EquiSatisfiable</TT> (<TT>ESA</TT>):<BR>
+          There exists a model of <EM>Ax</EM> iff there exists a model of <EM>C</EM>, 
+          i.e., <EM>Ax</EM> is (un)satisfiable iff <EM>C</EM> is (un)satisfiable.
+     <LI> <TT>ModelExtending</TT> (<TT>MEX</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and some interpretations are models of 
+          <EM>C</EM>, and all models of <EM>C</EM> are conservative extensions of models of <EM>Ax</EM> 
+          (which also means that all models of <EM>C</EM> are models of <EM>Ax</EM>).
+     <LI> <TT>Satisfiable</TT> (<TT>SAT</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and some models of <EM>Ax</EM> are models of
+          <EM>C</EM>.
+     <LI> <TT>FinitelySatisfiable</TT> (<TT>FSA</TT>):<BR>
+          Some finite interpretations are finite models of <EM>Ax</EM>, and some finite models of
+          <EM>Ax</EM> are finite models of <EM>C</EM>.
+     <LI> <TT>FiniteTheorem</TT> (<TT>FTH</TT>):<BR>
+          All finite models of <EM>Ax</EM> are finite models of <EM>C</EM>.
+     <LI> <TT>Theorem</TT> (<TT>THM</TT>):<BR>
+          All models of <EM>Ax</EM> are models of <EM>C</EM>.
+     <LI> <TT>SatisfiableAxiomsTheorem</TT> (<TT>STH</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
+          <EM>C</EM>.
+     <LI> <TT>Equivalent</TT> (<TT>EQV</TT>):<BR>
+          All models of <EM>Ax</EM> are models of <EM>C</EM>, and all models of <EM>C</EM> are models of
+          <EM>Ax</EM>.
+     <LI> <TT>TautologousConclusion</TT> (<TT>TAC</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          <EM>C</EM>.
+     <LI> <TT>WeakerConclusion</TT> (<TT>WEC</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
+          <EM>C</EM>, and some models of <EM>C</EM> are not models of <EM>Ax</EM>.
+     <LI> <TT>EquivalentTheorem</TT> (<TT>ETH</TT>):<BR>
+          Some, but not all, interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are
+          models of <EM>C</EM>, and all models of <EM>C</EM> are models of <EM>Ax</EM>.
+     <LI> <TT>Tautology</TT> (<TT>TAU</TT>):<BR>
+          All interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          <EM>C</EM>.
+     <LI> <TT>WeakerTautologousConclusion</TT> (<TT>WTC</TT>):<BR>
+          Some, but not all, interpretations are models of <EM>Ax</EM>, and all interpretations are
+          models of <EM>C</EM>.
+     <LI> <TT>WeakerTheorem</TT> (<TT>WTH</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
+          <EM>C</EM>, some models of <EM>C</EM> are not 
+          models of <EM>Ax</EM>, and some interpretations are not models of <EM>C</EM>.
+     <LI> <TT>FiniteTautology</TT> (<TT>FTT</TT>):<BR>
+          All finite interpretations are models of <EM>Ax</EM>, and all finite interpretations are 
+          models of <EM>C</EM>.
+     <LI> <TT>CounterUnsatisfiabilityPreserving</TT> (<TT>CUP</TT>):<BR>
+          If there does not exist a model of <EM>Ax</EM> then there does not exist a model of
+          ~<EM>C</EM>, i.e., if <EM>Ax</EM> is unsatisfiable then ~<EM>C</EM> is unsatisfiable.
+     <LI> <TT>CounterSatisfiabilityPreserving</TT> (<TT>CPT</TT>):<BR>
+          If there exists a model of <EM>Ax</EM> then there exists a model of ~<EM>C</EM>, 
+          i.e., if <EM>Ax</EM> is satisfiable then ~C is satisfiable.
+     <LI> <TT>EquiCounterSatisfiable</TT> (<TT>ECS</TT>):<BR>
+          There exists a model of <EM>Ax</EM> iff there exists a model of ~<EM>C</EM>, 
+          i.e., <EM>Ax</EM> is (un)satisfiable iff ~<EM>C</EM> is (un)satisfiable.
+     <LI> <TT>CounterModelExtending</TT> (<TT>CMX</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and some interpretations are models of 
+          ~<EM>C</EM>, and all models of ~<EM>C</EM> are conservative extensions of models of 
+          <EM>Ax</EM> (which also means that all models of ~<EM>C</EM> are models of <EM>Ax</EM>).
+     <LI> <TT>CounterSatisfiable</TT> (<TT>CSA</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and some models of <EM>Ax</EM> are models of
+          ~<EM>C</EM>.
+     <LI> <TT>FinitelyCounterSatisfiable</TT> (<TT>FCS</TT>):<BR>
+          Some finite interpretations are finite models of <EM>Ax</EM>, and some finite models of
+          <EM>Ax</EM> are finite models of ~<EM>C</EM>.
+     <LI> <TT>FiniteCounterTheorem</TT> (<TT>FCT</TT>):<BR>
+          All finite models of <EM>Ax</EM> are finite models of ~<EM>C</EM>.
+     <LI> <TT>CounterTheorem</TT> (<TT>CTH</TT>):<BR>
+          All models of <EM>Ax</EM> are models of ~<EM>C</EM>.
+     <LI> <TT>SatisfiableAxiomsCounterTheorem</TT> (<TT>SCT</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
+          ~<EM>C</EM>.
+     <LI> <TT>CounterEquivalent</TT> (<TT>CEQ</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
+          ~<EM>C</EM>, and all models of ~<EM>C</EM> are models of <EM>Ax</EM>,
+          i.e., all interpretations are models of <EM>Ax</EM> xor of <EM>C</EM>.
+     <LI> <TT>UnsatisfiableConclusion</TT> (<TT>UNC</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
+     <LI> <TT>WeakerCounterConclusion</TT> (<TT>WCC</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, and all models of <EM>Ax</EM> are models of
+          ~<EM>C</EM>, and some models of ~<EM>C</EM> are not models of <EM>Ax</EM>.
+     <LI> <TT>EquivalentCounterTheorem</TT> (<TT>ECT</TT>):<BR>
+          Some, but not all, interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are
+          models of ~<EM>C</EM>, and all models of ~<EM>C</EM> are models of <EM>Ax</EM>.
+     <LI> <TT>Unsatisfiable</TT> (<TT>UNS</TT>):<BR>
+          All interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
+     <LI> <TT>WeakerUnsatisfiableConclusion</TT> (<TT>WUC</TT>):<BR>
+          Some, but not all, interpretations are models of <EM>Ax</EM>, and all interpretations are
+          models of ~<EM>C</EM>.
+     <LI> <TT>WeakerCounterTheorem</TT> (<TT>WCT</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, all models of <EM>Ax</EM> are models of
+          ~<EM>C</EM>, some models of ~<EM>C</EM> are not models of <EM>Ax</EM>, and some
+          interpretations are not models of ~<EM>C</EM>.
+     <LI> <TT>FinitelyUnsatisfiable</TT> (<TT>FUN</TT>):<BR>
+          Some finite interpretations are finite models of <EM>Ax</EM>, and all finite models of 
+          <EM>Ax</EM> are finite models of ~<EM>C</EM>, i.e., no finite models of <EM>Ax</EM> are 
+          finite models of <EM>C</EM>.
+     <LI> <TT>ContradictoryAxioms</TT> (<TT>CAX</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>.
+     <LI> <TT>SatisfiableConclusionContradictoryAxioms</TT> (<TT>SCA</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>, and some interpretations are models of
+          <EM>C</EM>.
+     <LI> <TT>SatisfiableCounterConclusionContradictoryAxioms</TT> (<TT>SCC</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>, and some interpretations are models of
+          ~<EM>C</EM>.
+     <LI> <TT>TautologousConclusionContradictoryAxioms</TT> (<TT>TCA</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          <EM>C</EM>.
+     <LI> <TT>WeakerConclusionContradictoryAxioms</TT> (<TT>WCA</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>, and some, but not all, interpretations are
+          models of <EM>C</EM>.
+     <LI> <TT>UnsatisfiableConclusionContradictoryAxioms</TT> (<TT>UCA</TT>):<BR>
+          No interpretations are models of <EM>Ax</EM>, and all interpretations are models of
+          ~<EM>C</EM>, i.e., no interpretations are models of <EM>C</EM>.
+     <LI> <TT>NoConsequence</TT> (<TT>NOC</TT>):<BR>
+          Some interpretations are models of <EM>Ax</EM>, some models of <EM>Ax</EM> are models of
+          <EM>C</EM>, and some models of <EM>Ax</EM> are models of ~<EM>C</EM>.
+     </UL>
+<LI> <TT>TypeCheckSuccess</TT> (<TT>TSU</TT>):<BR>
+     The logical data has been typed checked successfully.
+     <UL>
+     <LI> <TT>TypeCheckPartial</TT> (<TT>TSU</TT>):<BR>
+          Everything passed type checking, but some of the checking was partial, i.e., some things
+          that passed might not be type correct.
+     <LI> <TT>TypeChecked</TT> (<TT>TSU</TT>):<BR>
+          Everything passed type checking.
+     </UL>
+<LI> <TT>VerifySuccess</TT> (<TT>VSU</TT>):<BR>
+     The logical solution has been verified successfully.
+     <UL>
+     <LI> <TT>Verified</TT> (<TT>VER</TT>):<BR>
+          The solution has been verified.
+     </UL>
 </UL>
 
 <HR> <!-- ------------------------------------------------------------------------------------- -->

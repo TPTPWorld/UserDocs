@@ -1,0 +1,1032 @@
+<A NAME="Utilities">
+<HR><!------------------------------------------------------------------------>
+<H2>Utilities</H2>
+
+<A NAME="TPTP2X">
+<H3>The TPTP2X Utility</H3>
+
+The TPTP2X utility is a multi-functional utility for reformatting,
+transforming, and generating TPTP problem files. In particular, it
+<UL>
+<LI> Converts from the TPTP format to other ATP formats.
+<LI> Applies various transformations to TPTP problems.
+<LI> Controls the generation of TPTP problem files from TPTP generator files.
+</UL>
+
+TPTP2X is written in Prolog, and should run on most Prolog systems.
+Before using TPTP2X, it is necessary to install the code for the dialect of
+Prolog that is to be used.
+This and other installation issues are described next.
+<P>
+<CENTER>
+<TABLE BORDER=1 WIDTH=80%>
+<TR> <TD ALIGN=JUSTIFY> WARNING:
+     For historical reasons TPTP2X omits the quotes around some constants
+     and function symbols that should be 'Quoted', e.g., as found in
+     <TT>PUZ001+2</TT>.
+     I'm really sorry about this - it's an artifact of a very generic printing
+     framework that became overloaded when THF formulae came into the TPTP.
+     Changing it would be a HUGE task, and now there's
+     <A HREF="#TPTP4X">TPTP4X</A> that is better in most respects.
+</TABLE>
+</CENTER>
+
+<H4>Installation</H4>
+The TPTP2X utility consists of the following files:
+<UL>
+<LI> <TT>tptp2X</TT> -
+     A shell script for running the tptp2X utility.
+<LI> <TT>tptp2X_install</TT> -
+     A <TT>csh</TT> script for installing the tptp2X utility.
+<LI> <TT>tptp2X.config</TT> -
+     The configuration file with site specific information.
+<LI> <TT>tptp2X.main</TT> -
+     The main source code file of the tptp2X utility.
+<LI> <TT>tptp2X.read</TT> -
+     Procedures for reading TPTP problem files.
+<LI> <TT>tptp2X.generate</TT> -
+     Procedures for using TPTP generator files.
+<LI> <TT>tptp2X.syntax</TT> -
+     Procedures for extracting syntactic measures from files.
+<LI> <TT>tptp2X.format</TT> -
+     Procedures used by format modules.
+<LI> <TT>transform.</TT>&lt;TRAN&gt; -
+     Procedures for doing &lt;TRAN&gt; transformations on TPTP problems.
+<LI> <TT>format.</TT>&lt;ATP&gt; -
+     Procedures for outputing formulae in &lt;ATP&gt; format.
+</UL>
+
+TPTP2X is installed by running <TT>tptp2X_install</TT>, which will prompt
+for required information.
+To install TPTP2X by hand, the following must be attended to:
+<UL>
+<LI> Copy the <TT>*.uninstalled</TT> files to their basenames (without
+     <TT>.uninstalled</TT>).
+<LI> In the <TT>tptp2X</TT> script file:
+     <UL>
+     <LI> <TT>TPTPDirectory</TT> must be set to the absolute path name of the
+          TPTP directory.
+     <LI> <TT>PrologInterpreter</TT> must be set to the absolute path name of
+          the Prolog interpreter.
+     <LI> <TT>PrologArguments</TT> must be set to any command line arguments
+          for the Prolog interpreter.
+     <LI> The <TT>Gawk</TT> variable must be set to the absolute path name of
+          <TT>gawk</TT> or <TT>awk</TT>.
+     </UL>
+<LI> In the <TT>tptp2X.config</TT> file:
+     <UL>
+     <LI> The appropriate facts for the desired Prolog dialect must be
+          uncommented.
+     <LI> The absolute path name of the TPTP directory must be set in the
+          <TT>tptp_directory/1</TT> fact.
+     </UL>
+<LI> In the <TT>tptp2X.main</TT> file:
+     <UL>
+     <LI> If your Prolog interpreter does not support <TT>compile/1</TT> for
+          loading source code, the <TT>compile/1</TT> directives must be
+          changed to something appropriate, e.g., <TT>[ ]</TT>.
+     <LI> The <TT>compile</TT> directives for unwanted output format modules
+          can be commented out.
+      </UL>
+</UL>
+
+<A NAME="UsingTPTP2X">
+<H4>Using TPTP2X</H4>
+
+The most convenient way of using the TPTP2X utility is through the
+<TT>tptp2X</TT> script.
+The use of this script is:
+<PRE>
+tptp2X [-h][-q&lt;Level&gt;][-i][-s&lt;Size&gt;][-t&lt;Transform&gt;][-f&lt;Format&gt;] [-d&lt;Directory&gt;] -l&lt;NamesFile&gt;|&lt;TPTPFiles&gt;
+</PRE>
+
+The <TT>-h</TT> flag specifies that usage information should be output.
+The <TT>-q</TT>&lt;Level&gt; flag specifies the level of quietness at which the
+script should operate.
+There are three quietness levels;
+    0 is verbose mode,
+    1 suppresses informational output from the Prolog interpreter, and
+    2 suppresses all informational output except lines showing what files
+      are produced.
+The default quietness level is 1.
+The <TT>-i</TT> flag specifies that the script should enter interactive
+mode after processing all other command line parameters.
+Interactive mode is described below.
+The other command line parameter values are:
+<UL>
+<LI> <TT>-s</TT>&lt;Size&gt; : This specifies the required sizes when
+     generating problems. &lt;Size&gt; is either an integer,
+     a &lt;Low&gt;..&lt;High&gt; integer size range, or
+     a <TT>:</TT> separated list of &lt;Sizes&gt;.
+     <UL>
+     <LI> An integer directly specifies the required problem size.
+     <LI> Each integer in a size range is used to generate a separate set
+          of formulae.
+     <LI> A <TT>:</TT> separated string of &lt;Sizes&gt; is used for generators
+          that require multiple parameters, one &lt;Size&gt; for each size
+          parameter required. For example, <TT>-s3..5:2</TT> means the three
+          sizes <TT>3:2</TT>, <TT>4:2</TT>, and <TT>5:2</TT>.
+     </UL>
+     <TT>-s</TT>&lt;Size&gt; is ignored for problem (<TT>.p</TT>) files.
+<LI> <TT>-t</TT>&lt;Transform&gt; : Specifies <A HREF="#TPTP2XTransformations>
+transformations</A> to be applied
+     to the formulae.
+     &lt;Transform&gt; is either a single transformation, a <TT>+</TT>
+     separated string of transformations, or a comma separated list of
+     &lt;Transform&gt;s.
+     <UL>
+     <LI> A single transformation is applied directly to the formulae.
+     <LI> The transformations in a <TT>+</TT> separated string are applied to
+          the formulae serially.
+     <LI> Each &lt;Transform&gt; in a comma separated list of
+          &lt;Transform&gt;s is used to create a separate set of transformed
+          formulae.
+     </UL>
+<LI> <TT>-f</TT>&lt;Format&gt; :
+     Specifies the <A HREF="#TPTP2XOutputFormats">format</A> in which the
+     output is to be written.
+<LI> <TT>-d</TT>&lt;Directory&gt; : Specifies the top level directory below
+     which the output files are to be placed.
+     If the &lt;Directory&gt; value is <TT>-</TT>, then all output files are
+     written to standard output, and all informational output is suppressed
+     (even quieter than <TT>-q2</TT>).
+     If the input file has a TPTP domain name as its first three characters,
+     the output files for that input file are placed in a subdirectory below
+     the &lt;Directory&gt;, named according to the domain.
+     Otherwise the output files are written in the &lt;Directory&gt;.
+     The default &lt;Directory&gt; is a subdirectory below the TPTP
+     <TT>Problems</TT> directory, named according to the &lt;Format&gt;.
+<LI> <TT>-l</TT>&lt;NamesFile&gt; : Specifies a file containing the names
+     of the input files which are to be processed, one per line.
+     This can be used instead of an explicit list of files, described next.
+<LI> &lt;TPTPFiles&gt; : Lists the input files which are to be processed.
+     The TPTP problem name can be given in which case TPTP2X will
+     find it in your TPTP installation.
+     Three letter domain names can be given, which processes all problems
+     in those domains.
+     If no files are specified, the entire TPTP is processed.
+     If the file name <TT>-</TT> is specified then input is taken from
+     standard input and all output is written to standard output (overriding
+     any &lt;Directory&gt; specification).
+     The default &lt;TPTPFiles&gt; is all TPTP problem files.
+<P>
+     Hint: If your command shell complains about too many arguments as a
+     result of expanding the &lt;TPTPFiles&gt; argument to a too large number
+     of files, e.g., <TT>~/TPTP/Problems/S*/*.p</TT>, place the
+     &lt;TPTPFiles&gt; argument in <TT>'</TT>single quotes<TT>'</TT>, and
+     TPTP2X will do the expansion internally.
+</UL>
+
+<!--
+<CENTER>
+<TABLE BORDER WIDTH=75%>
+<TR> <TD>
+A common first use of TPTP2X is to convert TPTP problems to another format.
+To convert all TPTP problems to another format, the use is
+<TT>tptp2X -f&lt;Format&gt;</TT>, e.g., <TT>tptp2X -f otter</TT>.
+To limit the conversion to one or more domains, the domain names are
+specified after the &lt;Format&gt;, e.g.,
+<TT>tptp2X -f leantap ALG GRP LDA</TT>.
+If you are a new TPTP user, these are probably the uses that you want
+to start with.
+</TABLE>
+</CENTER>
+-->
+
+The output files produced by TPTP2X are named according to the input file
+name and the options used.
+The TPTP problem name (the input file name without the <TT>.p</TT> or
+<TT>.g</TT>) forms the basis of the output file names.
+For files created from TPTP generators, the size parameters are appended to
+the base name, separated from the base name by a "<TT>.</TT>".
+Then, for each transformation applied, a <A HREF="#TPTP2XTransformations">
+suffix</A> is appended preceded by a <TT>+</TT>.
+Finally an <A HREF="#TPTP2XTransformations">extension</A> to indicate the
+output format is appended to the file name.
+To record how a TPTP2X output file has been formed, the TPTP2X parameters
+are given in a <TT>% Comments</TT> field entry of the output file.
+
+<A NAME="TPTP2XTransformations">
+<H4>TPTP2X Transformations</H4>
+
+The transformations are:
+<UL>
+<LI> <TT>stdfof</TT>,
+     to remove the connectives <TT>&lt;=</TT>, <TT>&lt;~&gt;</TT>,
+     <TT>~|</TT>, and <TT>~&</TT> from FOF problems, by
+     rewriting formulae to use the other connectives.
+     Suffix <TT>+stdfof</TT>.
+<LI> <TT>expand:conjectures</TT>,
+     to expand a single FOF problem with multiple conjectures into
+     multiple FOF problems with single conjectures.
+     Suffix <TT>+xc_&lt;Index&gt;_&lt;conjecture_name&gt;</TT>.
+<LI> <TT>clausify:&lt;Algorithm&gt;</TT>,
+     to transform FOF problems to CNF problems.
+     The &lt;Algorithm&gt; is one of:
+     <UL>
+     <LI> <TT>bundy</TT>, to use the algorithm presented in
+          [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Bun83">Bun83</A>],
+     <LI> <TT>otter</TT>, to use the algorithm used in Otter
+          [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC-Otter-URL">McC98</A>],
+     <LI> <TT>quaife</TT>, to use Art Quaife's algorithm
+          [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua90-Email">Qua90</A>],
+     <LI> <TT>tptp</TT>, to use an algorithm combining features of the
+          <TT>otter</TT> and <TT>quaife</TT> algorithms.
+     </UL>
+     Details of these algorithms can found in
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SM96">SM96</A>].
+     Note that these transformations do not simplify the resultant
+     clause set; see the next two transformations for this.
+     Suffix <TT>+cls_&lt;Algorithm&gt;</TT>.
+<LI> <TT>simplify</TT>,
+     to simplify a set of clauses.
+     Details of the simplifications performed can be found in
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SM96">SM96</A>].
+     Suffix <TT>+simp</TT>.
+<LI> <TT>cnf:&lt;Algorithm&gt;</TT>,
+     to do <TT>clausify:&lt;Algorithm&gt;</TT> followed by
+     <TT>simplify</TT>.
+     Details of the performance of these transformations can be
+     found in [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SM96">SM96</A>].
+     Generally <TT>cnf:otter</TT> and <TT>cnf:bundy</TT> produce
+     clause sets with lower symbol counts than the other two.
+     Suffix <TT>+cnf_&lt;Algorithm&gt;</TT>.
+<LI> <TT>fofify:obvious</TT>,
+     to convert a set of 1st order clauses to a set of first-order
+     formulae, converting <TT>negated_conjecture</TT> clauses into
+     a correspoding <TT>conjecture</TT>.
+     The transformation is very naive.
+     Suffix <TT>+fof_obvious</TT>.
+<LI> <TT>axiomate</TT>,
+     to remove all <TT>conjecture</TT> formulae.
+     Suffix <TT>+axed</TT>.
+<LI> <TT>tff2fof</TT>[:&lt;Inequalities&gt;[:&lt;KnownTypes&gt;]],
+     to convert TFF formulae to FOF.
+     The value of :&lt;Inequalities&gt; can be either <TT>with</TT> or
+     <TT>without</TT>, to indicate whether or not axioms that specify
+     that terms from different domains are unequal should be generated.
+     The default is <TT>with</TT>.
+     The value of :&lt;KnownTypes&gt; is a <TT>[]</TT>ed list of domains
+     for which type guards are not needed.
+     The default is <TT>[$i,$int,$rat,$real]</TT>, i.e., assuming that the
+     output will be given to a system that knows about terms and the numeric
+     types.
+     Suffix <TT>+tff2fof</TT>.
+<LI> <TT>propify</TT>,
+     to convert a set of 1st order clauses to a set of propositional
+     clauses, preserving satisfiability.
+     The transformation is very naive.
+     Suffix <TT>+prop</TT>.
+<LI> <TT>lr</TT>,
+     to reverse the literal ordering in the clauses of CNF problems.
+     Suffix <TT>+lr</TT>.
+<LI> <TT>cr</TT>,
+     to reverse the clause ordering in CNF problems.
+     Suffix <TT>+cr</TT>.
+<LI> <TT>clr</TT>,
+     to do both clausal reversals.
+     Suffix <TT>+clr</TT>.
+<LI> <TT>fr</TT>,
+     to reverse the formula ordering in FOF problems.
+     Suffix <TT>+fr</TT>.
+<LI> <TT>random</TT>,
+     to randomly reorder the clauses and literals in CNF problems,
+     or to randomly reorder the formulae in FOF problems.
+     The rearrangement of formulae, clauses, and literals in a problem
+     facilitates testing the sensitivity of an ATP system to the order
+     of presentation.
+     Suffix <TT>+ran</TT>.
+<LI> <TT>er</TT>,
+     to reverse the arguments of unit equality clauses in CNF problems.
+     Suffix <TT>+er</TT>.
+<LI> <TT>ran_er</TT>,
+     to reverse the arguments of randomly selected unit equality
+     clauses in CNF problems.
+     Suffix <TT>+ran_er</TT>.
+<LI> <TT>add_equality</TT>[<TT>:&lt;Add&gt;</TT>],
+     to add missing equality axioms to problems that contain equality.
+     If the optional <TT>:&lt;Add&gt;</TT> flags are omitted, then all
+     equality axioms are added.
+     If the optional <TT>:&lt;Add&gt;</TT> flags are included, then
+     &lt;Add&gt; is a string that indicates which equality axioms to
+     add.
+     The characters that can be in the string are as for the
+     <TT>rm_equality</TT> transformation.
+     Suffix <TT>+add_&lt;Add&gt;</TT>.
+<LI> <TT>rm_equality</TT>[<TT>:&lt;Remove&gt;</TT>],
+     to remove equality axioms.
+     If the optional <TT>:&lt;Remove&gt;</TT> flags are omitted, then all
+     equality axioms are removed.
+     If the optional <TT>:&lt;Remove&gt;</TT> flags are included, then
+     &lt;Remove&gt; is a string that indicates which equality axioms to
+     remove.
+     The characters that can be in the string are:
+     <UL>
+     <LI> <TT>r</TT>, to remove reflexivity,
+     <LI> <TT>s</TT>, to remove symmetry,
+     <LI> <TT>t</TT>, to remove transitivity,
+     <LI> <TT>f</TT>, to remove function substitution,
+     <LI> <TT>p</TT>, to remove predicate substitution.
+     </UL>
+     For example, <TT>-t rm_equality:stfp</TT> would remove symmetry,
+     transitivity, function substitution, and predicate substitution.
+     This transformation works only if the equality axiomatization is
+     complete (i.e., including the axioms of reflexivity, symmetry,
+     transitivity, function substitution for all functors, and predicate
+     substitution for all predicate symbols).
+     Suffix <TT>+rm_eq_&lt;Remove&gt;</TT>.
+<LI> <TT>set_equality</TT>[<TT>:&lt;Set&gt;</TT>],
+     to set the equality axioms in problems that contain equality.
+     If the optional <TT>:&lt;Set&gt;</TT> flags are omitted, then all
+     equality axioms are set.
+     If the optional <TT>:&lt;Set&gt;</TT> flags are included, then
+     &lt;Set&gt; is a string that indicates which equality axioms to
+     set.
+     The characters that can be in the string are as for the
+     <TT>rm_equality</TT> transformation.
+     Suffix <TT>+set_eq_&lt;Set&gt;</TT>.
+<LI> <TT>to_equality</TT>,
+     to convert CNF problems to a pure equality representation.
+     Every non-equality literal is converted to an equality literal
+     with the same sign.
+     The arguments of the new equality literal are the atom of the
+     non-equality literal and the constant <TT>true</TT>.
+     Suffix <TT>+2eq</TT>.
+<LI> <TT>ifof:&lt;Axioms&gt;</TT> to convert intuitionistic propositional
+     formulae to FOF.
+     The <TT>&lt;Axioms&gt;</TT> specify which axiomatic basis to use.
+     The options are:
+     <UL>
+     <LI> <TT>goedel1</TT>
+     <LI> <TT>goedel2</TT>
+     <LI> <TT>mckinsey</TT>
+     </UL>
+     Suffix <TT>+ifof_&lt;_&lt;Axioms&gt;</TT>.
+<LI> <TT>mfof:&lt;Logic&gt;:&lt;Axioms&gt;</TT> to convert modal
+     propositional formulae to FOF.
+     The <TT>&lt;Logic&gt;</TT> specifies which modal logic to use.
+     The options are:
+     <UL>
+     <LI> <TT>mm</TT> for multi-modal logic
+     <LI> <TT>k</TT>
+     <LI> <TT>d</TT>
+     <LI> <TT>m</TT>
+     <LI> <TT>b</TT>
+     <LI> <TT>s4</TT>
+     <LI> <TT>s5</TT>
+     </UL>
+     The <TT>&lt;Axioms&gt;</TT> specify which modal logic axioms to use.
+     The options are:
+     <UL>
+     <LI> <TT>benzmueller</TT>
+     <LI> <TT>k</TT>
+     <LI> <TT>d</TT>
+     <LI> <TT>m</TT>
+     <LI> <TT>b</TT>
+     <LI> <TT>s4</TT>
+     <LI> <TT>s5</TT>
+     </UL>
+     Suffix <TT>+mfof_&lt;_&lt;Logic&gt;_&lt;Axioms&gt;</TT>.
+<LI> <TT>magic</TT>,
+     to apply Mark Stickel's magic set transformation
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sti94-JAR">Sti94</A>]
+     to CNF problems.
+     Suffix <TT>+magic</TT>.
+<LI> <TT>shorten</TT>,
+     to replace all the symbols in the problem by short, meaningless
+     symbols.
+     This is useful if you are only interested in the syntax of the
+     problem, and do not want to read through the long, meaningful
+     symbols that are often used in TPTP problems.
+     Note that equality atoms are not affected.
+     Suffix <TT>+shorten</TT>.
+<LI> <TT>none</TT>,
+     to do nothing (same as omitting the <TT>-t</TT> parameter, but
+     required for <A HREF="#TPTP2XInProlog">advanced use</A>.
+     No suffix.
+</UL>
+The default transformation is <TT>none</TT>.
+
+<A NAME="TPTP2XOutputFormats">
+<H4>TPTP2X Output Formats</H4>
+
+The available output formats are:
+<UL>
+<LI> <TT>bliksem</TT>,
+     to convert CNF problems to the Bliksem format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=deN-Bliksem-URL">deN98</A>].
+     Suffix <TT>.blk</TT>.
+<LI> <TT>dedam</TT>
+     to convert CNF unit equality problems to the Dedam format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=NRV97">NRV97</A>].
+     Suffix <TT>.dedam</TT>.
+<LI> <TT>dfg</TT>,
+     to convert CNF problems to the DFG format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HKW96">HKW96</A>].
+     Suffix <TT>.dfg</TT>.
+<LI> <TT>dimacs</TT>,
+     to convert propositional CNF problems to the DIMACS format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=DIM">DIM</A>].
+     Suffix <TT>.dimacs</TT>.
+<LI> <TT>eqp</TT>
+     to convert CNF unit equality problems to the EQP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC-EQP-URL">McC00</A>].
+     Suffix <TT>.eqp</TT>.
+<LI> <TT>geo</TT>,
+     to convert problems to the Geo format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=dNM06">dNM06</A>].
+     Suffix <TT>.geo</TT>.
+<LI> <TT>leancop</TT>,
+     to convert problems to the leanCoP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=OB03">OB03</A>].
+     Suffix <TT>.leancop</TT>.
+<LI> <TT>lf</TT>
+     to convert problems to the LF format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pfe89">Pfe89</A>].
+     Suffix <TT>.lf</TT>.
+<LI> <TT>metitarski</TT>,
+     to convert problems to the MetiTarski format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=AP10">AP10</A>].
+     Suffix <TT>.mski</TT>.
+<LI> <TT>otter:</TT>&lt;SoS&gt;<TT>:'</TT>&lt;Otter options&gt;<TT>'</TT>,
+     to convert FOF and CNF problems to the Otter <TT>.in</TT> format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC94-TR-ANL-94-6">McC94</A>].
+     &lt;SoS&gt; specifies the Set-of-Support to use. It can be one of:
+     <UL>
+     <LI> <TT>conjecture</TT>,
+          to use the formulae whose type is <TT>conjecture</TT>
+     <LI> <TT>not_conjecture</TT>,
+          to use the formulae whose type is not <TT>conjecture</TT>
+     <LI> <TT>hypothesis</TT>,
+          to use the formulae whose type is <TT>hypothesis</TT> or
+          <TT>conjecture</TT>
+     <LI> <TT>axioms</TT>,
+          to use the formulae whose type is <TT>axiom</TT>
+     <LI> <TT>positive</TT>,
+          to use the positive clauses
+     <LI> <TT>negative</TT>,
+          to use the negative clauses
+     <LI> <TT>unit</TT>,
+          to use the unit clauses
+     <LI> <TT>all</TT>,
+          to use all formulae
+     <LI> <TT>none</TT>,
+          to use no formulae (needed fo Otter's <TT>auto</TT> mode)
+     </UL>
+     <TT>'</TT>&lt;Otter options&gt;<TT>'</TT> is a quoted (to avoid
+     UNIX shell errors), comma separated list of Otter options, which
+     will be output before the formula lists.
+     See the Otter Reference Manual and Guide
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC94-TR-ANL-94-6">McC94</A>]
+     for details of the available options.
+     For example,
+     <TT>-f otter:none:'set(auto),assign(max_seconds,5)'</TT>
+     would configure Otter to use its <TT>auto</TT> mode with a
+     time limit of 5 seconds.
+     As the <TT>auto</TT> mode is commonly used with Otter, the TPTP2X
+     script allows the abbreviation <TT>-f otter</TT> to specify
+     <TT>-f otter:none:'set(auto),set(tptp_eq),clear(print_given)'</TT>.
+     If no <TT>-t</TT> parameter is specified then <TT>-f otter</TT> also
+     sets <TT>-t equality:stfp</TT>.
+     Suffix <TT>.in</TT>.
+<LI> <TT>prover9:</TT>&lt;Options&gt;,
+     to convert problems to the Prover format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC-Prover9-URL">McCURL</A>].
+     The &lt;Options&gt; specifies any Prover9 options.
+     Suffix <TT>.in</TT>.
+<LI> <TT>smt2</TT>,
+     to convert TFF and FOF problems to the SMT 2.0 format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BST10">BST10</A>].
+     Suffix <TT>.smt2</TT>.
+<LI> <TT>tps</TT>,
+     to convert THF problems to the TPS format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=AB06">AB06</A>].
+     Suffix <TT>.tps</TT>.
+<LI> <TT>tptp</TT>,
+     to convert FOF and CNF problems to the TPTP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SZS03">SZS03</A>].
+     Suffix <TT>.tptp</TT>.
+<LI> <TT>waldmeister</TT>,
+     to convert CNF unit equality problems to the Waldmeister format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HBF96">HBF96</A>].
+     Suffix <TT>.pr</TT>.
+</UL>
+The default format is <TT>tptp</TT>.
+<!-- OLD NO LONGER USED
+<LI> <TT>kif</TT>,
+     to convert problems to the KIF format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=GF92">GF92</A>].
+     Suffix <TT>.kif</TT>.
+<LI> <TT>leantap</TT>,
+     to convert problems to the leanTaP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BP95">BP95</A>].
+     Suffix <TT>.leantap</TT>.
+<LI> <TT>omdoc</TT>,
+     to convert problems to the OmDoc format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Koh06">Koh06</A>].
+     Suffix <TT>.omdoc</TT>.
+<LI> <TT>isabelle:[&lt;Tactics&gt;]</TT>,
+     to convert problems to the Isabelle format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=NPW02">NPW02</A>].
+     <TT>&lt;Tactics&gt;</TT> is a comma separated list of Isabelle
+     tactics, selected from
+     <TT>sledgehammeroracle</TT>, <TT>simp</TT>, <TT>blast</TT>,
+     <TT>auto</TT>, <TT>metis</TT>, <TT>fast</TT>, <TT>fastsimp</TT>,
+     <TT>best</TT>, <TT>force</TT>, <TT>meson</TT>, <TT>smt</TT>.
+     Suffix <TT>.thy</TT>.
+<LI> <TT>prefix</TT>,
+     to convert all equality to the old TPTP format prefix form.
+     Suffix <TT>.prefix</TT>.
+<LI> <TT>protein</TT>,
+     to convert CNF problems to the PROTEIN format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BF94">BF94</A>].
+     Suffix <TT>.tme</TT>.
+<LI> <TT>carine</TT>,
+     to convert CNF problems to the CARINE format.
+     Suffix <TT>.car</TT>.
+<LI> <TT>thinker</TT>,
+     to convert FOF problems to the THINKER format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pel82">Pel82</A>,
+     <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pel87">Pel87</A>]
+<LI> <TT>sem:</TT>&lt;WhatToModel&gt;<TT>:</TT>&lt;Cardinality&gt;,
+     to convert CNF problems to the SEM format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=ZZ96">ZZ96</A>].
+     &lt;WhatToModel&gt; specifies which clauses to use. It can be one of:
+     <UL>
+     <LI> <TT>conjecture</TT>,
+          to use the formulae whose type is <TT>conjecture</TT>
+     <LI> <TT>not_conjecture</TT>,
+          to use the formulae whose type is not <TT>conjecture</TT>
+     <LI> <TT>hypothesis</TT>,
+          to use the formulae whose type is <TT>hypothesis</TT> or
+          <TT>conjecture</TT>
+     <LI> <TT>axioms</TT>,
+          to use the formulae whose type is <TT>axiom</TT>
+     <LI> <TT>positive</TT>,
+          to use the positive clauses
+     <LI> <TT>negative</TT>,
+          to use the negative clauses
+     <LI> <TT>unit</TT>,
+          to use the unit clauses
+     <LI> <TT>all</TT>,
+          to use all formulae
+     <LI> <TT>none</TT>,
+          to use no formulae (needed fo Otter's <TT>auto</TT> mode)
+     </UL>
+     &lt;Cardinality&gt; is the required cardinailty of the model.
+<LI> <TT>lf</TT>,
+     to convert THF problems to the Twelf format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=PS99">PS99</A>]
+<LI> <TT>oscar</TT>,
+     to convert FOF problems to the OSCAR format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pol90">Pol90</A>]
+<LI> <TT>clif</TT>,
+     to convert problems to the CLIF format
+<LI> <TT>finder</TT>,
+     to convert CNF problems to the FINDER format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sla92">Sla92</A>]
+<LI> <TT>clin_s</TT>,
+     to convert CNF problems to the CLIN-S format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=CP94">CP94</A>,
+     <A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Chu94">Chu94</A>]
+<LI> <TT>code</TT>
+     to convert CNF condensed detachment problems to the CoDe format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=FF97">FF97</A>]
+<LI> <TT>glides</TT>,
+     to convert CNF problems to the GLiDeS format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BS00">BS00</A>]
+<LI> <TT>ilf</TT>,
+     to convert CNF problems to the ILF format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=DG+95">DG+95</A>]
+<LI> <TT>leantap</TT>,
+     to convert CNF problems to the leanTAP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BP95">BP95</A>]
+<LI> <TT>tap</TT>,
+     to convert CNF problems to the 3TAP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HBG94">HBG94</A>]
+<LI> <TT>mace4</TT>,
+     to convert CNF problems to the Mace4 format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC03-MACE4-TR">McC03</A>]
+<LI> <TT>math</TT>,
+     to convert propositional CNF problems to the Mathematica format
+<LI> <TT>meteor</TT>,
+     to convert CNF problems to the METEOR format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Ast94">Ast94</A>]
+<LI> <TT>mgtp</TT>,
+     to convert CNF problems to the MGTP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=FH+92">FH+92</A>]
+<LI> <TT>oldtptp</TT>,
+     to convert FOF and CNF problems to the old TPTP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS98">SS98</A>].
+     Suffix <TT>.oldtptp</TT>.
+<LI> <TT>omdoc</TT>,
+     to convert problems to the OmDoc format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Koh-OMDOC-URL">Koh</A>]
+<LI> <TT>pttp</TT>,
+     to convert CNF problems to the PTTP format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sti84-NGC">Sti84</A>]
+<LI> <TT>satchmo</TT>,
+     to convert CNF problems to the SATCHMO format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=GPS97">GPS97</A>]
+<LI> <TT>scott:</TT>&lt;SoS&gt;<TT>:</TT>&lt;InputFirst&gt;<TT>:'</TT>&lt;Otter options&gt;<TT>'</TT></TT>,
+     to convert CNF problems to the SCOTT format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=HS00">HS00</A>].
+     A normal setting is <TT>scott:hypothesis:conjecture:none</TT>.
+<LI> <TT>sprfn</TT>,
+     to convert CNF problems to the SPRFN format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pla88">Pla88</A>]
+<LI> <TT>setheo:</TT>&lt;Style&gt;,
+     to convert CNF problems to the SETHEO <TT>.lop</TT> format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=STK90">STK90</A>].<BR>
+     &lt;Style&gt; specifies the style of SETHEO clauses to write. It
+     can be one of:
+     <UL>
+     <LI> <TT>sign</TT>,
+          to write the atoms of the negative and positive literals of
+          each clause in the antecendent and consequent of an
+          implication, respectively;
+     <LI> <TT>type</TT>
+          In the <TT>type</TT> style, if there are no negative
+          <TT>axiom</TT> or <TT>hypothesis</TT> clauses, then the
+          <TT>sign</TT> style is used.
+          Otherwise in all negative <TT>axiom</TT> and <TT>hypothesis</TT>
+          clauses the first literal is negated to form the consequent
+          of an implication, with the remaining literals' atoms being
+          written as the antecedent.
+          Further, in all <TT>conjecture</TT> clauses all positive
+          literals are negated so that all literals are written in
+          the antecedent of an implication.
+     </UL>
+     The default style is <TT>sign</TT>, i.e., the abbreviation
+     <TT>-f setheo</TT> means <TT>-f setheo:sign</TT>.
+     Suffix <TT>.lop</TT>.
+<LI> <TT>sex</TT>,
+     to convert THF problems to the s-expression format used by Satallax
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BB10">BB10</A>].
+     Suffix <TT>.sex</TT>.
+<LI> <TT>smt</TT>,
+     to convert TFF and FOF problems to the SMT 1.2 format
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=RT06-TR">RT06</A>].
+     Suffix <TT>.smt</TT>.
+-->
+
+<P>
+<STRONG>Examples</STRONG><BR>
+<PRE>
+~/TPTP/TPTP2X> tptp2X -tfr,random -f prover9 PUZ001+1
+</PRE>
+This applies two separate transformations to the problem
+<TT>ALG001-1</TT>.
+The transformations are formula order reversal and formula order randomizing.
+The transformed problems are output in <TT>prover9</TT> format, in a directory
+<TT>prover9/PUZ</TT> below the current directory.
+The file names are <TT>PUZ001+1+fr.in</TT> and <TT>PUZ001+1+ran.in</TT>.
+<P>
+<PRE>
+~/TPTP/TPTP2X> tptp2X -q2 -s3..5 -fotter -d~tptp/tmp SYN001-1.g
+</PRE>
+This generates three sizes of the generic problem <TT>SYN001-1</TT>.
+The sizes are 3, 4, and 5.
+The output files are formatted for Otter, to use its <TT>auto</TT> mode.
+The files are placed in <TT>\verb/~/tptp/tmp/SYN</TT>, and are named
+<TT>SYN001-1.003.lop</TT>, <TT>SYN001-1.004.lop</TT>, and
+<TT>SYN001-1.005.lop</TT>.
+The quietness level is set to 2, thus suppressing all informational output
+except the lines showing what files are produced.
+Note that the file <TT>SYN001-1.g</TT> is automatically found in the generators
+directory.
+<P>
+<PRE>
+~/TPTP/TPTP2X> tptp2X -tmagic+shorten - &lt; ~tptp/TPTP/Problems/GRP/GRP001-1.p
+</PRE>
+This uses the TPTP2X script as a filter, to apply the non-Horn magic set
+transformation and then the symbol shortening transformation to
+<TT>GRP001-1.p</TT>.
+<TT>GRP001-1.p</TT> is fed in from standard input, and the output is written to
+standard output (thus all informational output is suppressed).
+
+<H4>The TPTP2X Interactive Mode</H4>
+
+If the <TT>-i</TT> flag is set, the TPTP2X script enters interactive mode after
+processing all other command line parameters. In interactive mode the user can
+change the value of any of the command line parameters.
+The user is prompted for the &lt;TPTPFiles&gt;, the &lt;Size&gt;,
+the &lt;Transform&gt;, the &lt;Format&gt;, and the &lt;Directory&gt;.
+In each prompt the current value is given.
+The user can respond by specifying a new value or by entering &lt;cr&gt;
+to accept the current value.
+The prompt-respond loop continues for each parameter until the user
+accepts the value for the parameter.
+
+<A NAME="TPTP2XInProlog">
+<H4>Running TPTP2X from within Prolog</H4>
+
+The TPTP2X utility can also be run from within a Prolog interpreter.
+The <TT>tptp2X.main</TT> file has to be loaded, and the entry point is then
+<TT>tptp2X/5</TT>, in the form:
+<P>
+<TT>?-tptp2X(</TT>&lt;TPTPFile&gt;,&lt;Size&gt;,&lt;Transform&gt;,&lt;Format&gt;,&lt;Directory&gt;<TT>).</TT>
+<P>
+The <A HREF="#UsingTPTP2X">parameters</A> are similar to the TPTP2X script
+command line parameters.
+A summary, highlighting differences with "(!)", is given here.
+<UL>
+<LI> &lt;TPTPFile&gt; is the name of a single TPTP file.
+     If the file name is not absolute, then it is considered to be relative
+     to the directory specified in the <TT>tptp_directory/1</TT> fact in the
+     <TT>tptp2X.config</TT> file (!).
+     If the file name is <TT>user</TT> (!), then input is taken from standard
+     input.
+<LI> &lt;Size&gt; is either
+     an integer,
+     a <TT>:</TT> separated string of &lt;Size&gt;s,
+     a &lt;Low&gt;..&lt;High&gt; integer size range,
+     or a Prolog list of &lt;Size&gt;s (!).
+     Each &lt;Size&gt; in a Prolog list of &lt;Size&gt;s is used to generate
+     separate sets of formulae.
+<LI> &lt;Transform&gt; is either
+     a single transformation  specifier,
+     a <TT>+</TT> separated string of &lt;Transform&gt;s, or
+     a Prolog list (!) of &lt;Transform&gt;s.
+<LI> &lt;Format&gt; is an output format  or a Prolog list (!) of output formats.
+     An output file is written for each output format specified.
+     For the <TT>otter</TT> format, the syntax is
+     <TT>otter:</TT>&lt;SoS&gt;<TT>:[</TT>&lt;Otter options&gt;<TT>]</TT> (!),
+     i.e., the Otter options form a Prolog list.
+<LI> &lt;Directory&gt; specifies the directory in which the output files
+     are to be placed. If the &lt;Directory&gt; is <TT>user</TT> (!) then
+     output is sent to standard output.
+</UL>
+
+<A NAME="WritingModules">
+<H4>Writing your own Transformations and Output Formats</H4>
+
+The transformations and output formatting are implemented in Prolog, in the
+files <TT>transform.</TT>&lt;TRAN&gt; and <TT>format.</TT>&lt;ATP&gt;,
+respectively.
+It is simple to add new transformations and output formats to the TPTP2X
+utility, by creating new transformation and format files.
+New files should follow the structure of the existing files.
+Typically, a new file can be created by modifying a copy of one of the
+existing files.
+<P>
+The entry point in a transformation file is &lt;Transform&gt;<TT>/6</TT>.
+The first three arguments are inputs: a list of the problem's formulae,
+the variable dictionary (a bit complicated), and the transformation
+specification.
+The next three arguments are outputs: the transformed formulae, the
+transformed variable dictionary (typically the same as the input
+dictionary), and the transformation suffix.
+As well as the &lt;Transform&gt;<TT>/6</TT> entry point, a
+&lt;Transform&gt;<TT>_file_information/2</TT> fact must be provided.
+The two arguments of the &lt;Transform&gt;<TT>_file_information/2</TT> fact are
+the atom <TT>transform</TT> and a description of the possible transformation
+specifications (as used in the third argument of &lt;Transform&gt;<TT>/6</TT>).
+See the existing transform.&lt;TRAN&gt; files for examples.
+<P>
+The entry point in a format file is &lt;Format&gt;<TT>/3</TT>.
+The three arguments are inputs: the format specification, a list of the
+problem's formulae, and the file header information.
+(It is not necessary to output a file header here; this information is
+available only for producing supplementary documentation.)
+As well as the &lt;Format&gt;<TT>/3</TT> entry point, a
+&lt;Format&gt;<TT>_format_information/2</TT> fact and a
+&lt;Format&gt;<TT>_file_information/2</TT> fact must be provided.
+The two arguments of the &lt;Format&gt;<TT>_format_information/2</TT> fact
+are a character that can be used to start a comment in the output file and
+the format extension, both as Prolog atoms.
+The two arguments of the &lt;Format&gt;<TT>_file_information/2</TT> fact are
+the atom <TT>format</TT> and a description of the possible format
+specifications.
+See the existing format.&lt;ATP&gt; files for examples.
+<P>
+New transformation and format files must be compiled in with the other
+TPTP2X files.
+This is done by adding a compile query in the <TT>tptp2X.main</TT> file,
+alongside the queries that compile in the existing files.
+<P>
+If you need help, please contact <A HREF="http://www.tptp.org">the TPTP developers</A>.
+
+<A NAME="WritingGenerators">
+<H4>Writing your own Problem Generators</H4>
+
+The TPTP generators are implemented in Prolog.
+It is simple to write new generators.
+New files should follow the structure of the existing files.
+<P>
+The entry point in a generator file is &lt;Problem name&gt;<TT>/3</TT>, where
+&lt;Problem name&gt; is the file name without the <TT>.g</TT> suffix.
+The first argument is an input: the size parameter for generation.
+The second and third arguments are outputs: the formulae generated and
+the <TT>% Status</TT> of the formulae.
+The formulae must be a Prolog list of formulae in TPTP format.
+A &lt;Problem name&gt;<TT>_file_information/3</TT> fact must also be provided.
+The three arguments of the fact are the atom <TT>generator</TT>, a description
+of the possible size parameters, and the TPTP size for this problem (this is
+hard to determine!).
+See the existing generator files for examples.
+<P>
+If you need help, please contact <A HREF="http://www.tptp.org">the TPTP developers</A>.
+
+<A NAME="TPTP4X">
+<HR><!------------------------------------------------------------------------>
+<H3>The TPTP4X Utility</H3>
+
+The TPTP4X utility is a multi-functional utility for reformatting,
+transforming, and generating TPTP problem files.
+It is the successor to the TPTP2X utility, and offers some of the same
+functionality, and some extra functionality.
+TPTP4X is written in C, and is thus faster than TPTP2X.
+<P>
+The TPTP4X usage is <TT>Usage: tptp4X</TT> &lt;options&gt; &lt;files&gt;.
+The options are (defaults in ()s):
+<UL>
+<LI> <TT>-q</TT>&lt;quietness&gt;  - control amount of output (1)
+<LI> <TT>-d</TT>&lt;directory&gt;  - output directory (stdout)
+<LI> <TT>-f</TT>&lt;format&gt;     - output format (tptp)
+     <UL>
+     <LI> <TT>tptp</TT>         - long tptp format
+     <LI> <TT>tptp:short</TT>   - short tptp format
+     </UL>
+<LI> <TT>-t</TT>&lt;transform&gt;  - transform the formulae (none)
+     <UL>
+     <LI> <TT>add_equality</TT> - adds all axioms of equality
+     <LI> <TT>add_equality:rstfp</TT>   - adds selected axioms of equality
+     <LI> <TT>fofify -V</TT>    - make universally quantified fof
+     <LI> <TT>fofify:! -V</TT>  - universally quantify fof
+     <LI> <TT>noint</TT>        - rename integers to constants
+     <LI> <TT>aritize</TT>      - make function and predicate names unique by arity
+     <LI> <TT>dequote</TT>      - make function and predicate names unquoted
+     <LI> <TT>numbernames</TT>N - add N digit extension to formula names
+     <LI> <TT>uniquenames</TT>N - add N digit extension to duplicate formula names
+     <LI> <TT>randomize</TT>    - randomize formulae and their order
+     <LI> <TT>negate_conjectures</TT> - negate all conjectures
+     </UL>
+<LI> <TT>-u</TT>&lt;user&gt;    - user type (human)
+     <UL>
+     <LI> <TT>human</TT>        - pretty printed with indenting
+     <LI> <TT>machine</TT>      - one line per formula
+     </UL>
+<LI> <TT>-r</TT>&lt;delay&gt;   - delay between formula output (none)
+     <UL>
+     <LI> <TT>fixed</TT>        - fixed delay of that many milliseconds
+     <LI> <TT>min:max</TT>      - random delay from min to max milliseconds
+     </UL>
+<LI> <TT>-V</TT>             - allow free variables (no)
+<LI> <TT>-N</TT>             - allow duplicate formula names (no)
+<LI> <TT>-x</TT>             - expand includes (no)
+<LI> <TT>-c</TT>             - clean away non-logicals (no)
+<LI> <TT>-w</TT>             - warnings (no)
+<LI> <TT>-z</TT>             - SZS ontology status output (no)
+<LI> <TT>-v</TT>             - print version number
+<LI> <TT>-h</TT>             - print this help
+</UL>
+
+<A NAME="TPTP2T">
+<HR><!------------------------------------------------------------------------>
+<H3>The TPTP2T Script</H3>
+
+The TPTP2T script selects lines from either the
+<A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ProblemAndSolutionStatistics"><TT>ProblemAndSolutionStatistics</TT></A>
+file, by problem and solution characteristics.
+<P>
+The TPTP2T script is written in <TT>perl</TT>.
+
+<H4>Installation</H4>
+
+Installation of the TPTP2T utility requires simple changes in the
+<TT>tptp2T</TT> script.
+These changes can be made by running <TT>tptp2T_install</TT>, which will prompt
+for required information.
+
+<H4>Using TPTP2T</H4>
+
+The use of this script is:
+<P>
+<TT>tptp2T [-f <EM>FileName</EM>] [-q1 or -q2 or -q3] [-pp or -ps or -pps] {[-]<EM>Constraint</EM> {[and/or] [-]<EM>Constraint</EM>}}</TT>
+
+<UL>
+<LI> The optional <TT>-f &lt;ProblemFile&gt;</TT> flag specifies the name
+     of a file containing TPTP problem names.
+     <TT>tptp2T</TT> will select statistics file lines for only those problems
+     whose names appear in the <TT>&lt;ProblemFile&gt;</TT>.
+     The problem names (without the <TT>.p</TT> extension) must appear one
+     per line in the <TT>&lt;ProblemFile&gt;</TT>, and lines that start with
+     <TT>#</TT> are ignored.
+<LI> The optional <TT>-q</TT> flag sets quietness:
+     1=continuous update, 2=final count (default), 3=quiet.
+<LI> The option <TT>-p</TT> flag indicates what output is required.
+     <TT>-pp</TT> prints problem lines,
+     <TT>-ps</TT> prints solution lines,
+     <TT>-pps</TT> prints both.
+     (Defaults: Only problem constraints = <TT>-pp</TT>,
+                only solution constraints = <TT>-ps</TT>,
+                both types of constraints = <TT>-pps</TT>)
+</UL>
+
+The <EM>Constraint</EM>s specify required problem and solution
+characteristics that must be satisfied for the statistics file
+line(s) to be selected.
+There are two sets of constraints, problem constraints and solution
+constraints, which apply to problem lines and solution lines separately.
+For a solution line to be printed, the problem line it accompanies must
+pass all problem constraints, if any are provided.
+Different sets of solution constraints can be applied to different systems
+individually.
+<UL>
+<LI> An optional <TT>-</TT> (hyphen) negates the meaning of any constraint.
+<LI> <TT>or</TT> allows for logical or between constraints.
+<LI> <TT>and</TT> allows for logical and between constraints.
+<LI> A space between constraints is treated as an and.
+<LI> <TT>{ }</TT> allow for grouping of terms.
+<LI> For constraints in which an upper and lower bound are required,
+     a <TT>-</TT> (hyphen) can be used to indicate don't care.
+</UL>
+
+<P>
+A problem <EM>Constraint</EM> is selected from:
+<UL>
+<LI> <TT>Domains</TT> <TT>ALG</TT> <TT>ANA</TT> ... <TT>TOP</TT>
+     <BR> Only the listed problem domains.
+<LI> <TT>Form</TT> <EM>???</EM>
+      <BR> One of <TT>THF</TT>, <TT>TXF</TT>, <TT>TFF</TT>, <TT>FOF</TT>,
+      <TT>CNF</TT>, <TT>ANY</TT>. Default is <TT>ANY</TT>.
+<LI> <TT>Status</TT> <EM>SZSStatus</EM>
+     <BR> One of <TT>Theorem</TT>, <TT>CounterSatisfiable</TT>,
+             <TT>Unsatisfiable</TT>, <TT>Satisfiable</TT>,
+             <TT>Unknown</TT>, <TT>Open</TT>.
+<LI> <TT>Rating</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> In the range 0.00 (easiest) to 1.00 (hardest)
+<LI> <TT>Formulae</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of formulae in the problem.
+<LI> <TT>UnitFormulae</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of unit formulae
+<LI> <TT>TypeFormulae</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of type formulae
+<LI> <TT>Atoms</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of atoms.
+<LI> <TT>EqualityAtoms</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of equality atoms.
+<LI> <TT>Equality</TT>
+     <BR> Only problems that use equality.
+<LI> <TT>PureEquality</TT>
+     <BR> Only problems that use only equality.
+<LI> <TT>UnitEquality</TT>
+     <BR> Only problems with only unit-equality clauses/formulae.
+<LI> <TT>FOOLs</TT>
+     <BR> Only problems with FOOL logic atoms/terms
+<LI> <TT>Arithmetic</TT>
+     <BR> Only problems that use arithmetic.
+<LI> <TT>Types</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of types used
+<LI> <TT>Symbols</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of distinct symbols
+<LI> <TT>Predicates</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of predicates
+<LI> <TT>MinimalPredicateArity</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The minimal predicate arity
+<LI> <TT>MaximalPredicateArity</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The maximal predicate arity in TFF/FOF/CNF problems.
+<LI> <TT>Propositional</TT>
+     <BR> Only propositional (only preducates of arity 0) problems
+<LI> <TT>Functions</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of functions
+<LI> <TT>MinimalFunctionArity</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The minimal function arity
+<LI> <TT>MaximalFunctionArity</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The maximal function arity
+<LI> <TT>Variables</TT>
+     <BR> Only problems with variables.
+<LI> <TT>PIVariables</TT>
+     <BR> Only problems with PI variables.
+</UL>
+
+A solution <TT>&lt;Constraint&gt;</TT> is selected from:
+<UL>
+<LI> <TT>System</TT> <EM>Name</EM>[<TT>---</TT><EM>Version</EM>]
+     <BR> ATP system which found a solution (<TT>ANY</TT> for any system).
+<LI> <TT>Result</TT> <EM>SZSStatus</EM> (Any SZS value, e.g., <TT>THM</TT>)
+     <BR> Solutions with this result, or a result lower in the SZS ontology.
+<LI> <TT>ResultTime</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> Solutions found in this time range.
+<LI> <TT>Output</TT> <EM>SZSDataform</EM> (Any SZS value, e.g., <TT>Ref</TT>)
+     <BR> Solutions with this output, or an output lower in the SZS ontology.
+<LI> <TT>SolutionFormulae</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of formulae in the solution.
+<LI> <TT>SolutionLeaves</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of leaves in the solution (for DAGs).
+<LI> <TT>SolutionDepth</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The depth of the solution (for DAGs, from an axiom to a root).
+<LI> <TT>SolutionAtoms</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The number of atoms in the soltuion.
+<LI> <TT>Equality</TT>
+     <BR> Only solutions that use equality.
+<LI> <TT>Arithmetic</TT>
+     <BR> Only solutions that use arithmetic.
+<LI> <TT>Selectivity</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The ratio of solution leaves to problem formulae.
+<LI> <TT>Girth</TT> <EM>Min</EM> <EM>Max</EM>
+     <BR> The ratio of solution leaves to solution depth.
+</UL>
+
+<HR><!------------------------------------------------------------------------>

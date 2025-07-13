@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+<TITLE>TPTP Technical Report</TITLE>
+<LINK REL="icon" HREF="https://tptp.org/Logos/TPTPPLTR.png" type="image/png" />
+</HEAD>
+<BODY ALIGN=JUSTIFY>
+<HR><!------------------------------------------------------------------------>
+<A NAME="Title"></A>
+<CENTER>
+<H1>The TPTP Problem Library</H1>
+<H3>TPTP
+<!--#include file="MACRO_ReleaseNumber"-->
+</H3>
+
+<TABLE>
+     <TR VALIGN=TOP>
+<!--
+          <TD WIDTH=50%> <CENTER>
+               Christian B. Suttner<BR>
+               Cirrus Management<BR>
+               &nbsp;<BR>
+               <A HREF="mailto:christian@suttner.info">
+                      <TT>christian@suttner.info</TT></A>
+               </CENTER>
+          </TD>
+-->
+          <TD WIDTH=50%> <CENTER>
+               Geoff Sutcliffe<BR>
+               Department of Computer Science<BR>
+               University of Miami<BR>
+               <TT>geoff@cs.miami.edu</TT>
+               </CENTER>
+          </TD>
+     </TR>
+</TABLE>
+</CENTER>
+<P>
+
+<H3>Abstract</H3>
+This report provides a detailed description of the TPTP Problem Library for 
+automated theorem proving systems.
+The library forms a common basis for development of and experimentation with 
+automated theorem provers. 
+This report provides:
+<UL>
+<LI> the motivations for building the library;
+<LI> a discussion of the inadequacies of previous problem collections, and
+     how these have been resolved in the TPTP;
+<LI> a description of the library structure, including overview information;
+<LI> descriptions of supplementary utility programs;
+<LI> guidelines for obtaining and using the library.
+</UL>
+<HR><!------------------------------------------------------------------------>
+<P>
+<CENTER>
+<TABLE BORDER=1>
+<TR> <TD ALIGN=CENTER> 
+          If you're new to all this and don't want to wade through the
+          details provided in this manual, you might want to start at the
+          <A HREF="../../UserDocs/QuickGuide">TPTP and TSTP Quick Guide</A>.<BR>
+          You could also work your way through the slides of the
+          <A HREF="../../UserDocs/TPTPWorldTutorial">TPTP World Tutorial</A>.
+</TABLE>
+</CENTER>
+<P>
+<HR><!------------------------------------------------------------------------>
+<H3>Table of Contents</H3>
+<UL>
+<LI> <A HREF="#Introduction">Introduction</A>
+<LI> <A HREF="#InsideTheTPTP">Inside the TPTP</A>
+     <UL>
+     <LI> <A HREF="#DomainStructure">The Domain Structure</A>
+     <LI> <A HREF="#ProblemVersions">Problem Versions and Standard Axiomatizations</A>
+     <LI> <A HREF="#ProblemGenerators">Problem Generators</A>
+     <LI> <A HREF="#ProblemAndAxiomatizationNaming">Problem and Axiomatization Naming</A>
+     <LI> <A HREF="#ProblemPresentation">Problem Presentation</A>
+          <UL>
+          <LI> <A HREF="#HeaderSection">Header Section</A>
+          <LI> <A HREF="#IncludeSection">Include Section</A>
+          <LI> <A HREF="#FormulaeSection">Formulae Section</A>
+          </UL>
+     <LI> <A HREF="#ArithmeticSystem">The Arithmetic System</A>
+     <LI> <A HREF="#NonClassicalLogics">The Non-classical Logics</A>
+     <LI> <A HREF="#PhysicalOrganization">Physical Organization</A>
+     </UL>
+<LI> <A HREF="#Utilities">Utilities</A>
+     <UL>
+     <LI> <A HREF="#TPTP2X">TPTP2X</A>
+     <LI> <A HREF="#TPTP4X">TPTP4X</A>
+     <LI> <A HREF="#TPTP2T">TPTP2T</A>
+     </UL>
+<LI> <A HREF="#GettingAndUsing">Getting and Using the TPTP</A>
+<LI> <A HREF="#Conclusion">Conclusion</A>
+</UL>
+<HR><!------------------------------------------------------------------------>
+<!--#include file="Introduction.shtml"-->
+<!--#include file="TheTPTP.shtml"-->
+<!--#include file="Utilities.shtml"-->
+<!--#include file="GettingAndUsing.shtml"-->
+<!--#include file="Conclusion.shtml"-->
+<HR><!------------------------------------------------------------------------>
+</BODY>
+</HTML>

@@ -1,0 +1,102 @@
+<HR><!------------------------------------------------------------------------>
+<A NAME="GettingAndUsing">
+<H2>Getting and Using the TPTP</H2>
+
+<A NAME="Quick Installation Guide">
+<H3>Quick Installation Guide</H3>
+
+This section explains how to obtain and install the TPTP, and how to 
+syntax-convert the TPTP problems.
+
+<H4>Obtaining the TPTP</H4>
+
+The distribution consists of two files:
+<UL>
+<LI> <TT>ReadMe-<!--#include file="MACRO_ReleaseNumber"--></TT> 
+     contains an overview of the TPTP.
+<LI> <TT>TPTP-<!--#include file="MACRO_ReleaseNumber"-->.tgz</TT> 
+     (<!--#include file="MACRO_TPTPCompressedSize"--> MByte, 
+     <!--#include file="MACRO_TPTPFullSize"--> GByte unpacked) contains 
+     the library (including a copy of the 
+     <TT>ReadMe-<!--#include file="MACRO_ReleaseNumber"--></TT> file). 
+</UL>
+
+There also might be a file called 
+<TT>BuggedProblems-<!--#include file="MACRO_ReleaseNumber"--></TT>, 
+containing a list of files that have been found to contain errors, in 
+the current release (bugs that have been discovered after the release has 
+been distributed).
+<P>
+
+These files are <A HREF="../../">available online</A>.
+
+<H4>Installing the TPTP</H4> 
+
+<P>
+<! NOTE, have to edit the release numbers in by hand here, due to verbatim >
+<TT>
+prompt> tar xzf TPTP-<!--#include file="MACRO_ReleaseNumber"-->.tgz
+<P>
+prompt> cd TPTP-<!--#include file="MACRO_ReleaseNumber"-->
+<P>
+prompt> ./Scripts/tptp2T_install
+<BR>
+        ... the script will then ask for required information
+<P>
+prompt> ./TPTP2X/tptp2X_install 
+<BR>
+        ... the script will then ask for required information
+</TT>
+<P>
+
+If you don't have any Prolog installed, you need to get one first. 
+Both utilities can be installed in a default configuration by appending a
+<TT>-default</TT> flag to the install command.
+
+<A NAME="UsingTheTPTP">
+<H3>Important: Using the TPTP</H3>
+
+Appropriate use of the TPTP allows developers and users to meaningfully
+evaluate ATP systems.
+To that end, the following guidelines for using the TPTP and presenting
+results should be followed.
+<UL>
+<LI> The TPTP release number must be stated.
+<LI> Each problem must be referenced by its unambiguous syntactic name.
+<LI> The problem formulae should, as far as is possible, not be changed
+      in any way.
+      Any changes made (addition, removal, reordering, reformatting, etc.)
+      must be explicitly noted.
+<LI> Any information given to the ATP system, other than that in the
+      formulae, must be explicitly noted.
+      All system switches and settings must be recorded.
+      The header information in each problem may not be used by the ATP
+      system without explicit notice.
+</UL>
+Abiding by these conditions will allow unambigous identification of the
+problem, the formulae used, and further input to the ATP system.
+If you follow the rules, please make it clear in any presentation of your
+results, by an explicit statement.
+We propose that you state
+"These results were obtained in compliance with the guidelines for
+use of the TPTP".
+By making this clear statement, ATP researchers are assured of your
+awareness of our guidelines.
+Conversely, it will become clear when the guidelines might have been ignored.
+
+
+<A NAME="PleaseContact">
+<H3>Please contact <A HREF="http://www.tptp.org">the TPTP developers</A> if ...</H3>
+
+<UL>
+<LI> You find any mistakes in the TPTP.
+<LI> You are able to provide further information for a TPTP problem.
+<LI> You  want  to  contribute  a  problem  to  the TPTP.  
+     Please use the problem <A HREF="#PhysicalOrganization">template</A> that comes with the 
+     distribution.
+     Fill in header information as far as possible. 
+     Any unambiguous representation will do for the formulae.
+<LI> You have any suggestions for improving the TPTP library.
+</UL>
+<P>
+<HR><!------------------------------------------------------------------------>

@@ -1,0 +1,279 @@
+<HR><!------------------------------------------------------------------------>
+<A NAME="Introduction">
+<H2>Introduction</H2>
+<P>
+The TPTP (Thousands of Problems for Theorem Provers) is a library of
+problems, in classical logic with an interpreted equality symbol, for 
+Automated Theorem Proving (ATP) systems.
+The TPTP contains problems in 
+monomorphic and polymorphic typed higher-order form (THF), 
+monomorphic and polymorphic typed first-order form (TFF, including the
+extended first-order form (TXF)), 
+first-order form (FOF), and clause normal form (CNF).
+Interpreted arithmetic types and symbols are supported in THF, TXF, and TFF.
+The TPTP supplies the automated reasoning community with a comprehensive
+library of the ATP test problems that are available today, in order to provide
+an overview and a simple, unambiguous reference  mechanism.
+The principal motivation for the TPTP is to support the testing and evaluation
+of ATP  systems, to help ensure that performance results accurately reflect
+the  capabilities of  the ATP  system being  considered.
+A common  library  of problems  is necessary  for meaningful  system
+evaluations,  meaningful  system comparisons,  repeatability  of testing,
+and the  production of  statistically significant results.
+The TPTP problems are stored in a specifically designed, easy to understand
+format.
+Utilities for manipulating the problems, for converting the problems
+to other known ATP formats, and for finding problems with certain 
+characteristics, are provided.
+Since its first release in 1993, many researchers have used the TPTP as
+an appropriate and convenient basis for ATP system evaluation.
+<P>
+This technical report explains the motivations and reasoning behind the 
+development of the TPTP, and thus implicitly explains the design decisions 
+made.
+It also serves as a manual explaining the structure and use of the TPTP:
+it provides a full description of the TPTP contents and organization, details 
+of the utility programs, and guidelines for obtaining and using the TPTP.
+<P>
+
+<STRONG>What's New in TPTP 
+<!--#include file="MACRO_ReleaseNumber"--></STRONG>
+(since TPTP v8.0.0):
+<UL>
+<LI> This is the first release with non-classical logic problems. 
+     There are 147 non-classical logic problems in 8 domains.
+<LI> 1 new domain has been added: 
+     MVA (MV-algebras)
+<LI> The separator for arithmetic problems is no longer '<TT>=</TT>', but rather whatever is
+     used for the host language, i.e., '<TT>_</TT>' for TFF and TXF problems, '<TT>^</TT>' for 
+     THF problems.
+<LI> The SZS ontology has a new value USM (Unsemantic), and been extended to include non-logical 
+     data.
+<LI> Many many changes to SyntaxBNF.
+     </UL>
+</UL>
+
+<H3>Previous Problem Collections</H3>
+
+A large number of interesting problems had accumulated over the years in the 
+ATP community. 
+Besides publishing particularly interesting individual problems, from early on 
+researchers collected problems in order to obtain a basis for experimentation.
+Problems in First Order Form (FOF), published by mathematicians and logicians 
+prior to the mechanization of reasoning (e.g., 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Chu56">Chu56</A>]) provided the first source for 
+ATP researchers.
+The first major publication in this regard was 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MOW76">MOW76</A>], which provides 
+an explicit listing of clauses for 63 Clause Normal Form (CNF) problems, many 
+of which are still relevant today
+(to our knowledge, the first <EM>circulation</EM> of problems for testing ATP 
+systems was due to Larry Wos in the late sixties).
+In the same year 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WM76">WM76</A>] documented 86 CNF problems which were commonly used for ATP testing.
+However, the problem clauses are not supplied in 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=WM76">WM76</A>].
+A second major thrust was provided by 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Pel86-JAR">Pel86</A>], which lists 75 
+problems in both FOF and CNF.
+Other early papers are 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BL+86">BL+86</A>], 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Qua92-JAR">Qua92</A>], 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=MW92-CADE-11">MW92</A>], and 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC93">McC93</A>], to name a few. 
+The Journal of Automated Reasoning's Problem Corner also provided interesting 
+challenge problems.
+Problems published in hardcopy form are, however, often not suitable for 
+testing ATP systems, because they have to be transcribed to electronic form.
+This is a cumbersome, error-prone process, and is feasible for only small 
+numbers of small problems. 
+<P>
+The sparsness of research into ATP systems for FOF problems meant that 
+no electronic collections of FOF test problems had previously been commonly 
+available.
+A CNF problem collection in electronic form was made publicly available by 
+Argonne National Laboratories (in Otter format 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=McC94-TR-ANL-94-6">McC94</A>]) 
+in 1988 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=ANL">ANL</A>].
+This collection was a major source of problems for ATP researchers.
+Other electronic collections of CNF problems have been available, but not 
+announced officially (e.g., that distributed with the SPRFN ATP system 
+[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SPRFN">SPRFN</A>]).
+Although some of these collections provided significant support to 
+researchers, and formed the early core of the TPTP library, none (with the 
+possible exception of the ANL collection) was specifically designed to serve 
+as a common basis for ATP research.
+Rather, these collections typically were built in the course of research into 
+a particular ATP system.   
+As a result there are several factors that limited their usefulness as 
+a common basis for research. 
+In particular, previously existing problem collections:
+<UL>
+<LI> were often hard to discover and obtain.
+     <BR>
+     System development and system evaluations typically relied on a 
+     small set of test problems, depending on the collections of problems 
+     available to the researcher.
+<LI> needed to be transformed to the syntax of the ATP system being considered.
+     <BR>
+     The problem format used in a collection was often inappropriate for the 
+     desired purpose, and a comparatively large effort was required just to 
+     make the problems locally usable (which in practice often meant that such 
+     collections of problems were simply ignored).
+<LI> were often limited in scope and size. 
+     <BR>
+     The problems used were often homogeneous, and thus could not be used
+     for broad testing of the capabilities of the ATP system under 
+     consideration.
+     If there are too few problems, statistically significant testing is
+     not possible.
+<LI> were often be outdated.
+     <BR>
+     The problems did not sufficiently reflect the current state-of-the-art in 
+     ATP research.
+<LI> were sometimes designed and tuned (regarding formula selection, 
+     formula ordering, and formula structure) for a particular ATP system.
+     <BR>
+     Using a collection designed and tuned for a particular ATP system 
+     leads to biases in results.
+<LI> provided no indication of the significance or difficulty of the problems.
+     <BR>
+     The significance and difficulty of a problem, with respect to the current 
+     state-of-the-art in ATP systems, is hard to assess by newcomers to the 
+     field.
+     Existing test problems are often not adequate anymore (e.g., Schubert's 
+     Steamroller 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Sti86-JAR">Sti86</A>]), while others might be solvable only with 
+     specialized techniques (e.g., LIM+ 
+     [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=Ble90">Ble90</A>]), 
+     and therefore are much too hard to start with.
+<LI> were inconsistent in their presentation of equally named problems.
+     <BR>
+     Copies and variants of the same "original" problem existed in different 
+     collections. 
+     This meant that unambiguous identification of problems, and therefore a 
+     clear interpretation of performance figures for given problems, was 
+     difficult.
+<LI> were usually undocumented.
+     <BR>
+     It was hard to obtain information on problem semantics, the
+     original problem source, and the particular style of axiomatization.
+     This also contributed to the problem of unambiguous problem identification.
+<LI> were almost always unserviced. 
+     <BR>
+     Collections did not provide a mechanism for adding new problems or 
+     correcting errors in existing problems, and could be not be used to 
+     electronically distribute new and corrected problems to the ATP community.
+     This in turn perpetuated the use of old and erroneous problems.
+<LI> provided no guidelines for their use.
+     <BR>
+     Quite often, inadequate system evaluations were performed.
+     As a consequence, results that provided little indication
+     of the system properties were reported.
+</UL>
+<P>
+
+The problem of meaningfully interpreting results can be even worse than 
+indicated.
+A few problems might be selected and hand-tuned (formulae arranged in a special 
+way, irrelevant formulae omitted, lemmas added in, etc) specifically for the 
+ATP system being tested.  
+The presentation of a problem can significantly affect the nature of the 
+problem, and changing the formulae clearly  makes a different problem 
+altogether.  
+Nevertheless the problem might be referenced under the same name as it was
+presented elsewhere.
+As a consequence the experimental results reveal little.
+Some researchers avoid this ambiguity by listing the formulae explicitly,
+but obviously this usually cannot be done for a large number of problems or 
+for large individual problems.
+The only satisfactory solution to these issues is a common and stable library
+of problems. 
+The TPTP is such a library.
+
+<H3>What is Required?</H3>
+
+The goal for building the TPTP has been to overcome previous drawbacks, and 
+to centralize the burden of problem collection and maintenance.
+The TPTP tries to address all relevant issues. 
+In particular, the TPTP:
+<UL>
+<LI> is easy to discover and obtain.<BR>
+     Awareness of the TPTP is assured by extensive formal and informal 
+     announcements.
+     The TPTP is available online, and is thus easily available to the 
+     research community. 
+<LI> is easy to use.<BR>
+     Problems are presented in a specifically designed, easy to understand 
+     format. Automatic conversion to other known formats is also provided, 
+     thus eliminating the necessity for any other transcription. 
+<LI> spans a diversity of subject matters.<BR>
+     This reduces biases in the development and testing of ATP systems, 
+     which arise from the use of a limited scope of problems.
+     It also provides an overview of the domains in which ATP systems are
+     used.
+<LI> is large enough for statistically significant testing.<BR>
+     In contrast to common practice, an ATP system should be evaluated over 
+     a large number of problems, rather than a small set of judiciously 
+     selected examples. The large size of the TPTP makes this possible.
+<LI> is comprehensive.<BR>
+     The TPTP contains most problems known to the community.
+     There is no longer a need to look elsewhere.
+<LI> is up-to-date.<BR>
+     As new problems appear in the literature and elsewhere,
+     they are added to the TPTP as soon as possible.
+<LI> is independent of any particular ATP system.<BR>
+     The problems are arranged so as to be modular and human-readable, 
+     rather than arranged for a particular ATP system.
+<LI> contains problems varying in difficulty, with a difficulty rating for 
+     each problem.<BR>
+     The difficulty of problems in the TPTP ranges from very simple problems 
+     through to open problems. 
+     This allows all interested researchers, from newcomers to experts, to
+     rely on the same problem library.
+     The difficulty ratings provided with each problem are important for 
+     several reasons:
+     <OL>
+     <LI> It simplifies problem selection according to the user's intention.
+     <LI> It allows the quality of an ATP system to be judged.
+     <LI> Over the years, changes in the problem ratings will provide an 
+          indicator of the advancement in ATP.
+     </OL>
+<LI> provides statistics for each problem and for the library as a whole.<BR>
+     This provides information about the syntactic nature of the problems.
+<LI> has an unambiguous naming scheme. <BR>
+     This provides unambiguous problem reference, and makes the comparison of 
+     results meaningful.
+<LI> is well structured and documented.<BR>
+     This allows effective and efficient use of the library.
+     Useful background information, such as an overview of ATP application 
+     domains, is provided.
+<LI> documents each problem.<BR>
+     This contributes to the unambiguous identification of each problem.
+<LI> provides a mechanism for adding new problems.<BR>
+     The TPTP contains standard axiomatizations that can be used in new 
+     problems.
+     This simplifies the collection of new problems.
+     A template is provided for submission of new problems.
+     The TPTP is thus a channel for making new problems available to the 
+     community, in a simple and effective way.
+<LI> provides a mechanism for correcting errors in existing problems.<BR>
+     All errors, noticed by the developers or reported by users,
+     are corrected. 
+     Patched TPTP releases are made regularly.
+<LI> provides guidelines for its use in evaluating ATP systems.<BR>
+     A standard library of problems together with evaluation guidelines 
+     makes reported results meaningful and reproducible by others. 
+     This will in turn simplify and improve system comparisons, and 
+     allow ATP researchers to accurately gauge their progress.
+</UL>
+<P>
+The development of the TPTP problem library is an ongoing project, with the 
+aim to provide all of the desired properties.
+<P>
+<STRONG>Current Limitations of the TPTP.</STRONG><BR>
+The TPTP library currently limited to problems expressed in classical
+logic.
+<P>
+<HR><!------------------------------------------------------------------------>
