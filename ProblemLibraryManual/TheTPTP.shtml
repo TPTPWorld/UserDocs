@@ -984,7 +984,7 @@ A regular expression for recognizing axiom file names is
      <TH ALIGN=LEFT WIDTH=0%> <TT>.SSS</TT>
      <TH ALIGN=LEFT WIDTH=0%> <TT>.T</TT>
      <TH WIDTH=100%>
-<TR> <TD COLSPAN=7> <TT>DDD</TT> - <A HREF="DomainStructure">Domain name abbreviation</A>.
+<TR> <TD COLSPAN=7> <TT>DDD</TT> - <A HREF="#DomainStructure">Domain name abbreviation</A>.
 <TR> <TD>
      <TD COLSPAN=6> <TT>NNN</TT> - Abstract problem number.
           It is unique within the domain.
