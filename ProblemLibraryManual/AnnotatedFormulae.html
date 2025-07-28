@@ -183,6 +183,16 @@ The THF and TFF languages have conditional and let expressions.
      Such variables do not need to be declared (they are implicitly declared to
      be of the type defined by the symbol declaration), but must be top-level
      arguments of the defined symbol and be pairwise distinct.
+     In the polymorphic case, type declarations may include type variables introduced in an enclosing scope, such as
+<PRE>
+tff(let_polymorphic_both_types, axiom,
+  ![A: $tType]: $let(
+    % the constant function using A from 'outside' and B from 'inside'
+    const : !>[B : $tType]: (A * B) > A,
+    % B required here but not A
+    const(B, X, Y) := X)).
+</PRE>
+     No extra sort arguments are needed when using such $let-defined symbols.
 </UL>
 <P>
 The <EM>useful_info</EM> field of an annotated formula is optional, and if
