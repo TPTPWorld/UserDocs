@@ -266,20 +266,17 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
      <TD> The nearest integral value (in the type of the argument) to the argument. 
           If the argument is halfway between two integral values, the nearest even integral
           value to the argument.
-<!--
 <TR VALIGN=TOP>
      <TD> <TT>$abs</TT>/1
      <TD> Absolute value of a number.
      <TD> <TT>$abs</TT> is related to other operators by
           <PRE>
     ! [X] :
-      ( ( $less(0,X)
+      ( ( $greatereq(X,0)
        => $abs(X) = X )
-      & ( X = 0
-       => $abs(X) = 0 )
       & ( $less(X,0)
        => $abs(X) = $uminus(X) ) ) </PRE>
-         i.e, <TT>$abs</TT> can be implemented in terms of other operators.
+<!--
 <TR VALIGN=TOP>
      <TD> <TT>$min</TT>/2
      <TD> Smallest (towards negative infinity) of the arguments, which must

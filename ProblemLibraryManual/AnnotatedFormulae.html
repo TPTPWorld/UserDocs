@@ -2,54 +2,51 @@
 <H3> Annotated Formulae </H3>
 
 TPTP problems and TSTP solutions are built from <EM>annotated formulae</EM> of the form
-<EM>language</EM><TT>(</TT><EM>name</EM><TT>,</TT><EM>role</EM><TT>,</TT><EM>formula</EM><TT>,</TT><EM>source</EM><TT>,</TT><TT>[</TT><EM>useful_info</EM><TT>]).</TT>.
-The <EM>language</EM>s currently supported are 
-<TT>thf</TT> - formulae in typed higher-order form,
-<TT>tff</TT> - formulae in typed first-order form (including extended form),
-<TT>fof</TT> - formulae in first order form, 
-and 
-<TT>cnf</TT> - formulae in clause normal form.
-The <EM>name</EM> identifies the formula within the problem.
+<P>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><EM>language</EM><TT>(</TT><EM>name</EM><TT>,</TT><EM>role</EM><TT>,</TT><EM>formula</EM><TT>,</TT><EM>source</EM><TT>,</TT><EM>useful_info</EM><TT>).</TT>
+<P>
+The <EM>language</EM>s supported are <TT>cnf</TT>, <TT>fof</TT>, <TT>tff</TT>, and <TT>thf</TT>.
+<P>
 The <EM>role</EM> gives the user semantics of the <EM>formula</EM>, one of
 <TT>axiom</TT>, <TT>hypothesis</TT>, <TT>definition</TT>, <TT>assumption</TT>,
-<TT>lemma</TT>, <TT>theorem</TT>, <TT>corollary</TT>, <TT>conjecture</TT>, 
-<TT>negated_conjecture</TT>, <TT>plain</TT>, <TT>type</TT>, <TT>interpretation</TT>, 
-<TT>logic</TT>, and 
+<TT>lemma</TT>, <TT>theorem</TT>, <TT>corollary</TT>, <TT>conjecture</TT>,
+<TT>negated_conjecture</TT>, <TT>plain</TT>, <TT>type</TT>, <TT>interpretation</TT>,
+<TT>logic</TT>, and
 <TT>unknown</TT>.
 <UL>
 <LI> The <EM>axiom-like</EM> formulae are those with the roles
      <TT>axiom</TT>, <TT>hypothesis</TT>, <TT>definition</TT>, <TT>assumption</TT>,
      <TT>lemma</TT>, <TT>theorem</TT>, and <TT>corollary</TT>.
-      They are accepted, without proof, as a basis for proving <TT>conjecture</TT>s 
+      They are accepted, without proof, as a basis for proving <TT>conjecture</TT>s
       in THF, TFF, and FOF problems.
-      In CNF problems the axiom-like formulae are accepted as part of the set whose 
+      In CNF problems the axiom-like formulae are accepted as part of the set whose
       satisfiability has to be established.
       There is no guarantee that the axiom-like formulae of a problem are consistent.
 <LI> <TT>hypothesis</TT>s are assumed to be true for a particular problem.
 <LI> <TT>definition</TT>s are used to define symbols.
 <LI> <TT>assumption</TT>s must be discharged before a derivation is complete.
-<LI> <TT>lemma</TT>s and <TT>theorem</TT>s have been proven from the other 
+<LI> <TT>lemma</TT>s and <TT>theorem</TT>s have been proven from the other
       axiom-like formulae, and are thus redundant wrt those axiom-like formulae.
      <TT>theorem</TT> is used also as the role of proven <TT>conjecture</TT>s, in output.
-     A problem containing a <TT>lemma</TT> or <TT>theorem</TT> that is not 
+     A problem containing a <TT>lemma</TT> or <TT>theorem</TT> that is not
      redundant wrt the other axiom-like formulae is ill-formed.
      <TT>theorem</TT>s are more important than <TT>lemma</TT>s from the
      user perspective.
 <LI> <TT>corollary</TT>s have been proven from the <TT>axiom</TT>s and a
-     <TT>theorem</TT>, and are thus redundant wrt the other axiom-like and 
+     <TT>theorem</TT>, and are thus redundant wrt the other axiom-like and
      <TT>theorem</TT> formulae.
-     A problem containing a <TT>corollary</TT> that is not redundant wrt the 
+     A problem containing a <TT>corollary</TT> that is not redundant wrt the
      other axiom-like formulae and <TT>theorem</TT> formulae is ill-formed.
-<LI> <TT>conjecture</TT>s occur in only THF, TFF, and FOF problems, and are to all 
+<LI> <TT>conjecture</TT>s occur in only THF, TFF, and FOF problems, and are to all
      be proven from the axiom-like formulae.
      A problem is solved only when all conjectures are proven.
-     (<EM>TPTP problems never contain more than one </EM><TT>conjecture</TT><EM>, 
+     (<EM>TPTP problems never contain more than one </EM><TT>conjecture</TT><EM>,
      and the creation of problems with more than one </EM><TT>conjecture</TT><EM>
-     is currently deprecated, because contemporary ATP systems commonly treat them 
-     as a disjunction, and will prove only one of them</EM>.) 
+     is currently deprecated, because contemporary ATP systems commonly treat them
+     as a disjunction, and will prove only one of them</EM>.)
 <LI> <TT>negated_conjecture</TT>s are formed from negation of a <TT>conjecture</TT>,
      typically in FOF to CNF conversion.
-<LI> <TT>plain</TT> formulae have no special user semantics, and are typically used in derivation 
+<LI> <TT>plain</TT> formulae have no special user semantics, and are typically used in derivation
      output.
 <LI> <TT>type</TT> formulae define the types of symbols globally.
 <LI> <TT>interpretation</TT> formulae are used for writing interpretations, typically models of
@@ -60,154 +57,136 @@ The <EM>role</EM> gives the user semantics of the <EM>formula</EM>, one of
 <LI> <TT>unknown</TT>s have unknown role, and this is an error situation.
 </UL>
 <P>
-The syntax for atoms is that of Prolog:
-variables start with upper case letters,
-atoms and terms are written in prefix notation,
-uninterpreted predicates and functors either start with lower case
-and contain alphanumerics and underscore, or are in <TT>'single quotes'</TT>.
-The language also supports interpreted predicates and functors.
-These come in two varieties: <EM>defined</EM> predicates and functors, whose
-interpretation is specified by the TPTP language, and <EM>system</EM>
-predicates and functors, whose interpretation is ATP system specific.
-Interpreted predicates and functors are syntactically distinct from
-uninterpreted ones - they are <TT>=</TT> and <TT>!=</TT>, or start with 
-a <TT>$</TT>, a <TT>"</TT>, or a digit.
-Non-variable symbols can be given a type globally, in the formula with
-role <TT>type</TT>.
-The defined types are
-<TT>$o</TT> - the Boolean type,
-<TT>$i</TT> - the type of individuals,
-<TT>$real</TT> - the type of reals,
-<TT>$rat</TT> - the type of rational,
-and
-<TT>$int</TT> - the type of integers.
-New types are introduced in formulae with the <TT>type</TT> role, based on
-<TT>$tType</TT> - the type of all types.
-Full details of the THF and TFF type systems are provided in
-[<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS+12">SS+12</A>,<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=BP13-TFF1">BP13</A>,<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SB10">SB10</A>,<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=KSR16">KSR16</A>],
-with the last providing an overview of the first three.
-<P>
-The defined predicates recognized so far are 
-<UL>
-<LI> <TT>$true</TT> and <TT>$false</TT>, with the obvious interpretations.
-     In typed languages they are of type <TT>$o</TT>.
-<LI> <TT>=</TT> and <TT>!=</TT> for equality and inequality. 
-     In typed languages they are ad hoc polymorphic with both sides having 
-     the same type.
-<LI> <TT>$distinct</TT>, whose arguments are hence known to be unequal from
-     each other (but not necessarily unequal to any other constants).
-     <TT>$distinct</TT> maybe overloaded with different arities.
-     <TT>$distinct</TT> is used in only the typed languages, and is ad hoc
-     polymorphic with all arguments having the same type.
-<LI> The <A HREF="#Arithmetic">arithmetic predicates</A> described below.
-     The arithmetic predicates are used in only the THF and TFF languages.
-</UL>
-The defined functors recognized so far are 
-<UL>
-<LI> <TT>"distinct object"</TT>s, written in double quotes.
-     All <TT>"distinct object"</TT>s are unequal to all <TT>"different 
-     distinct object"</TT>s (but not necessarily unequal to any other 
-     constants), e.g., <TT>"Apple" != "Microsoft"</TT>.
-     One way of implementing this is to interpret <TT>"distinct object"</TT> 
-     as the domain element in the double quotes.
-     In typed contexts <TT>"distinct object"</TT>s are of type <TT>$i</TT>
-     (and as a result, are unequal to all numbers because their interpretation
-     domains are disjoint in the TPTP type systems).
-<LI> Numbers (numeric constants).
-     These are used in the THF and TFF languages.
-     Numbers are interpreted as themselves (as domain elements).
-     All different numbers are unequal, e.g., <TT>1 != 2</TT> 
-     (but not necessarily unequal to any other constants).
-     All numbers are also unequal to terms of type <TT>$i</TT> (because 
-     their interpretation domains are disjoint in the TPTP type systems).
-     Numbers are not allowed in FOF and CNF, but for many applications an
-     adequate alternative is to write "numbers" as distinct objects, 
-     e.g., <TT>"27"</TT>, so that different "numbers" are known to be 
-     unequal to each other, but possibly equal to other terms of type 
-     <TT>$i</TT>.
-<LI> The <A HREF="#Arithmetic">arithmetic functions</A> described below.
-     The arithmetic functions are used in only the THF and TFF languages.
-</UL>
-<P>
-System predicates and functors are used for interpreted predicates and
-functors that are available in particular ATP tools.
-System predicates and functors start with <TT>$$</TT>.
-The names are not controlled by the TPTP language, so they must be used
-with caution.
-<P>
-The connectives used to build non-atomic formulae are written using intuitive 
-notations.
-The universal quantifier is <TT>!</TT>, the existential quantifier is
-<TT>?</TT>, and the lambda binder is <TT>^</TT>.
-Quantified formulae are written in the form
-<EM>Quantifier</EM>&nbsp;<TT>[</TT><EM>Variables</EM><TT>]&nbsp;:</TT>&nbsp;<EM>
-Formula</EM>.
-In the THF, TFF, and FOF languages, every variable in a <EM>Formula</EM> 
-must be bound by a preceding quantification with adequate scope.
-Typed <EM>Variables</EM> are given their type by a <TT>:</TT><EM>type</EM> 
-suffix.
-The binary connectives are
-infix <TT>|</TT> for disjunction, 
-infix <TT>&</TT> for conjunction,
-infix <TT>&lt;=&gt;</TT> for equivalence,
-infix <TT>=&gt;</TT> for implication,
-infix <TT>&lt;=</TT> for reverse implication,
-infix <TT>&lt;~&gt;</TT> for non-equivalence (XOR),
-infix <TT>~|</TT> for negated disjunction (NOR),
-infix <TT>~&</TT> for negated conjunction (NAND),
-infix <TT>@</TT> for application.
-The only unary connective is prefix <TT>~</TT> for negation.
+In a <EM>formula</EM>, terms and atoms follow Prolog conventions - functions and predicates start
+with a lowercase letter or are <TT>'</TT>single quoted<TT>'</TT>, and variables start with an
+uppercase letter.
+The language also supports interpreted symbols that are either defined symbols that start with
+a <TT>$</TT>, or are composed of non-alphabetic characters.
+Defined symbols come in two varieties: <EM>TPTP defined</EM> predicates and functors, whose
+interpretation is specified by the TPTP language, and <EM>system defined</EM> predicates and
+functors, whose interpretation is ATP system specific.
+Examples of TPTP defined symbols are the truth constants <TT>$true</TT> and <TT>$false</TT>.
+Examples of other interpreted symbols are integer/rational/real numbers such as <TT>27</TT>,
+<TT>43/92</TT>, <TT>-99.66</TT>.
+The logical connectives in the TPTP language are
+<TT>!></TT>, <TT>?*</TT>, <TT>@+</TT>, <TT>@-</TT>, <TT>!</TT>, <TT>?</TT>, <TT>~</TT>,
+<TT>|</TT>, <TT>&</TT>, <TT>=&gt;</TT>, <TT>&lt;=</TT>, <TT>&lt;=&gt;</TT>, and <TT>&lt;~&gt;</TT>,
+for Pi, Sigma, choice (indefinite description), definite description, universal quantification,
+existential quantification, negation. disjunction, conjunction, implication, reverse implication,
+equivalence, and non-equivalence (XOR).
+Equality and inequality are expressed as the infix predicates <TT>=</TT> and <TT>!=</TT>.
+Quantified formulae are written in the form<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><EM>Quantifier</EM>&nbsp;<TT>[</TT><EM>Variables</EM><TT>]&nbsp;:</TT>&nbsp;<EM> Formula</EM><BR>
+In the THF, TFF, and FOF languages, every variable in a <EM>Formula</EM> must be bound by a
+preceding quantification with adequate scope.
 Negation has higher precedence than quantification, which in turn has
 higher precedence than the binary connectives.
-No precedence is specified between the binary connectives; brackets are 
+No precedence is specified between the binary connectives; brackets are
 used to ensure the correct association.
 The binary connectives are left associative.
 <P>
+The typed first-order form (TFF) language supports types and type declarations.
+Predicate and function symbols can be declared before their use, with type signatures that
+specify the types of their arguments and result.
+Two TPTP defined types are available, <TT>$i</TT> for individuals, and <TT>$o</TT> for booleans.
+User defined types can be introduced as being of the "type"' <TT>$tType</TT>.
+An expression <TT>(t<SUB>1</SUB>,...,t<SUB>n</SUB>)&nbsp;>&nbsp;$o</TT> is the type of an n-ary
+predicate, where the i-th argument is of type t<SUB>i</SUB>.
+Analogously, an expression <TT>(t<SUB>1</SUB>,...,t<SUB>n</SUB>)&nbsp;>&nbsp;t</TT> is the type of
+a function that returns a term of type <TT>t</TT>.
+Typed <EM>Variables</EM> are given their type by a <TT>:</TT><EM>type</EM> suffix.
+TFF also supports arithmetic (which requires types, i.e., arithmetic is not supported in CNF or
+FOF), with defined types <TT>$int</TT>, <TT>$rat</TT>, <TT>$real</TT>, and a suite of interpreted
+<A HREF="#Arithmetic">arithmetic functions and predicates</A>.
+A useful feature of TFF is default typing for symbols that are not explicitly declared:
+predicates default to <TT>($i,...,$i)&nbsp;>&nbsp;$o</TT>, and functions default to
+<TT>($i,...,$i)&nbsp;>&nbsp;$i</TT>.
+This allows TFF to effectively degenerate to untyped FOF.
+<P>
+The typed extended first-order form (TXF) augments TFF with FOOL constructs:
+formulae of type <TT>$o</TT> as terms; variables of type <TT>$o</TT> as formulae; tuples;
+conditional (if-then-else) expressions; and let (let-defn-in) expressions.
+<P>
+The typed higher-order form (THF) includes type declarations in curried form, lambda-terms with
+a binder symbol <TT>^</TT> for lambda, explicit application with <TT>@</TT>, and quantification
+over variables of any type.
+THF does not admit default typing - all symbol types must be declared before use.
+<P>
+The defined predicates recognized so far are
+<UL>
+<LI> <TT>$distinct</TT>, whose arguments are hence known to be unequal from each other (but not
+     necessarily unequal to any other constants).
+     <TT>$distinct</TT> maybe overloaded with different arities.
+     <TT>$distinct</TT> is used in only the typed languages, and is ad hoc polymorphic with all
+     arguments having the same type.
+</UL>
+The defined functors recognized so far are
+<UL>
+<LI> <TT>"distinct object"</TT>s, written in double quotes.
+     All <TT>"distinct object"</TT>s are unequal to all <TT>"different distinct object"</TT>s
+     (but not necessarily unequal to any other constants), e.g., <TT>"Apple" != "Microsoft"</TT>.
+     One way of implementing this is to interpret <TT>"distinct object"</TT> as the domain element
+     in the double quotes.
+     In typed contexts <TT>"distinct object"</TT>s are of type <TT>$i</TT> (and as a result, are
+     unequal to all numbers because their interpretation domains are disjoint in the TPTP type
+     systems).
+<LI> Numbers (numeric constants).
+     These are used in the THF and TFF languages.
+     Numbers are interpreted as themselves (as domain elements).
+     All different numbers are unequal, e.g., <TT>1 != 2</TT> (but not necessarily unequal to any
+     other constants of the same type).
+     All numbers are also unequal to terms of type <TT>$i</TT> (because their interpretation
+     domains are disjoint in the TPTP type systems).
+     Numbers are not allowed in FOF and CNF, but for many applications an adequate alternative is
+     to write "numbers" as distinct objects, e.g., <TT>"27"</TT>, so that different "numbers" are
+     known to be unequal to each other, but possibly equal to other terms of type <TT>$i</TT>.
+</UL>
+<P>
 The THF and TFF languages have conditional and let expressions.
 <UL>
-<LI> Conditional expressions have <TT>$ite</TT> as the functor. 
-     The expressions are parametric polymorphic, taking a boolean expression as 
-     the first argument, then two expressions of any one type as the second and 
-     third arguments, as the true and false return values respectively, i.e., 
-     the return type is the same as that of the second and third arguments.
-     Let expressions have <TT>$let</TT> as the functor.
-<LI> The expressions provide the types of defined symbols, definitions for the
-     symbols, and a formula/term in which the definitions are applied.
-     Each type declaration is the same as a type declaration in an annotated
-     formula with the <TT>type</TT> role, and multiple type declarations are given
-     in <TT>[]</TT>ed tuples of declarations.
-     Each definition defines the expansion of one of the declared symbols, and
-     multiple definitions are given in <TT>[]</TT>ed tuples of definitions.
-     If variables are used in the lefthand side of a definition, their values
-     are supplied in the defined symbol's use.
-     Such variables do not need to be declared (they are implicitly declared to
-     be of the type defined by the symbol declaration), but must be top-level
-     arguments of the defined symbol and be pairwise distinct.
-     In the polymorphic case, type declarations may include type variables introduced in an enclosing scope, such as
-<PRE>
+<LI> Conditional expressions have <TT>$ite</TT> as the functor.
+     The expressions are parametric polymorphic, taking a boolean expression as the first argument,
+     then two expressions of any one type as the second and third arguments, as the true and false
+     return values respectively, i.e., the return type is the same as that of the second and third
+     arguments.
+<LI> Let expressions have <TT>$let</TT> as the functor.
+     The expressions provide the types of defined symbols, definitions for the symbols, and a
+     formula/term in which the definitions are applied.
+     Each type declaration is the same as a type declaration in an annotated formula with the
+     <TT>type</TT> role, and multiple type declarations are given in <TT>[]</TT>ed tuples of
+     declarations.
+     Each definition defines the expansion of one of the declared symbols, and multiple definitions
+     are given in <TT>[]</TT>ed tuples of definitions.
+     If variables are used in the lefthand side of a definition, their values are supplied in the
+     defined symbol's use.
+     Such variables do not need to be declared (they are implicitly declared to be of the type
+     defined by the symbol declaration), but must be top-level arguments of the defined symbol
+     and be pairwise distinct.
+     In the polymorphic case, type declarations may include type variables introduced in an 
+     enclosing scope, such as
+     <PRE>
+%----The constant function using A from 'outside' and <TT>B</TT> from 'inside'. <TT>B</TT> 
+%----is required in the use of <TT>const</TT>, but not <TT>A</TT>.
 tff(let_polymorphic_both_types, axiom,
-  ![A: $tType]: $let(
-    % the constant function using A from 'outside' and B from 'inside'
-    const : !>[B : $tType]: (A * B) > A,
-    % B required here but not A
-    const(B, X, Y) := X)).
-</PRE>
+    ! [A: $tType] : 
+      $let(
+        const : !>[B: $tType] : (A * B) > A,
+        const(B, X, Y) := X),
+        ... ).  </PRE>
      No extra sort arguments are needed when using such $let-defined symbols.
 </UL>
 <P>
-The <EM>useful_info</EM> field of an annotated formula is optional, and if
-it is not used then the <EM>source</EM> field becomes optional.
-The  source field is used to record where the annotated formula came from,
-and is most commonly a <TT>file</TT> record or an <TT>inference</TT> record.
-A <TT>file</TT> record stores the name of the file from which the annotated
-formula was read, and optionally the name of the annotated formula as it
-occurs in that file - this might be different from the name of the annotated
-formula itself, e.g., if an ATP systems reads an annotated formula,
+The <EM>useful_info</EM> field of an annotated formula is optional, and if it is not used then
+the <EM>source</EM> field becomes optional.
+The  source field is used to record where the annotated formula came from, and is most commonly a
+<TT>file</TT> record or an <TT>inference</TT> record.
+A <TT>file</TT> record stores the name of the file from which the annotated formula was read, and
+optionally the name of the annotated formula as it occurs in that file - this might be different
+from the name of the annotated formula itself, e.g., if an ATP systems reads an annotated formula,
 renames it, and then prints it out.
 An <TT>inference</TT> record stores information about an inferred formula.
-The <EM>useful_info</EM> field of an annotated formula is a list of arbitrary
-useful information formatted as Prolog terms, as required for user
-applications.
+The <EM>useful_info</EM> field of an annotated formula is a list of arbitrary useful information
+formatted as Prolog terms, as required for user applications.
 <P>
 An example of a THF formula section, extracted from the problem file
 <TT>LCL633^1.p</TT>, is shown below.
