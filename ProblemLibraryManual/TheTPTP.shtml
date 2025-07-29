@@ -874,45 +874,39 @@ A problem version is standard if it uses a standard axiomatization.
 <! OLD theorem proving systems for the domain. >
 (Note: A standard axiomatization might be redundant, because some axioms are 
 dependent on others. 
-In general, it is not known whether or not an axiomatization is minimal, and 
-thus the possibility of redundancy in standard axiomatizations must be 
-tolerated.)
-In the TPTP, standard axiomatizations are kept in separate axiom files, 
-and are included in problems as appropriate. 
-Sets of <EM>specialization</EM> axioms might be used to extend or constrain an
-axiomatization.
+In general, it is not known whether or not an axiomatization is minimal, and thus the possibility 
+of redundancy in standard axiomatizations must be tolerated.)
+In the TPTP, standard axiomatizations are kept in separate axiom files, and are included in 
+problems as appropriate. 
+Sets of <EM>specialization</EM> axioms might be used to extend or constrain an axiomatization.
 Specialization axioms are also kept in separate axiom files.
 <P>
-Within the ATP community, some problems have been created with 
-<EM>non-standard</EM> axiomatizations. 
-A non-standard axiomatization can be formed by modifying a standard 
-axiomatization:
-the standard axiomatization can be <EM>reduced</EM> (i.e., axioms are removed) and 
-the result is an <EM>incomplete</EM> axiomatization, or it can be 
-<EM>augmented</EM> 
-(i.e., lemmas are added) and the result is a <EM>redundant</EM> axiomatization. 
-Incomplete and redundant axiomatizations are typically used to find a proof 
-of a conjecture (based on the axiomatization) using a particular ATP system. 
-An axiomatization can also be non-standard because it is <EM>biased</EM>, 
-i.e., designed specifically to be suited or ill-suited to some ATP system, 
-calculus, or control strategy.
+Within the ATP community, some problems have been created with <EM>non-standard</EM> 
+axiomatizations. 
+A non-standard axiomatization can be formed by modifying a standard axiomatization: the standard 
+axiomatization can be <EM>reduced</EM> (i.e., axioms are removed) and the result is an 
+<EM>incomplete</EM> axiomatization, or it can be <EM>augmented</EM> (i.e., lemmas are added) and 
+the result is a <EM>redundant</EM> axiomatization. 
+Incomplete and redundant axiomatizations are typically used to find a proof of a conjecture (based 
+on the axiomatization) using a particular ATP system. 
+An axiomatization can also be non-standard because it is <EM>biased</EM>, i.e., designed 
+specifically to be suited or ill-suited to some ATP system, calculus, or control strategy.
 A problem version is incomplete, redundant, or biased if its axiomatization is.
-Finally, an axiomatization can be non-standard because it does not capture 
-any established theory.  i.e., a standard axiomatization does not exist, but 
-the axioms are not biased.
+Finally, an axiomatization can be non-standard because it does not capture any established theory,
+i.e., a standard axiomatization does not exist, but the axioms are not biased.
 A problem version with such an axiomatization is <EM>especial</EM>.
-Typically, the axioms in an especial problem are specific to that problem,
-and are not used in any other problem.
+Typically, the axioms in an especial problem are specific to that problem, and are not used in 
+any other problem.
 <P>
-In any 'real' application of an ATP system, a standard or especial 
-problem version would typically be used, at least initially. 
+In any 'real' application of an ATP system, a standard or especial problem version would typically 
+be used, at least initially. 
 The use of standard axiomatizations is particularly desirable.
 
 <P>
 <A NAME="Equality Axiomatization">
 <STRONG>Equality Axiomatization</STRONG><BR>
-In the TPTP equality is represented in infix using <TT>=</TT> and <TT>!=</TT>
-for equality and inequality.
+In the TPTP equality is represented in infix using <TT>=</TT> and <TT>!=</TT> for equality and 
+inequality.
 An inequality has the same meaning as a negated equality.
 If equality is present in a problem, axioms of equality are not provided; it is assumed that 
 equality reasoning is builtin to every ATP system.
@@ -1321,23 +1315,19 @@ If no rating has been assigned, a <TT>?</TT> is given.
 This field lists various syntactic measures of the problem's formulae. 
 The measures for THF problems are:
 <UL>
-<LI> the numbers of formulae, unit formulae,
-     type formulae, definition formulae,
-<LI> the numbers of atoms, equality atoms,
-     connective atoms,
+<LI> the numbers of formulae, unit formulae, type formulae, definition formulae,
+<LI> the numbers of atoms, equality atoms, connective atoms,
 <LI> the maximal and average number of atoms in a formula,
 <LI> the numbers of logical connectives, each logical connective,
-<LI> the maximal and average formula depth,
-     the number of nested formulae,
+<LI> the maximal and average formula depth, the number of nested formulae,
 <LI> the numbers of tuples, if-then-else formulae, and let-in formulae,
 <LI> the numbers of arithmetic formulae, terms, numbers, and variables,
 <LI> the numbers of types, user types,
+<LI> the numbers of type declarations, polymorphic type declarations, dependent type declarations
 <LI> the numbers of type connectives, each type connective,
-<LI> the numbers of distinct (non-variable) symbols, user symbols,
-     constant symbols,
+<LI> the numbers of distinct (non-variable) symbols, user symbols, constant symbols,
      and the arity range of the symbols,
-<LI> the numbers of uses of the &Pi;, &Sigma;, &epsilon;, &iota;, and typed
-     equality constants,
+<LI> the numbers of uses of the &Pi;, &Sigma;, &epsilon;, &iota;, and typed equality constants,
 <LI> the numbers of distinct variables,
      lambda quantifications, universal quantifications, existential 
      quantifications, typed variables, defined variables,
@@ -1345,8 +1335,7 @@ The measures for THF problems are:
 </UL>
 The measures for TFF problems are:
 <UL>
-<LI> the numbers of formulae, unit formulae,
-     type formulae, definition formulae,
+<LI> the numbers of formulae, unit formulae, type formulae, definition formulae,
 <LI> the numbers of atoms, equality atoms,
 <LI> the maximal and average number of atoms in a formula,
 <LI> the numbers of logical connectives, each logical connective,
@@ -1369,40 +1358,36 @@ The measures for TFF problems are:
 The measures for FOF problems are:
 <UL>
 <LI> the numbers of formulae, unit formulae, definition formulae,
-<LI> the numbers of atoms, equality atoms,
+<LI> the numbers of atoms, equality atoms
 <LI> the maximal and average number of atoms in a formula,
 <LI> the numbers of logical connectives, each logical connective,
 <LI> the maximal and average formula depth,
 <LI> the maximal and average term depth,
-<LI> the numbers of distinct predicates, user predicates, propositions,
-     and the arity range of the predicates.
-<LI> the numbers of distinct function, user functions, constants,
-     and the arity range of the functions,
+<LI> the numbers of distinct predicates, user predicates, propositions, and the arity range of the 
+     predicates.
+<LI> the numbers of distinct function, user functions, constants, and the arity range of the 
+     functions,
 <LI> the numbers of distinct variables,
      universal quantifications, existential quantifications.
 </UL>
 The measures for CNF problems are:
 <UL>
-<LI> the numbers of clauses, unit clauses,
-     non-Horn clauses, range restricted clauses,
+<LI> the numbers of clauses, unit clauses, non-Horn clauses, range restricted clauses,
 <LI> the numbers of literals, equality literals, negated literals,
 <LI> the maximal and average clause size,
 <LI> the maximal and average term depth,
-<LI> the numbers of distinct predicates, user predicates, propositions,
-     and the arity range of the predicates.
-<LI> the numbers of distinct function, user functions, constants,
-     and the arity range of the functions,
+<LI> the numbers of distinct predicates, user predicates, propositions, and the arity range of 
+     the predicates.
+<LI> the numbers of distinct function, user functions, constants, and the arity range of the 
+     functions,
 <LI> the numbers of distinct variables, singletons.
 </UL>
-See A HREF="#InsideTheTPTP">the summary</A> of this information over the 
-entire TPTP.
+See A HREF="#InsideTheTPTP">the summary</A> of this information over the entire TPTP.
 <P>
 <STRONG>The <TT>% SPC</TT> field.</STRONG><BR>
-This field indicates to which <EM>Specialist Problem Class</EM> (SPC) the 
-problem belongs.
-SPCs are sets of problems that have similar syntactic characteristics, so
-that that the problems are reasonably homogeneous with respect ATP systems'
-performances on the problems.
+This field indicates to which <EM>Specialist Problem Class</EM> (SPC) the problem belongs.
+SPCs are sets of problems that have similar syntactic characteristics, so that that the problems 
+are reasonably homogeneous with respect ATP systems' performances on the problems.
 SPCs are used for caclulating the difficulty rating 
 [<A HREF="../../cgi-bin/SeeTPTP?Category=BibTeX&File=SS01">SS01</A>], and 
 for recommending systems to use on problems
@@ -1447,24 +1432,21 @@ The characteristics used to build the SPCs are:
 </UL>
 <P>
 <STRONG>The <TT>% Comments</TT> field.</STRONG><BR>
-This field contains free format comments about the problem, e.g., 
-the significance of the problem, or the reason for creating the problem.
-If the problem was created using the <A HREF="#TPTP2X">TPTP2X</A> utility 
-then the TPTP2X parameters are given.
+This field contains free format comments about the problem, e.g., the significance of the problem,
+or the reason for creating the problem.
+If the problem was created using the <A HREF="#TPTP2X">TPTP2X</A> utility then the TPTP2X 
+parameters are given.
 <P>
 <STRONG>The <TT>% Bugfixes</TT> field.</STRONG><BR>
-This field describes any bugfixes that have been done to the formulae of
-the problem.
-Each entry gives the release number in which the bugfix was done, and 
-attempts to pinpoint the bugfix accurately. 
+This field describes any bugfixes that have been done to the formulae of the problem.
+Each entry gives the release number in which the bugfix was done, and attempts to pinpoint the 
+bugfix accurately. 
 
 <A NAME="IncludeSection">
 <H4>The Include Section</H4>
 
-The include section contains <TT>include</TT> directives for TPTP axiom 
-files. 
-An example extracted from the problem file <TT>GEO146+1.p</TT>
-is shown below.
+The include section contains <TT>include</TT> directives for TPTP axiom files. 
+An example extracted from the problem file <TT>GEO146+1.p</TT> is shown below.
 <P>
 <A NAME="IncludeSection">
 <PRE>
@@ -1483,32 +1465,28 @@ include('Axioms/GEO004+3.ax',[connect_defn,symmetry_of_at_the_same_time]).
 <U>Example of a problem file include section (adapted from <TT>GEO146+1.p</TT>).</U>
 </CENTER>
 <P>
-Each of the <TT>include</TT> directives indicates that the formulae in the
-named file should be included at that point. 
-Include files with relative path names are expected to be found either under
-the directory of the current file, or if not found there then under the 
-directory specified in the <TT>$TPTP</TT> environment variable.
-If the <TT>include</TT> directive has a <TT>[]</TT>ed list of formulae names
-as a second argument, the named file must be filtered to retain only those 
-formulae (this filter also applies to formulae that have been recursively 
-included into the named file).
-If any member of the list cannot be found, or there are multiple formulae
-with a given name, that is an error condition.
-If there is no second argument, or the second argument is <TT>all</TT>,
-then all the formulae in the file are included.
-In the example above only <TT>connect_defn</TT> and 
-<TT>symmetry_of_at_the_same_time</TT> are included from 
-<TT>Axioms/GEO004+3.ax</TT>.
+Each of the <TT>include</TT> directives indicates that the formulae in the named file should be 
+included at that point. 
+Include files with relative path names are expected to be found either under the directory of the 
+current file, or if not found there then under the directory specified in the <TT>TPTP</TT> 
+environment variable.
+If the <TT>include</TT> directive has a <TT>[]</TT>ed list of formulae names as a second argument,
+the named file must be filtered to retain only those formulae (this filter also applies to formulae
+that have been recursively included into the named file).
+If any member of the list cannot be found, or there are multiple formulae with a given name, that
+is an error condition.
+If there is no second argument, or the second argument is <TT>all</TT>, then all the formulae in
+the file are included.
+In the example above only <TT>connect_defn</TT> and <TT>symmetry_of_at_the_same_time</TT> are
+included from <TT>Axioms/GEO004+3.ax</TT>.
 <P>
-Full versions of TPTP problems (without <TT>include</TT> directives) can be 
-created by using the <A HREF="#TPTP2X">TPTP2X</A> and 
-<A HREF="#TPTP4X">TPTP4X</A> utilities.
+Full versions of TPTP problems (without <TT>include</TT> directives) can be created by using the
+<A HREF="#TPTP2X">TPTP2X</A> and <A HREF="#TPTP4X">TPTP4X</A> utilities.
 <P>
-A side effect of separating out the axioms into axiom files is that the 
-formula order in the TPTP presentation of problems is typically different 
-from that of any original presentation.
-This reordering is acceptable because the performance of a decent ATP 
-system should not be very dependent on a particular formula ordering.
+A side effect of separating out the axioms into axiom files is that the formula order in the TPTP
+presentation of problems is typically different from that of any original presentation.
+This reordering is acceptable because the performance of a decent ATP system should not be very
+dependent on a particular formula ordering.
 
 <A NAME="FormulaeSection">
 <!--#include file="AnnotatedFormulae.html"-->
@@ -1522,19 +1500,17 @@ system should not be very dependent on a particular formula ordering.
 The TPTP is physically organized into six subdirectories, as follows:
 <UL>
 <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Problems">
-     <TT>Problems</TT></A> 
-     - The problem files directory, with subdirectories for each domain. 
+     <TT>Problems</TT></A> - The problem files directory, with subdirectories for each domain. 
      The <A HREF="#DomainStructure">domain name abbreviations</A> are used as subdirectory names. 
      The subdirectories contain the problem files.
 <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Axioms"><TT>Axioms</TT></A>
      - The axiom files directory.
 <LI> <TT>Generators</TT> - The generator files directory.
-<LI> <TT>TPTP2X</TT> -   
-     The directory containing the <A HREF="#TPTP2X">TPTP2X</A> utility.
+<LI> <TT>TPTP2X</TT> - The directory containing the <A HREF="#TPTP2X">TPTP2X</A> utility.
 <LI> <TT>Scripts</TT> -  
-     A directory containing the <A HREF="#TPTP4X">TPTP4X</A> and
-     <A HREF="#TPTP2T">TPTP2T</A> utilities (the directory is called "Scripts" because originally 
-     it was planned to put shell scripts there, but things changed).
+     A directory containing the <A HREF="#TPTP4X">TPTP4X</A> and <A HREF="#TPTP2T">TPTP2T</A>
+     utilities (the directory is called "Scripts" because originally it was planned to put shell
+     scripts there, but things changed).
 <LI> <TT>Documents</TT> - A directory containing documents that relate to the TPTP:
      <UL>
      <LI> <A HREF="../../cgi-bin/SeeTPTP?Category=Documents&File=ReadMe"><TT>ReadMe</TT></A>
@@ -1629,6 +1605,8 @@ The TPTP is physically organized into six subdirectories, as follows:
      <LI> !      - The number of universally quantified variables
      <LI> ?      - The number of existentially quantified variables
      <LI> !>     - The number of lambda-pi quantified (polymorphic) variables (TH1 and TF1)
+     <LI> {.}    - The number of mono-modal non-classical connectives
+     <LI> {#}    - The number of multi-modal non-classical connectives
 <!--
      <LI> nHrn - The number of non-Horn clauses.
      <LI> Defn - The number of definitions
