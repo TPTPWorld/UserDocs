@@ -284,7 +284,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$real > $real</TT><br>
      <TD> Floor of a number.
      <TD> The largest integral value (in the type of the argument) not greater than 
-          the argument.
+          the argument
+          (i.e., <TT>! [X] : ($to_int($floor(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$ceiling</TT>/1
      <TD>
@@ -293,7 +294,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$real > $real</TT><br>
      <TD> Ceiling of a number.
      <TD> The smallest integral value (in the type of the argument) not less than 
-          the argument.
+          the argument
+          (i.e., <TT>! [X] : ($to_int($ceiling(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$truncate</TT>/1
      <TD>
@@ -302,7 +304,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$real > $real</TT><br>
      <TD> Truncation of a number.
      <TD> The nearest integral value (in the type of the argument) with magnitude 
-          not greater than the absolute value of the argument.
+          not greater than the absolute value of the argument
+          (i.e., <TT>! [X] : ($to_int($truncate(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$round</TT>/1
      <TD>
@@ -310,7 +313,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$rat > $rat</TT><br>
          <TT>$real > $real</TT><br>
      <TD> Rounding of a number.
-     <TD> The nearest integral value (in the type of the argument) to the argument. 
+     <TD> The nearest integral value (in the type of the argument) to the argument
+          (i.e., <TT>! [X] : ($to_int($rount(X)))</TT>).
           If the argument is halfway between two integral values, the nearest even integral
           value to the argument.
 <TR VALIGN=TOP>
