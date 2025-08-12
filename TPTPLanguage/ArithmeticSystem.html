@@ -468,8 +468,10 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$rat > $int</TT><br>
          <TT>$real > $int</TT><br>
      <TD> Coercion of a number to <TT>$int</TT>.
-     <TD> The largest <TT>$int</TT> not greater than the argument.
-          If applied to an argument of type <TT>$int</TT> this is the 
+     <TD> The largest <TT>$int</TT> not greater than the argument;
+          the argument effectively gets truncated before conversion:
+          <TT>! [X] : ($to_int($truncate(X)) = $to_int(X))</TT>.
+          If applied to an argument of type <TT>$int</TT>, this is the
           identity function.
 <TR VALIGN=TOP>
      <TD> <TT>$to_rat</TT>/1
