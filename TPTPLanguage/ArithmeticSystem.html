@@ -481,10 +481,10 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
          <TT>$real > $rat</TT><br>
      <TD> Coercion of a number to <TT>$rat</TT>.
      <TD> This function is not fully specified.
-          If applied to a <TT>$int</TT> the result is the argument over 
+          If applied to an argument of type <TT>$int</TT>, the result is the argument over
           <TT>1</TT>.
-          If applied to a <TT>$rat</TT> this is the identity function.
-          If applied to a <TT>$real</TT> that is (known to be) rational the 
+          If applied to an argument of type <TT>$rat</TT>, this is the identity function.
+          If applied to an argument of type <TT>$real</TT> that is (known to be) rational, the
           result is the <TT>$rat</TT> value.
           For other reals the result is not specified.
           In practice, if an ATP system does not "know" that the argument 
