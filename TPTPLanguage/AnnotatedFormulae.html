@@ -1,6 +1,13 @@
 <A NAME="AnnotatedFormulae">
 <H3> Annotated Formulae </H3>
 
+The TPTP contains problems in
+first-order form (FOF), and clause normal form (CNF),
+monomorphic and polymorphic typed first-order form (TFF, which includes the extended first-order
+form (TXF)), monomorphic and polymorphic typed higher-order form (THF),
+and dependently typed monomorphic and polymorphic typed higher-order form (DHF).
+Interpreted arithmetic types and symbols are supported in the typed logics.
+<P>
 TPTP problems and TSTP solutions are built from <EM>annotated formulae</EM> of the form
 <P>
 <TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><EM>language</EM><TT>(</TT><EM>name</EM><TT>,</TT><EM>role</EM><TT>,</TT><EM>formula</EM><TT>,</TT><EM>source</EM><TT>,</TT><EM>useful_info</EM><TT>).</TT>
@@ -32,12 +39,11 @@ The <EM>role</EM> gives the user semantics of the <EM>formula</EM>, one of
      redundant wrt the other axiom-like formulae is ill-formed.
      <TT>theorem</TT>s are more important than <TT>lemma</TT>s from the
      user perspective.
-<LI> <TT>corollary</TT>s have been proven from the <TT>axiom</TT>s and a
-     <TT>theorem</TT>, and are thus redundant wrt the other axiom-like and
-     <TT>theorem</TT> formulae.
+<LI> <TT>corollary</TT>s have been proven from the <TT>axiom</TT>s and a <TT>theorem</TT>, and are
+     thus redundant wrt the other axiom-like and <TT>theorem</TT> formulae.
      A problem containing a <TT>corollary</TT> that is not redundant wrt the
      other axiom-like formulae and <TT>theorem</TT> formulae is ill-formed.
-<LI> <TT>conjecture</TT>s occur in only THF, TFF, and FOF problems, and are to all
+<LI> <TT>conjecture</TT>s occur in DHF, THF, TFF, and FOF problems, and are to all
      be proven from the axiom-like formulae.
      A problem is solved only when all conjectures are proven.
      (<EM>TPTP problems never contain more than one </EM><TT>conjecture</TT><EM>,

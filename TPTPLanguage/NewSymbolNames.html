@@ -63,10 +63,10 @@ systems when processing a TPTP problem.
         ! [X3] : ~ hates(X3,sK1(X3)) ),
         inference(skolemize,[status(esa),new_symbols(skolem,[sK1]),skolemized(X4)],[49])).
     
-    fof(64,plain,
+    fof(64,definition,
         ( ~ sP1
       <=> ! [X8] : ~ has_job(X8,boxer) ),
-        introduced(definition,[new_symbols(definition,[sP1])])).</PRE>
+        introduced(definition,[new_symbols(definition,[sP1])],[])).</PRE>
 <P>
 <LI> ATP systems should check for clashes whenever they generate a new symbol, and whenever 
      they read input after any new symbols have been generated.

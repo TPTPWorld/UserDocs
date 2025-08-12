@@ -1,41 +1,37 @@
-<HR><!------------------------------------------------------------------------>
+<HR><!-- -------------------------------------------------------------------------------------- -->
 <A NAME="Introduction">
 <H2>Introduction</H2>
 <P>
-The TPTP (Thousands of Problems for Theorem Provers) is a library of
-problems, in classical logic with an interpreted equality symbol, for 
-Automated Theorem Proving (ATP) systems.
+The TPTP (Thousands of Problems for Theorem Provers) is a library of test problems for Automated 
+Theorem Proving (ATP) systems, in classical and non-classical logics, with an interpreted equality 
+symbol and assuming the axiom of choice.
 The TPTP contains problems in 
-monomorphic and polymorphic typed higher-order form (THF), 
-monomorphic and polymorphic typed first-order form (TFF, including the
-extended first-order form (TXF)), 
-first-order form (FOF), and clause normal form (CNF).
-Interpreted arithmetic types and symbols are supported in THF, TXF, and TFF.
-The TPTP supplies the automated reasoning community with a comprehensive
-library of the ATP test problems that are available today, in order to provide
-an overview and a simple, unambiguous reference  mechanism.
-The principal motivation for the TPTP is to support the testing and evaluation
-of ATP  systems, to help ensure that performance results accurately reflect
-the  capabilities of  the ATP  system being  considered.
-A common  library  of problems  is necessary  for meaningful  system
-evaluations,  meaningful  system comparisons,  repeatability  of testing,
-and the  production of  statistically significant results.
-The TPTP problems are stored in a specifically designed, easy to understand
-format.
-Utilities for manipulating the problems, for converting the problems
-to other known ATP formats, and for finding problems with certain 
-characteristics, are provided.
-Since its first release in 1993, many researchers have used the TPTP as
-an appropriate and convenient basis for ATP system evaluation.
+first-order form (FOF), and clause normal form (CNF),
+monomorphic and polymorphic typed first-order form (TFF, which includes the extended first-order 
+form (TXF)), monomorphic and polymorphic typed higher-order form (THF), 
+and dependently typed monomorphic and polymorphic typed higher-order form (DHF).
+Interpreted arithmetic types and symbols are supported in the typed logics.
 <P>
-This technical report explains the motivations and reasoning behind the 
-development of the TPTP, and thus implicitly explains the design decisions 
-made.
-It also serves as a manual explaining the structure and use of the TPTP:
-it provides a full description of the TPTP contents and organization, details 
-of the utility programs, and guidelines for obtaining and using the TPTP.
+The TPTP supplies the automated reasoning community with a comprehensive library of the ATP test 
+problems that are available today, in order to provide an overview and a simple, unambiguous 
+reference mechanism.
+The principal motivation for the TPTP is to support the testing and evaluation of ATP systems, to
+help ensure that performance results accurately reflect the capabilities of the ATP system being
+considered.
+A common library of problems is necessary for meaningful system evaluations, meaningful system 
+comparisons, repeatability of testing, and the production of statistically significant results.
+The TPTP problems are stored in a specifically designed, easy to understand format.
+Utilities for manipulating the problems, for converting the problems to other known ATP formats, 
+and for finding problems with certain characteristics, are provided.
+Since its first release in 1993, many researchers have used the TPTP as an appropriate and 
+convenient basis for ATP system evaluation.
 <P>
-
+This technical manual explains the motivations and reasoning behind the development of the TPTP,
+and thus implicitly explains the design decisions made.
+It also serves as a manual explaining the structure and use of the TPTP: it provides a full
+description of the TPTP contents and organization, details of the utility programs, and guidelines
+for obtaining and using the TPTP.
+<P>
 <STRONG>What's New in TPTP 
 <!--#include file="MACRO_ReleaseNumber"--></STRONG>
 (since TPTP v8.0.0):
@@ -276,4 +272,4 @@ aim to provide all of the desired properties.
 The TPTP library currently limited to problems expressed in classical
 logic.
 <P>
-<HR><!------------------------------------------------------------------------>
+<HR><!-- -------------------------------------------------------------------------------------- -->
