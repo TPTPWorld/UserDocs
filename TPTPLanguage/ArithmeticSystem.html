@@ -70,28 +70,7 @@ the IEEE standard."
 -->
 <P>
 The following interpreted predicates and interpreted functions are defined.
-Each symbol is ad-hoc polymorphic over the numeric types 
-exception - <TT>$quotient</TT> is not defined for <TT>$int</TT>).
-All arguments must have the same numeric type. 
-All the functions, except for <TT>$quotient</TT> of two <TT>$int</TT>s, and the coercion functions 
-<TT>$to_int</TT> and <TT>$to_rat</TT>, have the same range type as their arguments. 
-For example,
-<TT>$sum</TT> can be used with the type signatures
-<TT>($int&nbsp;*&nbsp;$int)&nbsp;>&nbsp;$int</TT>,
-<TT>($rat&nbsp;*&nbsp;$rat)&nbsp;>&nbsp;$rat</TT>,
-and
-<TT>($real&nbsp;*&nbsp;$real)&nbsp;>&nbsp;$real</TT>.
-The <TT>$quotient</TT> of two <TT>$int</TT>s is a <TT>$rat</TT>.
-The coercion function <TT>$to_int</TT> always has a <TT>$int</TT> result,
-and the coercion function <TT>$to_rat</TT> always has a <TT>$rat</TT> result.
-<!---unless otherwise noted.-->
-All the predicates have a <TT>$o</TT> result. 
-For example,
-<TT>$less</TT> can be used with the type signatures
-<TT>($int&nbsp;*&nbsp;$int)&nbsp;>&nbsp;$o</TT>,
-<TT>($rat&nbsp;*&nbsp;$rat)&nbsp;>&nbsp;$o</TT>,
-and
-<TT>($real&nbsp;*&nbsp;$real)&nbsp;>&nbsp;$o</TT>.
+The symbols are overloaded (i.e., ad-hoc polymorphic) for the provided type signatures.
 <P>
 <!--
 At this stage all the functions are written in prefix form.
@@ -102,10 +81,12 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=2>
 <TR VALIGN=TOP>
      <TH ALIGN=LEFT> Symbol
+     <TH ALIGN=LEFT style="min-width: 20ch"> Types
      <TH ALIGN=LEFT> Operation
      <TH ALIGN=LEFT> Comments,&nbsp;examples<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>-
 <TR VALIGN=TOP>
-     <TD> $int
+     <TD> <TT>$int</TT>
+     <TD> <TT>$tType</TT>
      <TD> The type of integers
      <TD> <TT>123</TT>, <TT>-123</TT><BR>
           <PRE>
@@ -119,7 +100,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 &lt;non_zero_numeric>   ::: [1-9]
 &lt;numeric>            ::: [0-9]</PRE>
 <TR VALIGN=TOP>
-     <TD> $rat
+     <TD> <TT>$rat</TT>
+     <TD> <TT>$tType</TT>
      <TD> The type of rationals
      <TD> <TT>123/456</TT>, <TT>-123/456</TT>, <TT>+123/456</TT>
           <PRE>
@@ -128,7 +110,8 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 &lt;unsigned_rational>  ::- &lt;decimal>&lt;slash>&lt;positive_decimal>
 &lt;slash>              ::: [/]</PRE>
 <TR VALIGN=TOP>
-     <TD> $real
+     <TD> <TT>$real</TT>
+     <TD> <TT>$tType</TT>
      <TD> The type of reals
      <TD> <TT>123.456</TT>, <TT>-123.456</TT>,<BR>
           <TT>123.456E789</TT>, <TT>123.456e789</TT>,
@@ -145,11 +128,19 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 &lt;exponent>           ::: [Ee]</PRE>
 <TR VALIGN=TOP>
      <TD> <TT>=</TT> (infix)
+     <TD>
+         <TT>($int * $int) > $o</TT><br>
+         <TT>($rat * $rat) > $o</TT><br>
+         <TT>($real * $real) > $o</TT><br>
      <TD> Comparison&nbsp;of&nbsp;two&nbsp;numbers.
      <TD> The numbers must be the same atomic type (see the 
           <A HREF="##TypeSystem">type system</A>).
 <TR VALIGN=TOP>
      <TD> <TT>$less</TT>/2
+     <TD>
+         <TT>($int * $int) > $o</TT><br>
+         <TT>($rat * $rat) > $o</TT><br>
+         <TT>($real * $real) > $o</TT><br>
      <TD> Less-than comparison&nbsp;of&nbsp;two&nbsp;numbers.
      <TD ROWSPAN=4> <TT>$less</TT>, <TT>$lesseq</TT>, <TT>$greater</TT>,
           and <TT>$greatereq</TT> are related by<BR>
@@ -160,15 +151,31 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
           to get all four relational operators.
 <TR VALIGN=TOP>
      <TD> <TT>$lesseq</TT>/2
+     <TD>
+         <TT>($int * $int) > $o</TT><br>
+         <TT>($rat * $rat) > $o</TT><br>
+         <TT>($real * $real) > $o</TT><br>
      <TD> Less-than-or-equal-to comparison of two numbers.
 <TR VALIGN=TOP>
      <TD> <TT>$greater</TT>/2
+     <TD>
+         <TT>($int * $int) > $o</TT><br>
+         <TT>($rat * $rat) > $o</TT><br>
+         <TT>($real * $real) > $o</TT><br>
      <TD> Greater-than comparison of two numbers.
 <TR VALIGN=TOP>
      <TD> <TT>$greatereq</TT>/2
+     <TD>
+         <TT>($int * $int) > $o</TT><br>
+         <TT>($rat * $rat) > $o</TT><br>
+         <TT>($real * $real) > $o</TT><br>
      <TD> Greater-than-or-equal-to comparison of two numbers.
 <TR VALIGN=TOP>
      <TD> <TT>$uminus</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Unary minus of a number.
      <TD ROWSPAN=3 <TT>$uminus</TT>, <TT>$sum</TT>, and <TT>$difference</TT> are 
           related by<BR>
@@ -177,9 +184,17 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
           be implemented to get all three additive operators.
 <TR VALIGN=TOP>
      <TD> <TT>$sum</TT>/2
+     <TD>
+         <TT>($int * $int) > $int</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Sum of two numbers.
 <TR VALIGN=TOP>
      <TD> <TT>$difference</TT>/2
+     <TD>
+         <TT>($int * $int) > $int</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Difference between two numbers.
 <!-- ---- OMIT FOR NOW
 <TR VALIGN=TOP>
@@ -195,10 +210,18 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 -->
 <TR VALIGN=TOP>
      <TD> <TT>$product</TT>/2
+     <TD>
+         <TT>($int * $int) > $int</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Product of two numbers.
      <TD>
 <TR VALIGN=TOP>
      <TD> <TT>$quotient</TT>/2
+     <TD>
+         <TT>($int * $int) > $rat</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Exact quotient of two numbers of the same type.
      <TD> For non-zero divisors, the result can be computed.
           For zero divisors the result is not specified.
@@ -211,6 +234,10 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
           For <TT>$int</TT> operands the result is <TT>$rat</TT>; the result might be simplied.
 <TR VALIGN=TOP>
      <TD> <TT>$quotient_e</TT>/2, <TT>$quotient_t</TT>/2, <TT>$quotient_f</TT>/2
+     <TD>
+         <TT>($int * $int) > $int</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Integral quotient of two numbers.
      <TD> The three variants use different rounding to an integral result:
           <UL>
@@ -236,6 +263,10 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 -->
 <TR VALIGN=TOP>
      <TD> <TT>$remainder_e</TT>/2, <TT>$remainder_t</TT>/2, <TT>$remainder_f</TT>/2
+     <TD>
+         <TT>($int * $int) > $int</TT><br>
+         <TT>($rat * $rat) > $rat</TT><br>
+         <TT>($real * $real) > $real</TT><br>
      <TD> Remainder after integral division of two numbers.
      <TD> For <TT>&tau;</TT>&nbsp;&isin;&nbsp;{<TT>$int</TT>,<TT>$rat</TT>,
           <TT>$real</TT>}, <TT>&rho;</TT>&nbsp;&isin;&nbsp;{<TT>e</TT>,
@@ -247,27 +278,51 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
           For zero divisors the result is not specified.
 <TR VALIGN=TOP>
      <TD> <TT>$floor</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Floor of a number.
      <TD> The largest integral value (in the type of the argument) not greater than 
-          the argument.
+          the argument
+          (i.e., <TT>! [X] : ($is_int($floor(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$ceiling</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Ceiling of a number.
      <TD> The smallest integral value (in the type of the argument) not less than 
-          the argument.
+          the argument
+          (i.e., <TT>! [X] : ($is_int($ceiling(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$truncate</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Truncation of a number.
      <TD> The nearest integral value (in the type of the argument) with magnitude 
-          not greater than the absolute value of the argument.
+          not greater than the absolute value of the argument
+          (i.e., <TT>! [X] : ($is_int($truncate(X)))</TT>).
 <TR VALIGN=TOP>
      <TD> <TT>$round</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Rounding of a number.
-     <TD> The nearest integral value (in the type of the argument) to the argument. 
+     <TD> The nearest integral value (in the type of the argument) to the argument
+          (i.e., <TT>! [X] : ($is_int($rount(X)))</TT>).
           If the argument is halfway between two integral values, the nearest even integral
           value to the argument.
 <TR VALIGN=TOP>
      <TD> <TT>$abs</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Absolute value of a number.
      <TD> <TT>$abs</TT> is related to other operators by
           <PRE>
@@ -392,26 +447,44 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
 -->
 <TR VALIGN=TOP>
      <TD> <TT>$is_int</TT>/1
+     <TD>
+         <TT>$int > $o</TT><br>
+         <TT>$rat > $o</TT><br>
+         <TT>$real > $o</TT><br>
      <TD> Test for coincidence with an <TT>$int</TT> value.
      <TD> 
 <TR VALIGN=TOP>
      <TD> <TT>$is_rat</TT>/1
+     <TD>
+         <TT>$int > $o</TT><br>
+         <TT>$rat > $o</TT><br>
+         <TT>$real > $o</TT><br>
      <TD> Test for coincidence with a <TT>$rat</TT> value.
      <TD> 
 <TR VALIGN=TOP>
      <TD> <TT>$to_int</TT>/1
+     <TD>
+         <TT>$int > $int</TT><br>
+         <TT>$rat > $int</TT><br>
+         <TT>$real > $int</TT><br>
      <TD> Coercion of a number to <TT>$int</TT>.
-     <TD> The largest <TT>$int</TT> not greater than the argument.
-          If applied to an argument of type <TT>$int</TT> this is the 
+     <TD> The largest <TT>$int</TT> not greater than the argument;
+          the argument effectively gets truncated before conversion:
+          <TT>! [X] : ($to_int($truncate(X)) = $to_int(X))</TT>.
+          If applied to an argument of type <TT>$int</TT>, this is the
           identity function.
 <TR VALIGN=TOP>
      <TD> <TT>$to_rat</TT>/1
+     <TD>
+         <TT>$int > $rat</TT><br>
+         <TT>$rat > $rat</TT><br>
+         <TT>$real > $rat</TT><br>
      <TD> Coercion of a number to <TT>$rat</TT>.
      <TD> This function is not fully specified.
-          If applied to a <TT>$int</TT> the result is the argument over 
+          If applied to an argument of type <TT>$int</TT>, the result is the argument over
           <TT>1</TT>.
-          If applied to a <TT>$rat</TT> this is the identity function.
-          If applied to a <TT>$real</TT> that is (known to be) rational the 
+          If applied to an argument of type <TT>$rat</TT>, this is the identity function.
+          If applied to an argument of type <TT>$real</TT> that is (known to be) rational, the
           result is the <TT>$rat</TT> value.
           For other reals the result is not specified.
           In practice, if an ATP system does not "know" that the argument 
@@ -421,8 +494,12 @@ TPTP syntax is an orthogonal issue, which must be addressed separately.
           &nbsp;&nbsp;<TT>! [X: $real] : ( $is_rat(X) => p($to_rat(X)) )</TT>
 <TR VALIGN=TOP>
      <TD> <TT>$to_real</TT>/1
+     <TD>
+         <TT>$int > $real</TT><br>
+         <TT>$rat > $real</TT><br>
+         <TT>$real > $real</TT><br>
      <TD> Coercion of a number to <TT>$real</TT>.
-     <TD> 
+     <TD> If applied to an argument of type <TT>$real</TT>, this is the identity function.
 </TABLE>
 
 <!--
